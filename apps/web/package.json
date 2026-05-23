@@ -1,0 +1,8 @@
+{
+  "name": "project-estimator-web",
+  "private": true,
+  "scripts": {
+    "start": "astro dev",
+    "build": "astro build"
+  }
+}

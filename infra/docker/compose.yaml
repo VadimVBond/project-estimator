@@ -1,0 +1,13 @@
+# docker-compose placeholder
+version: '3.8'
+services:
+  web:
+    build: ./web
+    ports:
+      - "3000:3000"
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+  bot:
+    build: ./bot

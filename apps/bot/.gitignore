@@ -152,7 +152,7 @@ docker-compose.override.yml
 *.orig
 
 # AI local tools
-.ai/
+.ai/ 
 .gemini/
 .copilot/
 

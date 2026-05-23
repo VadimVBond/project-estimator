@@ -1,0 +1,196 @@
+project-estimator/
+│
+├── .ai/
+│   ├── context/
+│   │   ├── project-overview.md
+│   │   ├── architecture.md
+│   │   ├── current-state.md
+│   │   ├── decisions.md
+│   │   ├── glossary.md
+│   │   └── roadmap.md
+│   │
+│   ├── prompts/
+│   │   ├── codex/
+│   │   │   ├── implement-feature.md
+│   │   │   ├── fix-bug.md
+│   │   │   ├── refactor-module.md
+│   │   │   └── review-code.md
+│   │   │
+│   │   ├── antigravity/
+│   │   │   ├── architecture-task.md
+│   │   │   ├── feature-design.md
+│   │   │   ├── scaling-analysis.md
+│   │   │   └── system-review.md
+│   │   │
+│   │   └── shared/
+│   │       ├── coding-rules.md
+│   │       ├── ui-guidelines.md
+│   │       ├── api-standards.md
+│   │       └── naming-conventions.md
+│   │
+│   ├── workflows/
+│   │   ├── feature-development.md
+│   │   ├── ai-review-loop.md
+│   │   ├── context-switching.md
+│   │   ├── release-process.md
+│   │   └── debugging-flow.md
+│   │
+│   ├── memory/
+│   │   ├── snapshots/
+│   │   ├── decisions/
+│   │   └── retrospectives/
+│   │
+│   └── templates/
+│       ├── feature-template.md
+│       ├── api-template.md
+│       ├── bug-report.md
+│       └── architecture-template.md
+│
+├── apps/
+│   │
+│   ├── web/
+│   │   ├── public/
+│   │   ├── src/
+│   │   │   ├── assets/
+│   │   │   ├── components/
+│   │   │   │   ├── quiz/
+│   │   │   │   ├── pricing/
+│   │   │   │   ├── layout/
+│   │   │   │   ├── ui/
+│   │   │   │   └── forms/
+│   │   │   │
+│   │   │   ├── layouts/
+│   │   │   ├── pages/
+│   │   │   │   ├── index.astro
+│   │   │   │   ├── calculator.astro
+│   │   │   │   ├── result.astro
+│   │   │   │   └── thank-you.astro
+│   │   │   │
+│   │   │   ├── content/
+│   │   │   ├── i18n/
+│   │   │   ├── lib/
+│   │   │   │   ├── api/
+│   │   │   │   ├── state/
+│   │   │   │   ├── hooks/
+│   │   │   │   └── utils/
+│   │   │   │
+│   │   │   ├── styles/
+│   │   │   └── config/
+│   │   │
+│   │   ├── astro.config.mjs
+│   │   ├── tailwind.config.mjs
+│   │   └── package.json
+│   │
+│   ├── api/
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── quiz.py
+│   │   │   ├── pricing.py
+│   │   │   ├── leads.py
+│   │   │   ├── telegram.py
+│   │   │   └── admin.py
+│   │   │
+│   │   ├── services/
+│   │   │   ├── pricing_service.py
+│   │   │   ├── quiz_service.py
+│   │   │   ├── telegram_service.py
+│   │   │   ├── lead_service.py
+│   │   │   └── ai_service.py
+│   │   │
+│   │   ├── models/
+│   │   │   ├── lead.py
+│   │   │   ├── pricing.py
+│   │   │   └── quiz.py
+│   │   │
+│   │   ├── db/
+│   │   │   ├── sqlite.db
+│   │   │   └── migrations/
+│   │   │
+│   │   ├── schemas/
+│   │   ├── middleware/
+│   │   ├── utils/
+│   │   └── tests/
+│   │
+│   └── bot/
+│       ├── src/
+│       │   ├── handlers/
+│       │   ├── services/
+│       │   ├── templates/
+│       │   ├── commands/
+│       │   └── utils/
+│       │
+│       ├── package.json
+│       └── tsconfig.json
+│
+├── packages/
+│   │
+│   ├── shared/
+│   │   ├── types/
+│   │   ├── constants/
+│   │   ├── schemas/
+│   │   ├── validators/
+│   │   └── utils/
+│   │
+│   ├── pricing-engine/
+│   │   ├── src/
+│   │   │   ├── calculators/
+│   │   │   ├── modifiers/
+│   │   │   ├── rules/
+│   │   │   ├── estimators/
+│   │   │   └── index.ts
+│   │   │
+│   │   └── tests/
+│   │
+│   ├── quiz-engine/
+│   │   ├── src/
+│   │   │   ├── conditional/
+│   │   │   ├── render/
+│   │   │   ├── validation/
+│   │   │   ├── state/
+│   │   │   └── index.ts
+│   │   │
+│   │   └── tests/
+│   │
+│   ├── ui/
+│   │   ├── components/
+│   │   ├── styles/
+│   │   └── tokens/
+│   │
+│   └── config/
+│       ├── stacks/
+│       ├── project-types/
+│       ├── pricing/
+│       └── features/
+│
+├── infra/
+│   ├── docker/
+│   │   ├── web.Dockerfile
+│   │   ├── api.Dockerfile
+│   │   ├── bot.Dockerfile
+│   │   └── compose.yaml
+│   │
+│   ├── nginx/
+│   │   ├── nginx.conf
+│   │   └── sites/
+│   │
+│   └── scripts/
+│       ├── bootstrap.ps1
+│       ├── setup.sh
+│       └── deploy.sh
+│
+├── docs/
+│   ├── architecture/
+│   ├── api/
+│   ├── pricing/
+│   ├── quiz/
+│   ├── deployment/
+│   └── ai-workflow/
+│
+├── .env.example
+├── .gitignore
+├── turbo.json
+├── pnpm-workspace.yaml
+├── package.json
+└── README.md
