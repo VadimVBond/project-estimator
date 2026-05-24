@@ -1,0 +1,33 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="90" x2="1480" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1E1B4B"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
+  <rect x="130" y="150" width="460" height="600" rx="30" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+  <rect x="690" y="160" width="290" height="150" rx="24" fill="#EDE9FE"/>
+  <rect x="690" y="375" width="290" height="150" rx="24" fill="#DDD6FE"/>
+  <rect x="690" y="590" width="290" height="150" rx="24" fill="#C4B5FD"/>
+  <rect x="1080" y="195" width="340" height="90" rx="20" fill="#134E4A" stroke="#5EEAD4" stroke-width="2"/>
+  <rect x="1080" y="410" width="340" height="90" rx="20" fill="#134E4A" stroke="#5EEAD4" stroke-width="2"/>
+  <rect x="1080" y="625" width="340" height="90" rx="20" fill="#134E4A" stroke="#5EEAD4" stroke-width="2"/>
+  <rect x="190" y="235" width="340" height="62" rx="14" fill="#E2E8F0"/>
+  <rect x="190" y="335" width="340" height="62" rx="14" fill="#CBD5E1"/>
+  <rect x="190" y="435" width="340" height="62" rx="14" fill="#94A3B8"/>
+  <rect x="190" y="535" width="340" height="62" rx="14" fill="#64748B"/>
+  <rect x="190" y="635" width="340" height="62" rx="14" fill="#475569"/>
+  <path d="M590 266C640 266 650 235 690 235" stroke="#DDD6FE" stroke-width="8" stroke-linecap="round"/>
+  <path d="M590 466C640 466 650 450 690 450" stroke="#C4B5FD" stroke-width="8" stroke-linecap="round"/>
+  <path d="M590 666C640 666 650 665 690 665" stroke="#A78BFA" stroke-width="8" stroke-linecap="round"/>
+  <path d="M980 235H1040" stroke="#F8FAFC" stroke-width="8" stroke-linecap="round"/>
+  <path d="M980 450H1040" stroke="#F8FAFC" stroke-width="8" stroke-linecap="round"/>
+  <path d="M980 665H1040" stroke="#F8FAFC" stroke-width="8" stroke-linecap="round"/>
+  <text x="730" y="248" fill="#312E81" font-family="Arial, sans-serif" font-size="28" font-weight="700">boundaries</text>
+  <text x="744" y="463" fill="#312E81" font-family="Arial, sans-serif" font-size="28" font-weight="700">layers</text>
+  <text x="723" y="678" fill="#312E81" font-family="Arial, sans-serif" font-size="28" font-weight="700">scalability</text>
+  <text x="1160" y="252" fill="#CCFBF1" font-family="Arial, sans-serif" font-size="28" font-weight="700">clear modules</text>
+  <text x="1150" y="467" fill="#CCFBF1" font-family="Arial, sans-serif" font-size="28" font-weight="700">controlled change</text>
+  <text x="1150" y="682" fill="#CCFBF1" font-family="Arial, sans-serif" font-size="28" font-weight="700">predictable growth</text>
+</svg>

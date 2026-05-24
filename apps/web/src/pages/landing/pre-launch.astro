@@ -1,0 +1,42 @@
+---
+import Layout from '~/layouts/LandingLayout.astro';
+
+import Hero2 from '~/components/widgets/Hero2.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+import { getLocaleFromUrl } from '~/i18n/translator';
+import { lpByLocale } from '~/i18n/lp';
+
+const locale = getLocaleFromUrl(Astro.url);
+const lp = (lpByLocale[locale] || lpByLocale['en']).landings;
+
+const metadata = {
+  title: lp.preLaunch.metadata.title,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero2 Widget ******************* -->
+
+  <Hero2
+    tagline={lp.preLaunch.hero.tagline}
+    title={lp.preLaunch.hero.title}
+    subtitle={lp.preLaunch.hero.subtitle}
+    callToAction={{ text: lp.preLaunch.hero.cta, href: '#', icon: 'tabler:square-rounded-arrow-right' }}
+    callToAction2={{ text: lp.preLaunch.hero.cta2, href: '#' }}
+    image={{
+      src: 'https://images.unsplash.com/photo-1558803116-c1b4ac867b31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+      alt: lp.preLaunch.hero.imageAlt,
+    }}
+  />
+
+  <CallToAction
+    title={lp.preLaunch.comingSoon.title}
+    subtitle={lp.preLaunch.comingSoon.subtitle}
+    callToAction={{
+      text: lp.preLaunch.comingSoon.buttonText,
+      href: 'https://github.com/onwidget/astrowind',
+      icon: 'tabler:download',
+    }}
+  />
+</Layout>

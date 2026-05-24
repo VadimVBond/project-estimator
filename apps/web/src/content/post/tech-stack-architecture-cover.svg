@@ -1,0 +1,32 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="100" y1="100" x2="1500" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#14532D"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
+  <rect x="120" y="170" width="380" height="560" rx="30" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <rect x="600" y="140" width="290" height="160" rx="24" fill="#DCFCE7"/>
+  <rect x="600" y="370" width="290" height="160" rx="24" fill="#BBF7D0"/>
+  <rect x="600" y="600" width="290" height="160" rx="24" fill="#86EFAC"/>
+  <rect x="1030" y="170" width="370" height="100" rx="22" fill="#052E16" stroke="#4ADE80" stroke-width="2"/>
+  <rect x="1030" y="400" width="370" height="100" rx="22" fill="#052E16" stroke="#4ADE80" stroke-width="2"/>
+  <rect x="1030" y="630" width="370" height="100" rx="22" fill="#052E16" stroke="#4ADE80" stroke-width="2"/>
+  <rect x="170" y="240" width="280" height="58" rx="14" fill="#E5E7EB"/>
+  <rect x="170" y="340" width="280" height="58" rx="14" fill="#D1D5DB"/>
+  <rect x="170" y="440" width="280" height="58" rx="14" fill="#9CA3AF"/>
+  <rect x="170" y="540" width="280" height="58" rx="14" fill="#6B7280"/>
+  <path d="M500 270C550 270 560 220 600 220" stroke="#BBF7D0" stroke-width="8" stroke-linecap="round"/>
+  <path d="M500 470C550 470 560 450 600 450" stroke="#86EFAC" stroke-width="8" stroke-linecap="round"/>
+  <path d="M500 570C550 570 560 680 600 680" stroke="#4ADE80" stroke-width="8" stroke-linecap="round"/>
+  <path d="M890 220H980" stroke="#F0FDF4" stroke-width="8" stroke-linecap="round"/>
+  <path d="M890 450H980" stroke="#F0FDF4" stroke-width="8" stroke-linecap="round"/>
+  <path d="M890 680H980" stroke="#F0FDF4" stroke-width="8" stroke-linecap="round"/>
+  <text x="665" y="232" fill="#14532D" font-family="Arial, sans-serif" font-size="30" font-weight="700">Astro</text>
+  <text x="646" y="462" fill="#14532D" font-family="Arial, sans-serif" font-size="30" font-weight="700">Python APIs</text>
+  <text x="672" y="692" fill="#14532D" font-family="Arial, sans-serif" font-size="30" font-weight="700">AI workflow</text>
+  <text x="1115" y="232" fill="#DCFCE7" font-family="Arial, sans-serif" font-size="30" font-weight="700">SEO + static output</text>
+  <text x="1130" y="462" fill="#DCFCE7" font-family="Arial, sans-serif" font-size="30" font-weight="700">typed services</text>
+  <text x="1110" y="692" fill="#DCFCE7" font-family="Arial, sans-serif" font-size="30" font-weight="700">reusable system</text>
+</svg>

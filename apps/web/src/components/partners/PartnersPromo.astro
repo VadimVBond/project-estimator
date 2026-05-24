@@ -1,0 +1,9 @@
+---
+const { data } = Astro.props;
+---
+
+{data?.text && (
+  <section class="promo">
+    <p>{data.text}</p>
+  </section>
+)}

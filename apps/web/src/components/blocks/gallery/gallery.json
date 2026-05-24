@@ -1,0 +1,1994 @@
+{
+  "en": [
+    {
+      "id": "astrowind-i18n",
+      "carouselImages": [
+        "projects/astrowind/1.webp",
+        "projects/astrowind/2.webp",
+        "projects/astrowind/3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "AstroWind i18n",
+      "projectSlogan": "Astro + i18n + performance",
+      "projectDescription": "Adaptation of the AstroWind template for a resume on Astro + Tailwind CSS. The site is presented as a modern, flexible, and high-performance solution that combines usability, responsiveness, and multi-language support. A multilingual site with an emphasis on speed, SEO, and scalable structure.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "AstroWind i18n",
+      "description": "Adaptation of the AstroWind template for a resume on Astro + Tailwind CSS. The site is presented as a modern, flexible, and high-performance solution that combines usability, responsiveness, and multi-language support. A multilingual site with an emphasis on speed, SEO, and scalable structure.",
+      "slogan": "Astro + i18n + performance",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/awd/1.png",
+        "/projects/astro/awd/2.png",
+        "/projects/astro/awd/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "mkdocs-platform",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/YOUR_USERNAME/mkdocs-project",
+      "projectSite": "https://your-mkdocs-site.vercel.app",
+      "projectTitle": "MkDocs Platform",
+      "projectSlogan": "MkDocs + i18n + UI blocks",
+      "projectDescription": "Flexible documentation system with i18n support and custom UI architecture. The documentation interface is built using Material for MkDocs and Python.",
+      "projectTechnologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ],
+      "title": "MkDocs Platform",
+      "description": "Flexible documentation system with i18n support and custom UI architecture. The documentation interface is built using Material for MkDocs and Python.",
+      "slogan": "MkDocs + i18n + UI blocks",
+      "category": "MkDocs",
+      "images": [
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ]
+    },
+    {
+      "id": "flask-i18n",
+      "carouselImages": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "projectRepo": "https://gitlab.com/VadimVBond/flask-blpfst",
+      "projectSite": "",
+      "projectTitle": "Flask i18n",
+      "projectSlogan": "Flask + i18n + Markdown",
+      "projectDescription": "Minimalistic site with localization and Markdown support.",
+      "projectTechnologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ],
+      "title": "Flask i18n",
+      "description": "Minimalistic site with localization and Markdown support.",
+      "slogan": "Flask + i18n + Markdown",
+      "category": "flask",
+      "images": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ]
+    },
+    {
+      "id": "Pulseon",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond",
+      "projectSite": "https://pulseon-rho.vercel.app/",
+      "projectTitle": "Pulseon",
+      "projectSlogan": "Pulseon",
+      "projectDescription": "**Pulseon** is a modern web service focused on digital solutions and online products. The site is built as a **news aggregator** that collects materials from various sources. It features a deduplication system and article counting, which involves server-side data processing. The interface is minimalistic, focusing on speed and usability.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Pulseon",
+      "description": "**Pulseon** is a modern web service focused on digital solutions and online products. The site is built as a **news aggregator** that collects materials from various sources. It features a deduplication system and article counting, which involves server-side data processing. The interface is minimalistic, focusing on speed and usability.",
+      "slogan": "Pulseon",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/pulseon/1.png",
+        "/projects/astro/pulseon/2.png",
+        "/projects/astro/pulseon/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "okvas",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "http://vvebdes.pp.ua/myirvas-okna-astra/",
+      "projectTitle": "Windows for You",
+      "projectSlogan": "Windows for You",
+      "projectDescription": "Window company website with a window cost calculator and automatic order confirmation. Viewable via VPN",
+      "projectTechnologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "HTML",
+          "icon": "html"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ],
+      "title": "Windows for You",
+      "description": "Window company website with a window cost calculator and automatic order confirmation. Viewable via VPN",
+      "slogan": "Windows for You",
+      "category": "WordPress",
+      "images": [
+        "/projects/wp/okvas/1.jpg",
+        "/projects/wp/okvas/2.jpg",
+        "/projects/wp/okvas/3.jpg"
+      ],
+      "technologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ]
+    },
+    {
+      "id": "starlight",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "Starlight",
+      "projectSlogan": "Starlight",
+      "projectDescription": "A multilingual site with a focus on speed, SEO, and scalable structure.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Starlight",
+      "description": "A multilingual site with a focus on speed, SEO, and scalable structure.",
+      "slogan": "Starlight",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/starlight/1.png",
+        "/projects/astro/starlight/2.png",
+        "/projects/astro/starlight/2.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    }
+  ],
+  "ru": [
+    {
+      "id": "astrowind-i18n",
+      "carouselImages": [
+        "projects/astrowind/1.webp",
+        "projects/astrowind/2.webp",
+        "projects/astrowind/3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "AstroWind i18n",
+      "projectSlogan": "Многоязычный сайт на Astro + Tailwind",
+      "projectDescription": "Высокопроизводительный сайт на Astro с поддержкой i18n (EN/RU/UK), адаптивным UI и оптимизированной загрузкой. Реализована архитектура контента с разделением переводов и компонентов.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "AstroWind i18n",
+      "description": "Адаптация шаблона AstroWind для резюме на Astro + Tailwind CSS. Сайт представлен как современный, гибкий и производительный , который сочетает в себе удобство испоьзования, адаптивность и поддержку мультиязычности. Многоязычный сайт с акцентом на скорость, SEO и масштабируемую структуру.",
+      "slogan": "Astro + i18n + performance",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/awd/1.png",
+        "/projects/astro/awd/2.png",
+        "/projects/astro/awd/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "mkdocs-platform",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "https://mkdocs-ml.vercel.app/en/",
+      "projectTitle": "MkDocs Platform",
+      "projectSlogan": "Документационный сайт с кастомной темой",
+      "projectDescription": "Многоязычная документационная платформа (EN/RU/UK) на MkDocs с кастомными шаблонами, переключением тем (light/dark), модульной архитектурой и поддержкой UI-блоков (Bootstrap/Tailwind).",
+      "projectTechnologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ],
+      "title": "MkDocs Platform",
+      "description": "Гибкая система документации с поддержкой i18n и кастомной UI-архитектурой.Интерфейс документации создан с использованием Material for MkDocs и Python.",
+      "slogan": "MkDocs + i18n + UI blocks",
+      "category": "MkDocs",
+      "images": [
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/2.png",
+        "/projects/doc/mkdocs/ml/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ]
+    },
+    {
+      "id": "flask-i18n",
+      "carouselImages": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/flask_i18n_pf",
+      "projectSite": "https://vadimvbond.github.io/flask_i18n_pf/",
+      "projectTitle": "Flask i18n Site",
+      "projectSlogan": "Статический сайт с мультиязычностью",
+      "projectDescription": "Лёгкий веб-проект на Flask с поддержкой i18n, Markdown-контента и простой системой шаблонов. Подходит для генерации статических страниц и документации.",
+      "projectTechnologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ],
+      "title": "Flask i18n",
+      "description": "Минималистичный сайт с поддержкой локализации и Markdown.",
+      "slogan": "Flask + i18n + Markdown",
+      "category": "flask",
+      "images": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ]
+    },
+    {
+      "id": "Pulseon",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond",
+      "projectSite": "https://pulseon-rho.vercel.app/",
+      "projectTitle": "AstroWind i18n",
+      "projectSlogan": "pulseon",
+      "projectDescription": "Высокопроизводительный сайт на Astro с поддержкой i18n (EN/RU/UK), адаптивным UI и оптимизированной загрузкой. Реализована архитектура контента с разделением переводов и компонентов.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Pulseon",
+      "description": "**Pulseon** — это современный веб‑сервис, ориентированный на цифровые решения и онлайн‑продукты. Сайт построен как **новостной агрегатор**, собирающий материалы из разных источников. Есть система удаления дубликатов и подсчёта статей, что предполагает серверную обработку данных. Интерфейс минималистичный, с акцентом на скорость и удобство.",
+      "slogan": "Pulseon",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/pulseon/1.png",
+        "/projects/astro/pulseon/2.png",
+        "/projects/astro/pulseon/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "okvas",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "http://vvebdes.pp.ua/myirvas-okna-astra/",
+      "projectTitle": "okvas",
+      "projectSlogan": "Окна для Вас",
+      "projectDescription": "Сайт компании",
+      "projectTechnologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "HTML",
+          "icon": "html"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ],
+      "title": "Окна для Вас",
+      "description": "Сайт оконной компании с калькулятором расчета стоимости окон и автоматическим подтверждением заказа. Просмотр с VPN",
+      "slogan": "Окна для Вас",
+      "category": "WordPress",
+      "images": [
+        "/projects/wp/okvas/1.jpg",
+        "/projects/wp/okvas/2.jpg",
+        "/projects/wp/okvas/3.jpg"
+      ],
+      "technologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ]
+    },
+    {
+      "id": "starlight",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "https://starlight-docs-lemon.vercel.app/ru/",
+      "projectTitle": "Starlight",
+      "projectSlogan": "Многоязычный сайт на Astro + Tailwind",
+      "projectDescription": "Высокопроизводительный сайт на Astro с поддержкой i18n (EN/RU/UK), адаптивным UI и оптимизированной загрузкой. Реализована архитектура контента с разделением переводов и компонентов.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Starlight",
+      "description": "Многоязычный сайт с акцентом на скорость, SEO и масштабируемую структуру.",
+      "slogan": "Starlight",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/starlight/1.png",
+        "/projects/astro/starlight/2.png",
+        "/projects/astro/starlight/2.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    }
+  ],
+  "uk": [
+    {
+      "id": "astrowind-i18n",
+      "carouselImages": [
+        "projects/astrowind/1.webp",
+        "projects/astrowind/2.webp",
+        "projects/astrowind/3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "AstroWind i18n",
+      "projectSlogan": "Astro + i18n + performance",
+      "projectDescription": "Адаптація шаблону AstroWind для резюме на Astro + Tailwind CSS. Сайт представлений як сучасне, гнучке та високопродуктивне рішення, яке поєднує зручність використання, адаптивність та підтримку багатомовності. Багатомовний сайт з акцентом на швидкість, SEO та масштабовану структуру.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "AstroWind i18n",
+      "description": "Адаптація шаблону AstroWind для резюме на Astro + Tailwind CSS. Сайт представлений як сучасне, гнучке та високопродуктивне рішення, яке поєднує зручність використання, адаптивність та підтримку багатомовності. Багатомовний сайт з акцентом на швидкість, SEO та масштабовану структуру.",
+      "slogan": "Astro + i18n + performance",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/awd/1.png",
+        "/projects/astro/awd/2.png",
+        "/projects/astro/awd/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "mkdocs-platform",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "https://mkdocs-ml.vercel.app/en/",
+      "projectTitle": "MkDocs Platform",
+      "projectSlogan": "MkDocs + i18n + UI blocks",
+      "projectDescription": "Гнучка система документації з підтримкою i18n та кастомною UI-архітектурою. Інтерфейс документації створено з використанням Material for MkDocs та Python.",
+      "projectTechnologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ],
+      "title": "MkDocs Platform",
+      "description": "Гнучка система документації з підтримкою i18n та кастомною UI-архітектурою. Інтерфейс документації створено з використанням Material for MkDocs та Python.",
+      "slogan": "MkDocs + i18n + UI blocks",
+      "category": "MkDocs",
+      "images": [
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/2.png",
+        "/projects/doc/mkdocs/ml/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ]
+    },
+    {
+      "id": "flask-i18n",
+      "carouselImages": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "projectRepo": "https://gitlab.com/VadimVBond/flask-blpfst",
+      "projectSite": "",
+      "projectTitle": "Flask i18n",
+      "projectSlogan": "Flask + i18n + Markdown",
+      "projectDescription": "Мінімалістичний сайт з підтримкою локалізації та Markdown.",
+      "projectTechnologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ],
+      "title": "Flask i18n",
+      "description": "Мінімалістичний сайт з підтримкою локалізації та Markdown.",
+      "slogan": "Flask + i18n + Markdown",
+      "category": "flask",
+      "images": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ]
+    },
+    {
+      "id": "Pulseon",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond",
+      "projectSite": "https://pulseon-rho.vercel.app/",
+      "projectTitle": "Pulseon",
+      "projectSlogan": "Pulseon",
+      "projectDescription": "**Pulseon** — це сучасний веб‑сервіс, орієнтований на цифрові рішення та онлайн‑продукти. Сайт побудований як **новинний агрегатор**, що збирає матеріали з різних джерел. Є система видалення дублікатів та підрахунку статей, що передбачає серверну обробку даних. Інтерфейс мінімалістичний, з акцентом на швидкість та зручність.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Pulseon",
+      "description": "**Pulseon** — це сучасний веб‑сервіс, орієнтований на цифрові рішення та онлайн‑продукти. Сайт побудований як **новинний агрегатор**, що збирає матеріали з різних джерел. Є система видалення дублікатів та підрахунку статей, що передбачає серверну обробку даних. Інтерфейс мінімалістичний, з акцентом на швидкість та зручність.",
+      "slogan": "Pulseon",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/pulseon/1.png",
+        "/projects/astro/pulseon/2.png",
+        "/projects/astro/pulseon/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "okvas",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "http://vvebdes.pp.ua/myirvas-okna-astra/",
+      "projectTitle": "Вікна для Вас",
+      "projectSlogan": "Вікна для Вас",
+      "projectDescription": "Сайт віконної компанії з калькулятором розрахунку вартості вікон та автоматичним підтвердженням замовлення. Перегляд через VPN",
+      "projectTechnologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "HTML",
+          "icon": "html"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ],
+      "title": "Вікна для Вас",
+      "description": "Сайт віконної компанії з калькулятором розрахунку вартості вікон та автоматичним підтвердженням замовлення. Перегляд через VPN",
+      "slogan": "Вікна для Вас",
+      "category": "WordPress",
+      "images": [
+        "/projects/wp/okvas/1.jpg",
+        "/projects/wp/okvas/2.jpg",
+        "/projects/wp/okvas/3.jpg"
+      ],
+      "technologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ]
+    },
+    {
+      "id": "starlight",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "Starlight",
+      "projectSlogan": "Starlight",
+      "projectDescription": "Багатомовний сайт з акцентом на швидкість, SEO та масштабовану структуру.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Starlight",
+      "description": "Багатомовний сайт з акцентом на швидкість, SEO та масштабовану структуру.",
+      "slogan": "Starlight",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/starlight/1.png",
+        "/projects/astro/starlight/2.png",
+        "/projects/astro/starlight/2.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    }
+  ],
+  "it": [
+    {
+      "id": "astrowind-i18n",
+      "carouselImages": [
+        "projects/astrowind/1.webp",
+        "projects/astrowind/2.webp",
+        "projects/astrowind/3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "AstroWind i18n",
+      "projectSlogan": "Astro + i18n + performance",
+      "projectDescription": "Adaptation of the AstroWind template for a resume on Astro + Tailwind CSS. The site is presented as a modern, flexible, and high-performance solution that combines usability, responsiveness, and multi-language support. A multilingual site with an emphasis on speed, SEO, and scalable structure.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "AstroWind i18n",
+      "description": "Adaptation of the AstroWind template for a resume on Astro + Tailwind CSS. The site is presented as a modern, flexible, and high-performance solution that combines usability, responsiveness, and multi-language support. A multilingual site with an emphasis on speed, SEO, and scalable structure.",
+      "slogan": "Astro + i18n + performance",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/awd/1.png",
+        "/projects/astro/awd/2.png",
+        "/projects/astro/awd/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "mkdocs-platform",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/YOUR_USERNAME/mkdocs-project",
+      "projectSite": "https://your-mkdocs-site.vercel.app",
+      "projectTitle": "MkDocs Platform",
+      "projectSlogan": "MkDocs + i18n + UI blocks",
+      "projectDescription": "Flexible documentation system with i18n support and custom UI architecture. The documentation interface is built using Material for MkDocs and Python.",
+      "projectTechnologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ],
+      "title": "MkDocs Platform",
+      "description": "Flexible documentation system with i18n support and custom UI architecture. The documentation interface is built using Material for MkDocs and Python.",
+      "slogan": "MkDocs + i18n + UI blocks",
+      "category": "MkDocs",
+      "images": [
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ]
+    },
+    {
+      "id": "flask-i18n",
+      "carouselImages": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "projectRepo": "https://gitlab.com/VadimVBond/flask-blpfst",
+      "projectSite": "",
+      "projectTitle": "Flask i18n",
+      "projectSlogan": "Flask + i18n + Markdown",
+      "projectDescription": "Minimalistic site with localization and Markdown support.",
+      "projectTechnologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ],
+      "title": "Flask i18n",
+      "description": "Minimalistic site with localization and Markdown support.",
+      "slogan": "Flask + i18n + Markdown",
+      "category": "flask",
+      "images": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ]
+    },
+    {
+      "id": "Pulseon",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond",
+      "projectSite": "https://pulseon-rho.vercel.app/",
+      "projectTitle": "Pulseon",
+      "projectSlogan": "Pulseon",
+      "projectDescription": "**Pulseon** is a modern web service focused on digital solutions and online products. The site is built as a **news aggregator** that collects materials from various sources. It features a deduplication system and article counting, which involves server-side data processing. The interface is minimalistic, focusing on speed and usability.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Pulseon",
+      "description": "**Pulseon** is a modern web service focused on digital solutions and online products. The site is built as a **news aggregator** that collects materials from various sources. It features a deduplication system and article counting, which involves server-side data processing. The interface is minimalistic, focusing on speed and usability.",
+      "slogan": "Pulseon",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/pulseon/1.png",
+        "/projects/astro/pulseon/2.png",
+        "/projects/astro/pulseon/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "okvas",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "http://vvebdes.pp.ua/myirvas-okna-astra/",
+      "projectTitle": "Windows for You",
+      "projectSlogan": "Windows for You",
+      "projectDescription": "Window company website with a window cost calculator and automatic order confirmation. Viewable via VPN",
+      "projectTechnologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "HTML",
+          "icon": "html"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ],
+      "title": "Windows for You",
+      "description": "Window company website with a window cost calculator and automatic order confirmation. Viewable via VPN",
+      "slogan": "Windows for You",
+      "category": "WordPress",
+      "images": [
+        "/projects/wp/okvas/1.jpg",
+        "/projects/wp/okvas/2.jpg",
+        "/projects/wp/okvas/3.jpg"
+      ],
+      "technologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ]
+    },
+    {
+      "id": "starlight",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "Starlight",
+      "projectSlogan": "Starlight",
+      "projectDescription": "A multilingual site with a focus on speed, SEO, and scalable structure.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Starlight",
+      "description": "A multilingual site with a focus on speed, SEO, and scalable structure.",
+      "slogan": "Starlight",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/starlight/1.png",
+        "/projects/astro/starlight/2.png",
+        "/projects/astro/starlight/2.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    }
+  ],
+  "fr": [
+    {
+      "id": "astrowind-i18n",
+      "carouselImages": [
+        "projects/astrowind/1.webp",
+        "projects/astrowind/2.webp",
+        "projects/astrowind/3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "AstroWind i18n",
+      "projectSlogan": "Astro + i18n + performance",
+      "projectDescription": "Adaptation of the AstroWind template for a resume on Astro + Tailwind CSS. The site is presented as a modern, flexible, and high-performance solution that combines usability, responsiveness, and multi-language support. A multilingual site with an emphasis on speed, SEO, and scalable structure.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "AstroWind i18n",
+      "description": "Adaptation of the AstroWind template for a resume on Astro + Tailwind CSS. The site is presented as a modern, flexible, and high-performance solution that combines usability, responsiveness, and multi-language support. A multilingual site with an emphasis on speed, SEO, and scalable structure.",
+      "slogan": "Astro + i18n + performance",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/awd/1.png",
+        "/projects/astro/awd/2.png",
+        "/projects/astro/awd/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "mkdocs-platform",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/YOUR_USERNAME/mkdocs-project",
+      "projectSite": "https://your-mkdocs-site.vercel.app",
+      "projectTitle": "MkDocs Platform",
+      "projectSlogan": "MkDocs + i18n + UI blocks",
+      "projectDescription": "Flexible documentation system with i18n support and custom UI architecture. The documentation interface is built using Material for MkDocs and Python.",
+      "projectTechnologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ],
+      "title": "MkDocs Platform",
+      "description": "Flexible documentation system with i18n support and custom UI architecture. The documentation interface is built using Material for MkDocs and Python.",
+      "slogan": "MkDocs + i18n + UI blocks",
+      "category": "MkDocs",
+      "images": [
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ]
+    },
+    {
+      "id": "flask-i18n",
+      "carouselImages": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "projectRepo": "https://gitlab.com/VadimVBond/flask-blpfst",
+      "projectSite": "",
+      "projectTitle": "Flask i18n",
+      "projectSlogan": "Flask + i18n + Markdown",
+      "projectDescription": "Minimalistic site with localization and Markdown support.",
+      "projectTechnologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ],
+      "title": "Flask i18n",
+      "description": "Minimalistic site with localization and Markdown support.",
+      "slogan": "Flask + i18n + Markdown",
+      "category": "flask",
+      "images": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ]
+    },
+    {
+      "id": "Pulseon",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond",
+      "projectSite": "https://pulseon-rho.vercel.app/",
+      "projectTitle": "Pulseon",
+      "projectSlogan": "Pulseon",
+      "projectDescription": "**Pulseon** is a modern web service focused on digital solutions and online products. The site is built as a **news aggregator** that collects materials from various sources. It features a deduplication system and article counting, which involves server-side data processing. The interface is minimalistic, focusing on speed and usability.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Pulseon",
+      "description": "**Pulseon** is a modern web service focused on digital solutions and online products. The site is built as a **news aggregator** that collects materials from various sources. It features a deduplication system and article counting, which involves server-side data processing. The interface is minimalistic, focusing on speed and usability.",
+      "slogan": "Pulseon",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/pulseon/1.png",
+        "/projects/astro/pulseon/2.png",
+        "/projects/astro/pulseon/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "okvas",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "http://vvebdes.pp.ua/myirvas-okna-astra/",
+      "projectTitle": "Windows for You",
+      "projectSlogan": "Windows for You",
+      "projectDescription": "Window company website with a window cost calculator and automatic order confirmation. Viewable via VPN",
+      "projectTechnologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "HTML",
+          "icon": "html"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ],
+      "title": "Windows for You",
+      "description": "Window company website with a window cost calculator and automatic order confirmation. Viewable via VPN",
+      "slogan": "Windows for You",
+      "category": "WordPress",
+      "images": [
+        "/projects/wp/okvas/1.jpg",
+        "/projects/wp/okvas/2.jpg",
+        "/projects/wp/okvas/3.jpg"
+      ],
+      "technologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ]
+    },
+    {
+      "id": "starlight",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "Starlight",
+      "projectSlogan": "Starlight",
+      "projectDescription": "A multilingual site with a focus on speed, SEO, and scalable structure.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Starlight",
+      "description": "A multilingual site with a focus on speed, SEO, and scalable structure.",
+      "slogan": "Starlight",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/starlight/1.png",
+        "/projects/astro/starlight/2.png",
+        "/projects/astro/starlight/2.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    }
+  ],
+  "de": [
+    {
+      "id": "astrowind-i18n",
+      "carouselImages": [
+        "projects/astrowind/1.webp",
+        "projects/astrowind/2.webp",
+        "projects/astrowind/3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "AstroWind i18n",
+      "projectSlogan": "Astro + i18n + performance",
+      "projectDescription": "Adaptation of the AstroWind template for a resume on Astro + Tailwind CSS. The site is presented as a modern, flexible, and high-performance solution that combines usability, responsiveness, and multi-language support. A multilingual site with an emphasis on speed, SEO, and scalable structure.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "AstroWind i18n",
+      "description": "Adaptation of the AstroWind template for a resume on Astro + Tailwind CSS. The site is presented as a modern, flexible, and high-performance solution that combines usability, responsiveness, and multi-language support. A multilingual site with an emphasis on speed, SEO, and scalable structure.",
+      "slogan": "Astro + i18n + performance",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/awd/1.png",
+        "/projects/astro/awd/2.png",
+        "/projects/astro/awd/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "mkdocs-platform",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/YOUR_USERNAME/mkdocs-project",
+      "projectSite": "https://your-mkdocs-site.vercel.app",
+      "projectTitle": "MkDocs Platform",
+      "projectSlogan": "MkDocs + i18n + UI blocks",
+      "projectDescription": "Flexible documentation system with i18n support and custom UI architecture. The documentation interface is built using Material for MkDocs and Python.",
+      "projectTechnologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ],
+      "title": "MkDocs Platform",
+      "description": "Flexible documentation system with i18n support and custom UI architecture. The documentation interface is built using Material for MkDocs and Python.",
+      "slogan": "MkDocs + i18n + UI blocks",
+      "category": "MkDocs",
+      "images": [
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/1.png",
+        "/projects/doc/mkdocs/ml/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "MkDocs",
+          "icon": "markdown"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Bootstrap",
+          "icon": "bootstrap"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        }
+      ]
+    },
+    {
+      "id": "flask-i18n",
+      "carouselImages": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/flask_i18n_pf",
+      "projectSite": "https://vadimvbond.github.io/flask_i18n_pf/",
+      "projectTitle": "Flask i18n",
+      "projectSlogan": "Flask + i18n + Markdown",
+      "projectDescription": "Minimalistic site with localization and Markdown support.",
+      "projectTechnologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ],
+      "title": "Flask i18n",
+      "description": "Minimalistic site with localization and Markdown support.",
+      "slogan": "Flask + i18n + Markdown",
+      "category": "flask",
+      "images": [
+        "/projects/flask/1.png",
+        "/projects/flask/1.png"
+      ],
+      "technologies": [
+        {
+          "name": "Flask",
+          "icon": "flask"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Markdown",
+          "icon": "markdown"
+        }
+      ]
+    },
+    {
+      "id": "Pulseon",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond",
+      "projectSite": "https://pulseon-rho.vercel.app/",
+      "projectTitle": "Pulseon",
+      "projectSlogan": "Pulseon",
+      "projectDescription": "**Pulseon** is a modern web service focused on digital solutions and online products. The site is built as a **news aggregator** that collects materials from various sources. It features a deduplication system and article counting, which involves server-side data processing. The interface is minimalistic, focusing on speed and usability.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Pulseon",
+      "description": "**Pulseon** is a modern web service focused on digital solutions and online products. The site is built as a **news aggregator** that collects materials from various sources. It features a deduplication system and article counting, which involves server-side data processing. The interface is minimalistic, focusing on speed and usability.",
+      "slogan": "Pulseon",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/pulseon/1.png",
+        "/projects/astro/pulseon/2.png",
+        "/projects/astro/pulseon/3.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    },
+    {
+      "id": "okvas",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "",
+      "projectSite": "http://vvebdes.pp.ua/myirvas-okna-astra/",
+      "projectTitle": "Windows for You",
+      "projectSlogan": "Windows for You",
+      "projectDescription": "Window company website with a window cost calculator and automatic order confirmation. Viewable via VPN",
+      "projectTechnologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "HTML",
+          "icon": "html"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ],
+      "title": "Windows for You",
+      "description": "Window company website with a window cost calculator and automatic order confirmation. Viewable via VPN",
+      "slogan": "Windows for You",
+      "category": "WordPress",
+      "images": [
+        "/projects/wp/okvas/1.jpg",
+        "/projects/wp/okvas/2.jpg",
+        "/projects/wp/okvas/3.jpg"
+      ],
+      "technologies": [
+        {
+          "name": "WordPress",
+          "icon": "wordpress"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "CSS",
+          "icon": "css"
+        }
+      ]
+    },
+    {
+      "id": "starlight",
+      "carouselImages": [
+        "1.webp",
+        "2.webp",
+        "3.webp"
+      ],
+      "projectRepo": "https://github.com/VadimVBond/awsf",
+      "projectSite": "https://your-astrowind-site.vercel.app",
+      "projectTitle": "Starlight",
+      "projectSlogan": "Starlight",
+      "projectDescription": "A multilingual site with a focus on speed, SEO, and scalable structure.",
+      "projectTechnologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ],
+      "title": "Starlight",
+      "description": "A multilingual site with a focus on speed, SEO, and scalable structure.",
+      "slogan": "Starlight",
+      "category": "Astro",
+      "images": [
+        "/projects/astro/starlight/1.png",
+        "/projects/astro/starlight/2.png",
+        "/projects/astro/starlight/2.png"
+      ],
+      "technologies": [
+        {
+          "name": "Astro",
+          "icon": "astro"
+        },
+        {
+          "name": "Tailwind",
+          "icon": "tailwind"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "javascript"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        }
+      ]
+    }
+  ]
+}

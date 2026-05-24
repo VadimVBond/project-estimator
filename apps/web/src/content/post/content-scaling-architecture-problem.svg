@@ -1,0 +1,30 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" rx="36" fill="#111827"/>
+  <rect x="120" y="120" width="360" height="620" rx="28" fill="#1F2937" stroke="#374151" stroke-width="2"/>
+  <rect x="620" y="120" width="360" height="620" rx="28" fill="#1F2937" stroke="#374151" stroke-width="2"/>
+  <rect x="1120" y="120" width="360" height="620" rx="28" fill="#1F2937" stroke="#374151" stroke-width="2"/>
+  <text x="250" y="185" fill="#F9FAFB" font-family="Arial, sans-serif" font-size="42" font-weight="700">ru</text>
+  <text x="754" y="185" fill="#F9FAFB" font-family="Arial, sans-serif" font-size="42" font-weight="700">en</text>
+  <text x="1248" y="185" fill="#F9FAFB" font-family="Arial, sans-serif" font-size="42" font-weight="700">uk / it</text>
+  <rect x="170" y="230" width="260" height="84" rx="18" fill="#DC2626"/>
+  <rect x="170" y="350" width="260" height="84" rx="18" fill="#EA580C"/>
+  <rect x="170" y="470" width="260" height="84" rx="18" fill="#D97706"/>
+  <rect x="170" y="590" width="260" height="84" rx="18" fill="#CA8A04"/>
+  <rect x="670" y="230" width="260" height="84" rx="18" fill="#DC2626"/>
+  <rect x="670" y="350" width="260" height="84" rx="18" fill="#EA580C"/>
+  <rect x="670" y="470" width="260" height="84" rx="18" fill="#D97706"/>
+  <rect x="670" y="590" width="260" height="84" rx="18" fill="#CA8A04"/>
+  <rect x="1170" y="230" width="260" height="84" rx="18" fill="#DC2626"/>
+  <rect x="1170" y="350" width="260" height="84" rx="18" fill="#EA580C"/>
+  <rect x="1170" y="470" width="260" height="84" rx="18" fill="#D97706"/>
+  <rect x="1170" y="590" width="260" height="84" rx="18" fill="#CA8A04"/>
+  <path d="M430 272H670" stroke="#FCA5A5" stroke-width="8" stroke-dasharray="18 18"/>
+  <path d="M430 392H670" stroke="#FDBA74" stroke-width="8" stroke-dasharray="18 18"/>
+  <path d="M430 512H670" stroke="#FCD34D" stroke-width="8" stroke-dasharray="18 18"/>
+  <path d="M430 632H670" stroke="#FDE68A" stroke-width="8" stroke-dasharray="18 18"/>
+  <path d="M930 272H1170" stroke="#FCA5A5" stroke-width="8" stroke-dasharray="18 18"/>
+  <path d="M930 392H1170" stroke="#FDBA74" stroke-width="8" stroke-dasharray="18 18"/>
+  <path d="M930 512H1170" stroke="#FCD34D" stroke-width="8" stroke-dasharray="18 18"/>
+  <path d="M930 632H1170" stroke="#FDE68A" stroke-width="8" stroke-dasharray="18 18"/>
+  <text x="510" y="820" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="36" font-weight="700">duplication grows faster than content value</text>
+</svg>

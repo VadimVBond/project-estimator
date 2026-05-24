@@ -1,0 +1,133 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Hero2 from '~/components/widgets/Hero2.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Content from '~/components/widgets/Content.astro';
+import Testimonials from '~/components/widgets/Testimonials.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Stats from '~/components/widgets/Stats.astro';
+
+import { getLocaleFromUrl } from '~/i18n/translator';
+import { lpByLocale } from '~/i18n/lp';
+
+const locale = getLocaleFromUrl(Astro.url);
+const lp = (lpByLocale[locale] || lpByLocale['en']).mobileApp;
+
+const metadata = {
+  title: lp.metadata.title,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero2 Widget ******************* -->
+
+  <Hero2
+    tagline={lp.hero.tagline}
+    callToAction={{ text: lp.hero.cta, href: 'https://github.com/onwidget/astrowind', icon: 'tabler:download' }}
+    callToAction2={{ text: lp.hero.cta2, href: '#features' }}
+    image={{
+      src: 'https://images.unsplash.com/photo-1535303311164-664fc9ec6532?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
+      alt: lp.hero.imageAlt,
+    }}
+  >
+    <Fragment slot="title" set:html={lp.hero.title} />
+
+    <Fragment slot="subtitle" set:html={lp.hero.subtitle} />
+  </Hero2>
+
+  <!-- Features3 Widget ************** -->
+
+  <Features3
+    title={lp.guide.title}
+    subtitle={lp.guide.subtitle}
+    tagline={lp.guide.tagline}
+    columns={2}
+    items={lp.guide.steps}
+    image={{
+      src: 'https://images.unsplash.com/photo-1521517407911-565264e7d82d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+      alt: 'Colorful Image',
+    }}
+  />
+
+  <!-- Content Widget **************** -->
+
+  <Content
+    isReversed
+    items={lp.mainFeatures.items}
+    image={{
+      src: 'https://images.unsplash.com/photo-1576153192621-7a3be10b356e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80',
+      alt: 'Colorful Image',
+    }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">{lp.mainFeatures.sectionTitle}</h3>
+    </Fragment>
+  </Content>
+
+  <!-- Content Widget **************** -->
+
+  <Content
+    isAfterContent
+    items={lp.otherFeatures.items}
+    image={{
+      src: 'https://images.unsplash.com/photo-1453738773917-9c3eff1db985?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      alt: 'Vintage Image',
+    }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">{lp.otherFeatures.sectionTitle}</h3>
+    </Fragment>
+  </Content>
+
+  <!-- Stats Widget ****************** -->
+
+  <Stats
+    title={lp.stats.title}
+    stats={[
+      { amount: '20K', icon: 'tabler:download' },
+      { amount: '18.5K', icon: 'tabler:users' },
+      { amount: '4.7', icon: 'tabler:user-star' },
+    ]}
+  />
+
+  <!-- Testimonials Widget *********** -->
+
+  <Testimonials
+    title={lp.testimonials.title}
+    testimonials={lp.testimonials.items.map((item, i) => ({
+      ...item,
+      image: [
+        { src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80', alt: item.name },
+        { src: 'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80', alt: item.name },
+        { src: 'https://images.unsplash.com/photo-1512361436605-a484bdb34b5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80', alt: item.name },
+      ][i]
+    }))}
+    callToAction={{
+      targetBlank: true,
+      text: lp.testimonials.ctaText,
+      href: 'https://github.com/onwidget/astrowind',
+      icon: 'tabler:chevron-right',
+    }}
+  />
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title={lp.faqs.title}
+    items={lp.faqs.items}
+  />
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    title={lp.finalCta.title}
+    subtitle={lp.finalCta.subtitle}
+    callToAction={{
+      text: lp.finalCta.buttonText,
+      href: 'https://github.com/onwidget/astrowind',
+      icon: 'tabler:download',
+    }}
+  />
+</Layout>

@@ -1,0 +1,23 @@
+---
+import { SITE } from '~/utils/config';
+import logo from '~/assets/images/logo.png';
+
+export interface Props {
+  class?: string;
+  imageClass?: string;
+}
+
+const { class: className = '', imageClass = 'h-10 md:h-9 w-auto' } = Astro.props;
+---
+
+<span class:list={['inline-flex items-center', className]}>
+  <img
+    src={logo.src}
+    width={logo.width}
+    height={logo.height}
+    alt={SITE?.name ?? 'Logo'}
+    class:list={['block max-w-full object-contain', imageClass]}
+    loading="eager"
+    decoding="async"
+  />
+</span>

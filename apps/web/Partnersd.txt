@@ -1,0 +1,10 @@
+Partnersd
+
+
+PartnersPromo.astro
+PartnersdFAQ.astro
+partners.astro
+partners.en.ts
+partners.ru.ts
+
+

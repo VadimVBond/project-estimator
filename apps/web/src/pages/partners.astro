@@ -1,0 +1,22 @@
+---
+import PartnersPromo from '~/components/partners/PartnersPromo.astro';
+import PartnersFAQ from '~/components/partners/PartnersFAQ.astro';
+import { getLocaleFromUrl } from '~/i18n/translator';
+import { partners as partners_en } from '~/i18n/pages/partners.en';
+import { partners as partners_ru } from '~/i18n/pages/partners.ru';
+
+const partners_map = {
+  en: partners_en,
+  ru: partners_ru,
+};
+
+const locale = getLocaleFromUrl(Astro.url);
+const partners = (partners_map[locale] || partners_en) as any;
+---
+
+<h1>{partners.title}</h1>
+<p>{partners.description}</p>
+
+{partners.promo && <PartnersPromo {...partners.promo} />}
+
+{partners.faq.length > 0 && <PartnersFAQ items={partners.faq} />}

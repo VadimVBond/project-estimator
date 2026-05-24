@@ -1,0 +1,205 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Header from '~/components/widgets/Header.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Features from '~/components/widgets/Features.astro';
+import Steps2 from '~/components/widgets/Steps2.astro';
+import Content from '~/components/widgets/Content.astro';
+import Pricing from '~/components/widgets/Pricing.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+
+import { getHeaderData } from '~/navigation';
+import { getLocaleFromUrl } from '~/i18n/translator';
+import { lpByLocale } from '~/i18n/lp';
+
+const locale = getLocaleFromUrl(Astro.url);
+const headerData = getHeaderData(locale);
+const lp = (lpByLocale[locale] || lpByLocale['en']).saas;
+
+const metadata = {
+  title: lp.metadata.title,
+};
+
+const useCaseImages = [
+  { src: 'https://images.unsplash.com/photo-1620558138198-cfb9b4f3c294?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1671&q=80', alt: lp.useCases.items[0].imageAlt },
+  { src: 'https://images.unsplash.com/photo-1531973486364-5fa64260d75b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1658&q=80', alt: lp.useCases.items[1].imageAlt },
+  { src: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80', alt: lp.useCases.items[2].imageAlt },
+  { src: 'https://images.unsplash.com/photo-1514621166532-aa7eb1a3a2f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80', alt: lp.useCases.items[3].imageAlt },
+];
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="header">
+    <Header
+      {...headerData}
+      actions={[
+        {
+          type: 'ghost',
+          text: lp.header.loginButton,
+          href: '#',
+        },
+        {
+          type: 'primary',
+          text: lp.header.signupButton,
+          href: '#',
+        },
+      ]}
+      isSticky
+    />
+  </Fragment>
+
+  <!-- Hero2 Widget ******************* -->
+
+  <Hero2
+    tagline={lp.hero.tagline}
+    callToAction={{ text: lp.hero.cta, href: 'https://github.com/onwidget/astrowind' }}
+    callToAction2={{ text: lp.hero.cta2, href: '#features' }}
+    image={{
+      src: 'https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      alt: lp.hero.imageAlt,
+    }}
+  >
+    <Fragment slot="title" set:html={lp.hero.title} />
+    <Fragment slot="subtitle" set:html={lp.hero.subtitle} />
+  </Hero2>
+
+  <!-- Features Widget *************** -->
+
+  <Features
+    id="features"
+    title={lp.features.title}
+    subtitle={lp.features.subtitle}
+    columns={2}
+    items={lp.features.items}
+  />
+
+  <!-- Content Widget — Use Case 0 *** -->
+
+  <Content
+    title={lp.useCases.title}
+    subtitle={lp.useCases.subtitle}
+    isReversed
+    items={[
+      { title: lp.useCases.items[0].descriptionLabel, description: lp.useCases.items[0].description },
+      { title: lp.useCases.items[0].benefitsLabel, description: lp.useCases.items[0].benefits },
+    ]}
+    image={useCaseImages[0]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2" set:html={lp.useCases.items[0].contentTitle} />
+    </Fragment>
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <!-- Content Widget — Use Case 1 *** -->
+
+  <Content
+    isAfterContent={true}
+    items={[
+      { title: lp.useCases.items[1].descriptionLabel, description: lp.useCases.items[1].description },
+      { title: lp.useCases.items[1].benefitsLabel, description: lp.useCases.items[1].benefits },
+    ]}
+    image={useCaseImages[1]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2" set:html={lp.useCases.items[1].contentTitle} />
+    </Fragment>
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <!-- Content Widget — Use Case 2 *** -->
+
+  <Content
+    isReversed
+    isAfterContent={true}
+    items={[
+      { title: lp.useCases.items[2].descriptionLabel, description: lp.useCases.items[2].description },
+      { title: lp.useCases.items[2].benefitsLabel, description: lp.useCases.items[2].benefits },
+    ]}
+    image={useCaseImages[2]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2" set:html={lp.useCases.items[2].contentTitle} />
+    </Fragment>
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <!-- Content Widget — Use Case 3 *** -->
+
+  <Content
+    items={[
+      { title: lp.useCases.items[3].descriptionLabel, description: lp.useCases.items[3].description },
+      { title: lp.useCases.items[3].benefitsLabel, description: lp.useCases.items[3].benefits },
+    ]}
+    image={useCaseImages[3]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2" set:html={lp.useCases.items[3].contentTitle} />
+    </Fragment>
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <!-- Pricing Widget ******************* -->
+
+  <Pricing
+    title={lp.pricing.title}
+    prices={lp.pricing.plans.map((plan) => ({
+      title: plan.title,
+      subtitle: plan.subtitle,
+      price: plan.price,
+      period: plan.period,
+      callToAction: {
+        targetBlank: true,
+        text: plan.ctaText,
+        href: '#',
+      },
+      hasRibbon: !!plan.ribbonTitle,
+      ribbonTitle: plan.ribbonTitle || '',
+    }))}
+  />
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title={lp.faqs.title}
+    items={lp.faqs.items.map(item => ({ ...item, icon: 'tabler:chevrons-right' }))}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </FAQs>
+
+  <!-- Steps2 Widget ****************** -->
+
+  <Steps2
+    title={lp.contact.title}
+    subtitle={lp.contact.subtitle}
+    callToAction={{
+      text: lp.contact.ctaText,
+      href: '/',
+    }}
+    items={lp.contact.items}
+  />
+
+  <!-- BlogLatestPost Widget **************** -->
+
+  <BlogLatestPosts
+    id="blog"
+    title={lp.blog.title}
+    information={lp.blog.information}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </BlogLatestPosts>
+</Layout>

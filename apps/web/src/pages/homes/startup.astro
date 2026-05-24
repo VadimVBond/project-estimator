@@ -1,0 +1,124 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Hero from '~/components/widgets/Hero.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Features from '~/components/widgets/Features.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+
+import { getLocaleFromUrl } from '~/i18n/translator';
+import { lpByLocale } from '~/i18n/lp';
+
+const locale = getLocaleFromUrl(Astro.url);
+const lp = (lpByLocale[locale] || lpByLocale['en']).startup;
+
+const metadata = {
+  title: lp.metadata.title,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+
+  <Hero
+    tagline={lp.hero.tagline}
+    callToAction={{ text: lp.hero.cta, href: 'https://github.com/onwidget/astrowind', icon: 'tabler:download' }}
+    callToAction2={{ text: lp.hero.cta2, href: '#features' }}
+  >
+    <Fragment slot="title" set:html={lp.hero.title} />
+    <Fragment slot="subtitle" set:html={lp.hero.subtitle} />
+
+    <Fragment slot="image">
+      <div class="relative h-0 pb-[56.25%]">
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/dsTXcSeAZq8"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+          allowfullscreen
+          class="absolute top-0 left-0 w-full h-full"
+        >
+        </iframe>
+      </div>
+    </Fragment>
+  </Hero>
+
+  <!-- Stats Widget ****************** -->
+
+  <Stats
+    title={lp.stats.title}
+    stats={lp.stats.items.map(item => ({ title: item.title, amount: item.amount }))}
+  />
+
+  <!-- Features2 Widget ************** -->
+
+  <Features2
+    title={lp.services.title}
+    subtitle={lp.services.subtitle}
+    items={lp.services.items}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Features2>
+
+  <!-- Features Widget *************** -->
+
+  <Features
+    id="features"
+    title={lp.features.title}
+    subtitle={lp.features.subtitle}
+    columns={3}
+    items={lp.features.items}
+  />
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title={lp.faqs.title}
+    items={lp.faqs.items}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </FAQs>
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    callToAction={{
+      targetBlank: true,
+      text: lp.cta.buttonText,
+      href: 'https://github.com/onwidget/astrowind',
+      icon: 'tabler:download',
+    }}
+  >
+    <Fragment slot="title" set:html={lp.cta.title} />
+    <Fragment slot="subtitle" set:html={lp.cta.subtitle} />
+  </CallToAction>
+
+  <!-- Features3 Widget ************** -->
+
+  <Features3
+    title={lp.contact.title}
+    subtitle={lp.contact.subtitle}
+    columns={4}
+    items={lp.contact.items.map(item => ({
+      title: item.title,
+      icon: item.icon,
+      callToAction: {
+        targetBlank: true,
+        text: item.ctaText,
+        href: '/',
+      },
+    }))}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Features3>
+</Layout>

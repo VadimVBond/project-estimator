@@ -1,0 +1,239 @@
+import * as fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import yaml from 'js-yaml';
+import merge from 'lodash.merge';
+import configSource from '../config.yaml?raw';
+
+import type { MetaData } from '~/types';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const configPath = path.resolve(__dirname, '../config.yaml');
+
+export interface SiteConfig {
+  name: string;
+  site?: string;
+  base?: string;
+  trailingSlash?: boolean;
+  googleSiteVerificationId?: string;
+}
+export interface MetaDataConfig extends Omit<MetaData, 'title'> {
+  title?: {
+    default: string;
+    template: string;
+  };
+}
+export interface I18NConfig {
+  isEnabled: boolean;
+  defaultLocale: string;
+  locales: { [key: string]: string };
+  textDirection: string;
+  dateFormatter: unknown;
+}
+export interface AppBlogConfig {
+  isEnabled: boolean;
+  postsPerPage: number;
+  post: {
+    isEnabled: boolean;
+    permalink: string;
+    robots: {
+      index: boolean;
+      follow: boolean;
+    };
+  };
+  list: {
+    isEnabled: boolean;
+    pathname: string;
+    robots: {
+      index: boolean;
+      follow: boolean;
+    };
+  };
+  category: {
+    isEnabled: boolean;
+    pathname: string;
+    robots: {
+      index: boolean;
+      follow: boolean;
+    };
+  };
+  tag: {
+    isEnabled: boolean;
+    pathname: string;
+    robots: {
+      index: boolean;
+      follow: boolean;
+    };
+  };
+}
+export interface AnalyticsConfig {
+  vendors: {
+    googleAnalytics: {
+      id?: string;
+      partytown?: boolean;
+    };
+  };
+}
+
+const config = yaml.load(configSource) as {
+  site?: SiteConfig;
+  metadata?: MetaDataConfig;
+  i18n?: I18NConfig;
+  apps?: {
+    blog?: AppBlogConfig;
+  };
+  ui?: unknown;
+  analytics?: unknown;
+};
+
+const DEFAULT_SITE_NAME = 'Website';
+
+const normalizeBase = (base?: string) => {
+  if (!base) return '/';
+
+  const trimmed = base.trim();
+  if (trimmed === '/') return '/';
+
+  const withLeadingSlash = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  return withLeadingSlash.endsWith('/') ? withLeadingSlash.slice(0, -1) : withLeadingSlash;
+};
+
+const getSite = () => {
+  const _default = {
+    name: DEFAULT_SITE_NAME,
+    site: undefined,
+    base: '/',
+    trailingSlash: false,
+
+    googleSiteVerificationId: '',
+  };
+
+  const merged = merge({}, _default, config?.site ?? {}) as SiteConfig;
+  const envBase = process.env.DEPLOY_BASE;
+  const autoBase = process.env.VERCEL ? '/' : merged.base;
+
+  return {
+    ...merged,
+    base: normalizeBase(envBase ?? autoBase),
+  } as SiteConfig;
+};
+
+const getMetadata = () => {
+  const siteConfig = getSite();
+
+  const _default = {
+    title: {
+      default: siteConfig?.name || DEFAULT_SITE_NAME,
+      template: '%s',
+    },
+    description: '',
+    robots: {
+      index: false,
+      follow: false,
+    },
+    openGraph: {
+      type: 'website',
+    },
+  };
+
+  return merge({}, _default, config?.metadata ?? {}) as MetaDataConfig;
+};
+
+const getI18N = () => {
+  const _default = {
+    isEnabled: false,
+    defaultLocale: 'en',
+    locales: {
+      en: 'en-US',  // the `defaultLocale` value must present in `locales` keys
+      ru: 'ru-RU',
+      uk: 'uk-UA',
+      de: 'de-DE',
+      fr: 'fr-FR',
+      it: 'it-IT',
+    },
+    textDirection: 'ltr',
+  };
+
+  const value = merge({}, _default, config?.i18n ?? {});
+
+  return Object.assign(value, {
+    dateFormatter: new Intl.DateTimeFormat(value.defaultLocale, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      timeZone: 'UTC',
+    }),
+  }) as I18NConfig;
+};
+
+const getAppBlog = () => {
+  const _default = {
+    isEnabled: false,
+    postsPerPage: 6,
+    post: {
+      isEnabled: true,
+      permalink: '/blog/%slug%',
+      robots: {
+        index: true,
+        follow: true,
+      },
+    },
+    list: {
+      isEnabled: true,
+      pathname: 'blog',
+      robots: {
+        index: true,
+        follow: true,
+      },
+    },
+    category: {
+      isEnabled: true,
+      pathname: 'category',
+      robots: {
+        index: true,
+        follow: true,
+      },
+    },
+    tag: {
+      isEnabled: true,
+      pathname: 'tag',
+      robots: {
+        index: false,
+        follow: true,
+      },
+    },
+  };
+
+  return merge({}, _default, config?.apps?.blog ?? {}) as AppBlogConfig;
+};
+
+const getUI = () => {
+  const _default = {
+    theme: 'system',
+    classes: {},
+    tokens: {},
+  };
+
+  return merge({}, _default, config?.ui ?? {});
+};
+
+const getAnalytics = () => {
+  const _default = {
+    vendors: {
+      googleAnalytics: {
+        id: undefined,
+        partytown: true,
+      },
+    },
+  };
+
+  return merge({}, _default, config?.analytics ?? {}) as AnalyticsConfig;
+};
+
+export const SITE = getSite();
+export const I18N = getI18N();
+export const METADATA = getMetadata();
+export const APP_BLOG = getAppBlog();
+export const UI = getUI();
+export const ANALYTICS = getAnalytics();
+

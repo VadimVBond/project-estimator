@@ -1,0 +1,37 @@
+---
+import { blogTagRobots, getStaticPathsBlogTag, findTags } from '~/utils/blog';
+import PostTags from '~/components/blog/Tags.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import BlogList from '~/components/blog/List.astro';
+import Headline from '~/components/blog/Headline.astro';
+import Pagination from '~/components/blog/Pagination.astro';
+import { getLocaleFromUrl, useTranslations } from '~/i18n/translator';
+
+export async function getStaticPaths ({ paginate }) {
+  return await getStaticPathsBlogTag({ paginate });
+}
+
+const { page, tag } = Astro.props;
+
+const currentPage = page.currentPage ?? 1;
+const locale = getLocaleFromUrl(Astro.url);
+const allTags = await findTags(locale);
+const { t } = useTranslations(locale);
+
+const metadata = {
+  title: `Posts by tag '${tag}'${currentPage > 1 ? ` — Page ${currentPage} ` : ''}`,
+  robots: {
+    index: blogTagRobots?.index,
+    follow: blogTagRobots?.follow,
+  },
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 md:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
+    <Headline>Tag: {tag}</Headline>
+    <PostTags tags={allTags}  title={t('blog.tags') || "Tags:"} class="flex flex-wrap justify-center mb-12" />
+    <BlogList posts={page.data.map(p => p.locales[locale] || p.locales['en']).filter(Boolean)} />
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+  </section>
+</Layout>
