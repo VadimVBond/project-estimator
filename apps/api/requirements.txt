@@ -1,2 +1,5 @@
-flask
-flask-cors
+Flask
+Flask-FlatPages
+Frozen-Flask
+Markdown
+Pygments
