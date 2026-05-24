@@ -1,5 +1,37 @@
 ---
+import Layout from '~/layouts/PageLayout.astro';
+import QuizLayout from '~/components/layout/QuizLayout.astro';
+import QuizWizard from '~/components/quiz/QuizWizard.astro';
+import PriceSidebar from '~/components/pricing/PriceSidebar.astro';
+import { getLocaleFromUrl } from '~/i18n/translator';
+
+const lang = getLocaleFromUrl(Astro.url);
+const metadata = {
+  title: 'Project estimator',
+};
+
+// You can pass the specific quiz ID based on URL parameters or environment variables
+const QUIZ_ID = "software-dev-v1";
 ---
 
-<!-- Placeholder calculator page -->
-<h1>Calculator</h1>
+<Layout metadata={metadata}>
+  <div class="bg-gray-50 dark:bg-slate-900 min-h-screen">
+    <QuizLayout>
+      <Fragment slot="quiz">
+        <div class="mb-4">
+          <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Project Estimator</h1>
+          <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Answer a few questions to get a rough estimate for your project.</p>
+        </div>
+        <QuizWizard quizId={QUIZ_ID} locale={lang} />
+      </Fragment>
+      
+      <Fragment slot="sidebar">
+        <PriceSidebar locale={lang} />
+      </Fragment>
+
+      <Fragment slot="mobile-footer">
+        <PriceSidebar locale={lang} class="shadow-none border-none rounded-none !bg-transparent" />
+      </Fragment>
+    </QuizLayout>
+  </div>
+</Layout>

@@ -1,0 +1,186 @@
+---
+import ProgressBar from '../ui/ProgressBar.astro';
+import Spinner from '../ui/Spinner.astro';
+
+export interface Props {
+  quizId: string;
+  locale?: string;
+  class?: string;
+}
+
+const { quizId, locale = 'en', class: className = '' } = Astro.props;
+---
+
+<quiz-wizard 
+  data-quiz-id={quizId} 
+  data-locale={locale}
+  class={`block w-full ${className}`}
+>
+  <div class="mb-6 flex items-center justify-between">
+    <button type="button" id="btn-back" class="hidden text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+      &larr; Back
+    </button>
+    <div class="flex-grow mx-4">
+      <!-- ProgressBar will be updated via JS -->
+      <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+        <div id="progress-fill" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+      </div>
+    </div>
+    <span id="progress-text" class="text-sm font-medium text-gray-500 dark:text-gray-400">0%</span>
+  </div>
+
+  <div id="quiz-container" class="min-h-[400px] bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 p-6 sm:p-8">
+    <div class="flex items-center justify-center h-full min-h-[300px]">
+      <Spinner size="lg" />
+    </div>
+  </div>
+</quiz-wizard>
+
+<script>
+  import { $quiz } from '~/lib/state/quizStore';
+  import { useQuiz } from '~/lib/hooks/useQuiz';
+  import { getLocalizedContent, calculateProgress } from '~/lib/utils/quiz.utils';
+  
+  class QuizWizard extends HTMLElement {
+    private unsubscribe: () => void;
+    
+    constructor() {
+      super();
+      const quizId = this.dataset.quizId;
+      const locale = this.dataset.locale || 'en';
+      
+      const { init, answer, back } = useQuiz();
+      
+      const container = this.querySelector('#quiz-container');
+      const btnBack = this.querySelector('#btn-back');
+      const progressFill = this.querySelector('#progress-fill') as HTMLElement;
+      const progressText = this.querySelector('#progress-text');
+
+      btnBack?.addEventListener('click', () => back());
+
+      this.unsubscribe = $quiz.listen((state) => {
+        // Update progress
+        const progress = calculateProgress(state);
+        if (progressFill) progressFill.style.width = `${progress}%`;
+        if (progressText) progressText.textContent = `${progress}%`;
+
+        // Update back button visibility
+        if (btnBack) {
+          if (state.history.length > 0) {
+            btnBack.classList.remove('hidden');
+          } else {
+            btnBack.classList.add('hidden');
+          }
+        }
+
+        if (state.isLoading) {
+          container!.innerHTML = '<div class="flex justify-center py-20"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>';
+          return;
+        }
+
+        if (state.error) {
+          container!.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded-md">Error: ${state.error}</div>`;
+          return;
+        }
+
+        if (state.isComplete) {
+          container!.innerHTML = `
+            <div class="text-center py-12">
+              <h3 class="text-2xl font-bold mb-4">Quiz Completed!</h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-6">Calculating your estimate...</p>
+              <button id="btn-results" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors">View Results</button>
+            </div>
+          `;
+          container!.querySelector('#btn-results')?.addEventListener('click', () => {
+            window.location.href = `/result`;
+          });
+          return;
+        }
+
+        const question = state.schema?.questions.find(q => q.id === state.currentNodeId);
+        if (!question) return;
+
+        // Render Question
+        const title = getLocalizedContent(question, locale, 'title') || question.title;
+        const description = getLocalizedContent(question, locale, 'description') || question.description;
+
+        let inputHtml = '';
+        if (question.type === 'single-choice') {
+          inputHtml = `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+            ${(question.options || []).map(opt => `
+              <button type="button" class="quiz-option text-left p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-slate-800 transition-all" data-value="${opt.id}">
+                ${getLocalizedContent(opt, locale, 'label') || opt.label}
+              </button>
+            `).join('')}
+          </div>`;
+        } else if (question.type === 'multi-choice') {
+          // Simplified for now
+          inputHtml = `<div class="grid grid-cols-1 gap-4 mt-6">
+            ${(question.options || []).map(opt => `
+              <label class="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800">
+                <input type="checkbox" class="quiz-multi-option w-5 h-5 text-blue-600" value="${opt.id}">
+                <span class="ml-3">${getLocalizedContent(opt, locale, 'label') || opt.label}</span>
+              </label>
+            `).join('')}
+            <button type="button" class="quiz-submit-multi mt-4 bg-blue-600 text-white px-6 py-2 rounded-md font-medium">Continue</button>
+          </div>`;
+        } else {
+          // Fallback generic input
+          inputHtml = `<div class="mt-6">
+            <input type="text" class="quiz-text-input w-full p-4 border border-gray-300 rounded-md dark:bg-slate-800 dark:border-gray-700" placeholder="Type your answer...">
+            <button type="button" class="quiz-submit-text mt-4 bg-blue-600 text-white px-6 py-2 rounded-md font-medium">Continue</button>
+          </div>`;
+        }
+
+        container!.innerHTML = `
+          <div class="animate-fade-in">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">${title}</h2>
+            ${description ? `<p class="mt-2 text-gray-600 dark:text-gray-400">${description}</p>` : ''}
+            ${inputHtml}
+          </div>
+        `;
+
+        // Attach listeners
+        if (question.type === 'single-choice') {
+          container!.querySelectorAll('.quiz-option').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              const val = (e.currentTarget as HTMLElement).dataset.value;
+              answer(val);
+            });
+          });
+        } else if (question.type === 'multi-choice') {
+          container!.querySelector('.quiz-submit-multi')?.addEventListener('click', () => {
+            const checked = Array.from(container!.querySelectorAll('.quiz-multi-option:checked')).map(cb => (cb as HTMLInputElement).value);
+            answer(checked);
+          });
+        } else {
+          container!.querySelector('.quiz-submit-text')?.addEventListener('click', () => {
+            const val = (container!.querySelector('.quiz-text-input') as HTMLInputElement).value;
+            answer(question.type === 'number' ? Number(val) : val);
+          });
+        }
+      });
+
+      // Start quiz
+      if (quizId) {
+        init(quizId, locale);
+      }
+    }
+
+    disconnectedCallback() {
+      if (this.unsubscribe) this.unsubscribe();
+    }
+  }
+
+  customElements.define('quiz-wizard', QuizWizard);
+</script>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

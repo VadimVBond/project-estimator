@@ -8,6 +8,10 @@ from i18n import inject_i18n_helpers, load_translations
 from content.loader import init_loader
 from blueprints.main.routes import main_bp
 from generators import register_generators
+from routes.leads import bp as leads_bp
+from routes.pricing import bp as pricing_bp
+from routes.quiz import bp as quiz_bp
+from services.lead_service import init_lead_storage
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -15,13 +19,20 @@ app.config.from_object(config)
 flatpages = FlatPages(app)
 freezer = Freezer(app, with_static_files=True)
 
+from services.handlers import register_all_handlers
+
 # Инициализация
 load_translations()
 init_loader(flatpages)
 register_generators(freezer)
+init_lead_storage()
+register_all_handlers()
 
 # Подключение Blueprint и Context Processor
 app.register_blueprint(main_bp)
+app.register_blueprint(pricing_bp)
+app.register_blueprint(quiz_bp)
+app.register_blueprint(leads_bp)
 app.context_processor(inject_i18n_helpers)
 
 if __name__ == "__main__":

@@ -1,0 +1,19 @@
+---
+interface Props {
+  value?: number;
+  label?: string;
+}
+
+const { value = 0, label = 'Progress' } = Astro.props;
+const normalized = Math.max(0, Math.min(100, value));
+---
+
+<div class="space-y-2" data-progress-bar>
+  <div class="flex items-center justify-between text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+    <span>{label}</span>
+    <span data-progress-value>{normalized}%</span>
+  </div>
+  <div class="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-slate-800">
+    <div class="h-full rounded-full bg-primary transition-all duration-300" style={`width: ${normalized}%`} data-progress-fill></div>
+  </div>
+</div>

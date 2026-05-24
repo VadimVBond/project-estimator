@@ -1,0 +1,88 @@
+---
+import { formatCurrency } from '~/lib/utils/pricing.utils';
+
+export interface Props {
+  locale?: string;
+  class?: string;
+}
+
+const { locale = 'en', class: className = '' } = Astro.props;
+---
+
+<price-sidebar data-locale={locale} class={`block w-full bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden ${className}`}>
+  <div class="bg-blue-600 p-6 text-white text-center">
+    <h3 class="text-sm font-medium uppercase tracking-wider opacity-80 mb-1">Estimated Total</h3>
+    <div class="text-4xl font-bold flex items-center justify-center gap-2">
+      <span id="price-display">--</span>
+    </div>
+    <p class="text-xs opacity-75 mt-2">Final price may vary based on specific requirements</p>
+  </div>
+  
+  <div class="p-6">
+    <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 uppercase tracking-wider">Features Included</h4>
+    
+    <div id="price-line-items" class="space-y-3 text-sm">
+      <div class="text-gray-500 italic">Complete the quiz to see your estimate breakdown.</div>
+    </div>
+  </div>
+</price-sidebar>
+
+<script>
+  import { $pricing } from '~/lib/state/pricingStore';
+  import { $quiz } from '~/lib/state/quizStore';
+  import { usePricing } from '~/lib/hooks/usePricing';
+  import { formatCurrency } from '~/lib/utils/pricing.utils';
+  
+  class PriceSidebar extends HTMLElement {
+    private unsubPricing: () => void;
+    private unsubQuiz: () => void;
+    
+    constructor() {
+      super();
+      const locale = this.dataset.locale || 'en';
+      const { recalculate } = usePricing();
+      
+      const priceDisplay = this.querySelector('#price-display');
+      const lineItemsContainer = this.querySelector('#price-line-items');
+
+      // Listen to Quiz changes to trigger pricing recalculation
+      this.unsubQuiz = $quiz.listen((state) => {
+        if (Object.keys(state.answers).length > 0) {
+          recalculate(state.answers, locale);
+        }
+      });
+
+      // Listen to Pricing changes to update UI
+      this.unsubPricing = $pricing.listen((state) => {
+        if (state.isCalculating && state.price === null) {
+          if (priceDisplay) priceDisplay.innerHTML = '<span class="animate-pulse">Calculating...</span>';
+          return;
+        }
+
+        if (state.price !== null) {
+          if (priceDisplay) {
+            priceDisplay.textContent = formatCurrency(state.price, state.currency, locale);
+          }
+        }
+
+        if (state.lineItems && state.lineItems.length > 0 && lineItemsContainer) {
+          lineItemsContainer.innerHTML = state.lineItems.map(item => `
+            <div class="flex justify-between items-start">
+              <span class="text-gray-700 dark:text-gray-300 pr-4">${item.label}</span>
+              <span class="font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                ${item.amount > 0 ? '+' : ''}${formatCurrency(item.amount, state.currency, locale)}
+              </span>
+            </div>
+          `).join('');
+        }
+      });
+    }
+
+    disconnectedCallback() {
+      if (this.unsubPricing) this.unsubPricing();
+      if (this.unsubQuiz) this.unsubQuiz();
+    }
+  }
+
+  customElements.define('price-sidebar', PriceSidebar);
+</script>

@@ -2,6 +2,11 @@
   "name": "project-estimator",
   "private": true,
   "packageManager": "pnpm@9.0.0",
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.27.7"
+    }
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",

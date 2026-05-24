@@ -1,0 +1,129 @@
+import type { PricingRules } from "./types";
+
+export const DEFAULT_STACK_ID = "standard";
+export const DEFAULT_COMPLEXITY_ID = "medium";
+
+export const defaultPricingRules: PricingRules = {
+  currency: "USD",
+  projectTypes: {
+    "landing-page": {
+      id: "landing-page",
+      label: "Landing page",
+      basePrice: 1200,
+    },
+    "corporate-website": {
+      id: "corporate-website",
+      label: "Corporate website",
+      basePrice: 3000,
+    },
+    ecommerce: {
+      id: "ecommerce",
+      label: "E-commerce",
+      basePrice: 5500,
+    },
+    saas: {
+      id: "saas",
+      label: "SaaS application",
+      basePrice: 9000,
+    },
+    "mobile-app": {
+      id: "mobile-app",
+      label: "Mobile app",
+      basePrice: 8000,
+    },
+    automation: {
+      id: "automation",
+      label: "Automation system",
+      basePrice: 4500,
+    },
+  },
+  features: {
+    auth: {
+      id: "auth",
+      label: "Authentication",
+      amount: 900,
+      appliesTo: ["saas", "mobile-app", "ecommerce", "automation"],
+    },
+    payments: {
+      id: "payments",
+      label: "Payments",
+      amount: 1400,
+      appliesTo: ["saas", "mobile-app", "ecommerce"],
+    },
+    dashboard: {
+      id: "dashboard",
+      label: "Dashboard",
+      amount: 1600,
+      appliesTo: ["saas", "automation", "ecommerce"],
+    },
+    cms: {
+      id: "cms",
+      label: "CMS",
+      amount: 1000,
+      appliesTo: ["landing-page", "corporate-website", "ecommerce"],
+    },
+    multilingual: {
+      id: "multilingual",
+      label: "Multilingual content",
+      amount: 700,
+    },
+    "ai-assistant": {
+      id: "ai-assistant",
+      label: "AI assistant",
+      amount: 2200,
+      appliesTo: ["saas", "automation", "corporate-website"],
+    },
+    integrations: {
+      id: "integrations",
+      label: "Third-party integrations",
+      amount: 1100,
+    },
+  },
+  stacks: {
+    standard: {
+      id: "standard",
+      label: "Standard stack",
+      multiplier: 1,
+    },
+    "custom-backend": {
+      id: "custom-backend",
+      label: "Custom backend",
+      multiplier: 1.2,
+    },
+    "full-stack": {
+      id: "full-stack",
+      label: "Full-stack product",
+      multiplier: 1.35,
+    },
+    "high-load": {
+      id: "high-load",
+      label: "High-load architecture",
+      multiplier: 1.6,
+    },
+  },
+  complexities: {
+    low: {
+      id: "low",
+      label: "Low complexity",
+      coefficient: 0.85,
+    },
+    medium: {
+      id: "medium",
+      label: "Medium complexity",
+      coefficient: 1,
+    },
+    high: {
+      id: "high",
+      label: "High complexity",
+      coefficient: 1.35,
+    },
+    enterprise: {
+      id: "enterprise",
+      label: "Enterprise complexity",
+      coefficient: 1.8,
+    },
+  },
+  rounding: {
+    increment: 50,
+  },
+};

@@ -1,6 +1,39 @@
 ---
+import Layout from '~/layouts/PageLayout.astro';
+import { getLocaleFromUrl } from '~/i18n/translator';
 
+const lang = getLocaleFromUrl(Astro.url);
+const metadata = {
+  title: 'Thank You',
+};
 ---
 
-<!-- Placeholder thank you page -->
-<h1>Thank you</h1>
+<Layout metadata={metadata}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 mb-6">
+      <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+    
+    <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl mb-4">Request Sent Successfully!</h1>
+    
+    <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
+      Thank you for your interest. Our team has received your project details and estimate breakdown. 
+      We will review your requirements and get back to you shortly.
+    </p>
+
+    <div class="flex justify-center gap-4">
+      <a href="/" class="inline-flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
+        Return to Home
+      </a>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { clearSession } from '~/lib/state/sessionStore';
+  
+  // Clear the quiz and pricing session so the user starts fresh next time
+  clearSession();
+</script>

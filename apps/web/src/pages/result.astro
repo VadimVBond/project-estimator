@@ -1,6 +1,173 @@
 ---
+import Layout from '~/layouts/PageLayout.astro';
+import { getLocaleFromUrl } from '~/i18n/translator';
 
+const lang = getLocaleFromUrl(Astro.url);
+const metadata = {
+  title: 'Your Estimate',
+};
 ---
 
-<!-- Placeholder result page -->
-<h1>Result</h1>
+<Layout metadata={metadata}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center mb-12 animate-fade-in">
+      <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Your Project Estimate</h1>
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">Based on your answers, here is the breakdown of the expected costs.</p>
+    </div>
+
+    <result-view data-locale={lang}>
+      <div id="result-loading" class="flex justify-center py-20">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+      
+      <div id="result-content" class="hidden grid grid-cols-1 md:grid-cols-[1fr_350px] gap-8">
+        
+        <!-- Breakdown Column -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
+          <div class="p-6 sm:p-8 border-b border-gray-100 dark:border-gray-800">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Estimate Breakdown</h2>
+          </div>
+          <div class="p-6 sm:p-8">
+            <div id="result-line-items" class="space-y-4">
+              <!-- JS rendered -->
+            </div>
+            
+            <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 flex justify-between items-end">
+              <div>
+                <span class="block text-sm text-gray-500">Estimated Total</span>
+              </div>
+              <div id="result-total" class="text-4xl font-extrabold text-blue-600 dark:text-blue-400">
+                --
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lead Capture Form -->
+        <div class="bg-blue-50 dark:bg-slate-800/50 rounded-2xl p-6 sm:p-8">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Want to discuss this?</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Leave your contacts and we'll reach out to provide a detailed proposal.</p>
+          
+          <form id="lead-form" class="space-y-4">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+              <input type="text" id="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 sm:text-sm p-3">
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+              <input type="email" id="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 sm:text-sm p-3">
+            </div>
+            <div>
+              <label for="company" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Company (Optional)</label>
+              <input type="text" id="company" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 sm:text-sm p-3">
+            </div>
+            
+            <div id="form-error" class="hidden text-red-600 text-sm mt-2"></div>
+            <div id="form-success" class="hidden text-green-600 text-sm mt-2 font-medium bg-green-50 p-3 rounded">Thanks! We've received your request.</div>
+
+            <button type="submit" id="submit-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-6">
+              Send Request
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </result-view>
+  </div>
+</Layout>
+
+<script>
+  import { $pricing } from '~/lib/state/pricingStore';
+  import { $quiz } from '~/lib/state/quizStore';
+  import { submitLead } from '~/lib/api/leads.api';
+  import { formatCurrency } from '~/lib/utils/pricing.utils';
+  
+  class ResultView extends HTMLElement {
+    constructor() {
+      super();
+      const locale = this.dataset.locale || 'en';
+      
+      const loading = this.querySelector('#result-loading');
+      const content = this.querySelector('#result-content');
+      const lineItems = this.querySelector('#result-line-items');
+      const totalDisplay = this.querySelector('#result-total');
+      const form = this.querySelector('#lead-form') as HTMLFormElement;
+      const errorDiv = this.querySelector('#form-error');
+      const successDiv = this.querySelector('#form-success');
+      const submitBtn = this.querySelector('#submit-btn') as HTMLButtonElement;
+
+      // Restore session if needed (assuming sessionStore logic is initialized in a global script, but we can read stores directly here)
+      const pricingState = $pricing.get();
+      const quizState = $quiz.get();
+
+      if (!pricingState.price) {
+        // No pricing data available, maybe redirect back to calculator
+        window.location.href = '/calculator';
+        return;
+      }
+
+      // Render Pricing
+      loading?.classList.add('hidden');
+      content?.classList.remove('hidden');
+
+      if (totalDisplay) {
+        totalDisplay.textContent = formatCurrency(pricingState.price, pricingState.currency, locale);
+      }
+
+      if (lineItems && pricingState.lineItems) {
+        lineItems.innerHTML = pricingState.lineItems.map(item => `
+          <div class="flex justify-between items-center py-2 border-b border-gray-50 dark:border-gray-800 last:border-0">
+            <span class="text-gray-700 dark:text-gray-300 font-medium">${item.label}</span>
+            <span class="text-gray-900 dark:text-white font-semibold">
+              ${item.amount > 0 ? '+' : ''}${formatCurrency(item.amount, pricingState.currency, locale)}
+            </span>
+          </div>
+        `).join('');
+      }
+
+      // Handle Form Submit
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = (this.querySelector('#name') as HTMLInputElement).value;
+        const email = (this.querySelector('#email') as HTMLInputElement).value;
+        const company = (this.querySelector('#company') as HTMLInputElement).value;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        errorDiv?.classList.add('hidden');
+
+        try {
+          await submitLead({
+            contact: { name, email, company },
+            // Make sure idempotency is handled via session
+            quizId: quizState.quizId,
+            answers: quizState.answers,
+            locale
+          });
+          
+          form.reset();
+          submitBtn.classList.add('hidden');
+          successDiv?.classList.remove('hidden');
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Request';
+          errorDiv!.textContent = err instanceof Error ? err.message : 'Something went wrong';
+          errorDiv?.classList.remove('hidden');
+        }
+      });
+    }
+  }
+
+  customElements.define('result-view', ResultView);
+</script>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

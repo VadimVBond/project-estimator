@@ -1,0 +1,17 @@
+---
+export interface Props {
+  value: number; // от 0 до 100
+  class?: string;
+}
+
+const { value, class: className = '' } = Astro.props;
+// Убедимся, что значение находится в диапазоне 0-100
+const safeValue = Math.max(0, Math.min(100, value));
+---
+
+<div class={`w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 ${className}`}>
+  <div
+    class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out"
+    style={`width: ${safeValue}%`}
+  ></div>
+</div>

@@ -1,0 +1,26 @@
+---
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${className}`}>
+  <!-- Основная колонка квиза -->
+  <div class="flex flex-col gap-6">
+    <slot name="quiz" />
+  </div>
+
+  <!-- Сайдбар с ценой -->
+  <div class="relative hidden lg:block">
+    <div class="sticky top-24">
+      <slot name="sidebar" />
+    </div>
+  </div>
+
+  <!-- Мобильный футер с ценой (показывается только на маленьких экранах) -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800 p-4 z-50 shadow-lg">
+    <slot name="mobile-footer" />
+  </div>
+</div>

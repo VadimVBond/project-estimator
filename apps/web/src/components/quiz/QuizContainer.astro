@@ -1,0 +1,171 @@
+---
+import PriceDisplay from './PriceDisplay.astro';
+import ProgressBar from './ProgressBar.astro';
+import StepRenderer from './StepRenderer.astro';
+
+interface Props {
+  locale?: string;
+  apiBaseUrl?: string;
+  title?: string;
+  heading?: string;
+  continueLabel?: string;
+  completedLabel?: string;
+  loadingLabel?: string;
+  completedMessage?: string;
+}
+
+const {
+  locale = 'en',
+  apiBaseUrl = '',
+  title = 'Project estimator',
+  heading = 'Estimate your project',
+  continueLabel = 'Continue',
+  completedLabel = 'Completed',
+  loadingLabel = 'Loading...',
+  completedMessage = 'Quiz completed. Pricing and lead capture can use the saved answers.',
+} = Astro.props;
+---
+
+<section
+  class="mx-auto grid max-w-6xl gap-6 px-4 py-8 lg:grid-cols-[minmax(0,1fr)_320px]"
+  data-quiz-container
+  data-locale={locale}
+  data-api-base-url={apiBaseUrl}
+  data-continue-label={continueLabel}
+  data-completed-label={completedLabel}
+  data-loading-label={loadingLabel}
+  data-completed-message={completedMessage}
+>
+  <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
+    <div class="mb-6">
+      <p class="text-sm font-medium uppercase tracking-wide text-primary">{title}</p>
+      <h1 class="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{heading}</h1>
+    </div>
+
+    <ProgressBar />
+
+    <form class="mt-6 space-y-6" data-quiz-form>
+      <div data-step-root>
+        <StepRenderer />
+      </div>
+
+      <div class="hidden rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700" data-error-box></div>
+
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <button
+          class="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+          type="submit"
+          data-next-button
+        >
+          {continueLabel}
+        </button>
+        <p class="hidden text-sm text-gray-500 dark:text-gray-400" data-loading-label>{loadingLabel}</p>
+      </div>
+    </form>
+  </div>
+
+  <div class="lg:sticky lg:top-6 lg:self-start">
+    <PriceDisplay />
+  </div>
+</section>
+
+<script>
+  import { createEstimatorApi } from '~/lib/api/client';
+  import { createQuizState } from '~/lib/state/quizState';
+  import {
+    formatMoney,
+    getCurrentQuestion,
+    getIssueForQuestion,
+    getLocalizedText,
+    getProgressPercent,
+    renderQuestionControl,
+    escapeHtml,
+  } from '~/lib/utils/quizHelpers';
+
+  document.querySelectorAll('[data-quiz-container]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    const locale = root.dataset.locale || 'en';
+    const apiBaseUrl = root.dataset.apiBaseUrl || undefined;
+    const continueLabel = root.dataset.continueLabel || 'Continue';
+    const completedLabel = root.dataset.completedLabel || 'Completed';
+    const loadingText = root.dataset.loadingLabel || 'Loading...';
+    const completedMessage = root.dataset.completedMessage || 'Quiz completed.';
+    const form = root.querySelector<HTMLFormElement>('[data-quiz-form]');
+    const stepRoot = root.querySelector<HTMLElement>('[data-step-root]');
+    const loadingLabel = root.querySelector<HTMLElement>('[data-loading-label]');
+    const nextButton = root.querySelector<HTMLButtonElement>('[data-next-button]');
+    const errorBox = root.querySelector<HTMLElement>('[data-error-box]');
+    const progressValue = root.querySelector<HTMLElement>('[data-progress-value]');
+    const progressFill = root.querySelector<HTMLElement>('[data-progress-fill]');
+    const priceTotal = root.querySelector<HTMLElement>('[data-price-total]');
+    const priceEmpty = root.querySelector<HTMLElement>('[data-price-empty]');
+    const priceLines = root.querySelector<HTMLElement>('[data-price-lines]');
+    const priceLoading = root.querySelector<HTMLElement>('[data-price-loading]');
+
+    const api = createEstimatorApi({ baseUrl: apiBaseUrl, locale });
+    const quiz = createQuizState(api);
+
+    const setHidden = (element: Element | null, hidden: boolean) => element?.classList.toggle('hidden', hidden);
+
+    quiz.subscribe((state) => {
+      const question = getCurrentQuestion(state.schema, state.quiz);
+      const issue = question ? getIssueForQuestion(state.validationIssues, question.id) : undefined;
+      const progress = getProgressPercent(state.schema, state.quiz);
+
+      if (progressValue) progressValue.textContent = `${progress}%`;
+      if (progressFill) progressFill.style.width = `${progress}%`;
+      if (loadingLabel) loadingLabel.textContent = state.isLoading ? loadingText : '';
+      if (nextButton) {
+        nextButton.disabled = state.isLoading;
+        nextButton.textContent = state.quiz?.isComplete ? completedLabel : continueLabel;
+      }
+
+      setHidden(loadingLabel, !state.isLoading);
+      setHidden(errorBox, !state.error || state.validationIssues.length > 0);
+      if (errorBox && state.error && state.validationIssues.length === 0) errorBox.textContent = state.error;
+
+      if (stepRoot) {
+        if (state.quiz?.isComplete) {
+          stepRoot.innerHTML = `<div class="rounded-lg border border-green-200 bg-green-50 p-5 text-sm text-green-800">${escapeHtml(completedMessage)}</div>`;
+        } else if (question) {
+          const answer = state.quiz?.answers[question.id];
+          stepRoot.innerHTML = `
+            <fieldset class="space-y-5">
+              <div>
+                <legend class="text-xl font-semibold text-gray-900 dark:text-white">${escapeHtml(getLocalizedText(question.title, locale))}</legend>
+                ${question.description ? `<p class="mt-2 text-sm text-gray-600 dark:text-gray-300">${escapeHtml(getLocalizedText(question.description, locale))}</p>` : ''}
+              </div>
+              ${renderQuestionControl(question, answer, locale)}
+              ${issue ? `<p class="text-sm text-red-600">${escapeHtml(issue.message)}</p>` : ''}
+            </fieldset>
+          `;
+        }
+      }
+
+      setHidden(priceLoading, !state.isPricingLoading);
+      if (priceTotal) priceTotal.textContent = formatMoney(state.pricing?.total, state.pricing?.currency, locale);
+      setHidden(priceEmpty, Boolean(state.pricing));
+      if (priceLines) {
+        priceLines.classList.toggle('hidden', !state.pricing);
+        priceLines.innerHTML = (state.pricing?.lineItems ?? [])
+          .map(
+            (item) => `
+              <div class="flex items-center justify-between gap-4">
+                <dt class="text-gray-500 dark:text-gray-400">${escapeHtml(item.label)}</dt>
+                <dd class="font-medium text-gray-900 dark:text-white">${formatMoney(item.amount, state.pricing?.currency, locale)}</dd>
+              </div>
+            `
+          )
+          .join('');
+      }
+    });
+
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      void quiz.submitCurrent(form);
+    });
+
+    void quiz.init();
+  });
+</script>
