@@ -1,0 +1,534 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Admin Leads Dashboard Section -->
+<section id="admin-leads" class="portfolio admin-section section-show">
+  <div class="container-fluid">
+    <div class="section-title">
+      <h2>{{ t('leads_dashboard_title') }}</h2>
+      <p>{{ t('leads_dashboard_subtitle') }}</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card-summary bg-primary text-white">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="card-title mb-0">{{ t('summary_total_leads') }}</h6>
+                <h2 class="mt-2">{{ summary.total }}</h2>
+              </div>
+              <div class="icon-summary">
+                <i class="bi bi-people-fill"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card-summary bg-success text-white">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="card-title mb-0">{{ t('summary_delivered') }}</h6>
+                <h2 class="mt-2">{{ summary.by_status.get('delivered', 0) }}</h2>
+              </div>
+              <div class="icon-summary">
+                <i class="bi bi-check-circle-fill"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card-summary bg-warning text-dark">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="card-title mb-0">{{ t('summary_queued') }}</h6>
+                <h2 class="mt-2">{{ summary.by_status.get('queued', 0) }}</h2>
+              </div>
+              <div class="icon-summary">
+                <i class="bi bi-hourglass-split"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card-summary bg-danger text-white">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="card-title mb-0">{{ t('summary_failed') }}</h6>
+                <h2 class="mt-2">{{ summary.by_status.get('failed', 0) }}</h2>
+              </div>
+              <div class="icon-summary">
+                <i class="bi bi-exclamation-circle-fill"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Card -->
+    <div class="card mb-4 filter-card">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">
+          <i class="bi bi-funnel"></i> {{ t('filters_title') }}
+        </h5>
+      </div>
+      <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+          <!-- Search -->
+          <div class="col-md-3">
+            <label for="search" class="form-label">{{ t('search_label') }}</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="search" 
+              name="q" 
+              placeholder="{{ t('search_placeholder') }}"
+              value="{{ filters.q }}"
+            >
+          </div>
+
+          <!-- Status Filter -->
+          <div class="col-md-2">
+            <label for="status" class="form-label">{{ t('telegram_status_label') }}</label>
+            <select class="form-select" id="status" name="status">
+              <option value="all" {% if filters.status == 'all' %}selected{% endif %}>{{ t('all_label') }}</option>
+              <option value="queued" {% if filters.status == 'queued' %}selected{% endif %}>{{ t('status_queued') }}</option>
+              <option value="delivered" {% if filters.status == 'delivered' %}selected{% endif %}>{{ t('status_delivered') }}</option>
+              <option value="failed" {% if filters.status == 'failed' %}selected{% endif %}>{{ t('status_failed') }}</option>
+            </select>
+          </div>
+
+          <!-- Source Filter -->
+          <div class="col-md-2">
+            <label for="source" class="form-label">{{ t('source_label') }}</label>
+            <select class="form-select" id="source" name="source">
+              <option value="all" {% if filters.source == 'all' %}selected{% endif %}>{{ t('all_label') }}</option>
+              {% for src in summary.by_source %}
+              <option value="{{ src }}" {% if filters.source == src %}selected{% endif %}>{{ src }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Page Size -->
+          <div class="col-md-2">
+            <label for="page_size" class="form-label">{{ t('per_page_label') }}</label>
+            <select class="form-select" id="page_size" name="page_size">
+              <option value="5" {% if filters.page_size == 5 %}selected{% endif %}>5</option>
+              <option value="15" {% if filters.page_size == 15 %}selected{% endif %}>15</option>
+              <option value="30" {% if filters.page_size == 30 %}selected{% endif %}>30</option>
+              <option value="50" {% if filters.page_size == 50 %}selected{% endif %}>50</option>
+            </select>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-search"></i> {{ t('apply_filters') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Leads Table Card -->
+    <div class="card table-card">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">
+          <i class="bi bi-table"></i> {{ t('leads_table_title') }} ({{ pagination.total }} {{ t('total_label') }})
+        </h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 12%">{{ t('id_label') }}</th>
+                <th style="width: 18%">{{ t('name_label') }}</th>
+                <th style="width: 18%">{{ t('email_label') }}</th>
+                <th style="width: 12%">{{ t('source_label') }}</th>
+                <th style="width: 15%">{{ t('telegram_status_label') }}</th>
+                <th style="width: 15%">{{ t('created_label') }}</th>
+                <th style="width: 10%">{{ t('actions_label') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if leads %}
+                {% for lead in leads %}
+                <tr>
+                  <td>
+                    <code class="text-muted small">{{ lead.lead_id[:8] }}...</code>
+                  </td>
+                  <td>
+                    <strong>{{ lead.contact.name }}</strong>
+                  </td>
+                  <td>
+                    <a href="mailto:{{ lead.contact.email }}">{{ lead.contact.email }}</a>
+                  </td>
+                  <td>
+                    <span class="badge bg-info">{{ lead.source }}</span>
+                  </td>
+                  <td>
+                    {% if lead.telegram_status == 'delivered' %}
+                      <span class="badge bg-success">
+                        <i class="bi bi-check-circle"></i> {{ t('status_delivered') }}
+                      </span>
+                    {% elif lead.telegram_status == 'queued' %}
+                      <span class="badge bg-warning">
+                        <i class="bi bi-hourglass-split"></i> {{ t('status_queued') }}
+                      </span>
+                    {% elif lead.telegram_status == 'failed' %}
+                      <span class="badge bg-danger">
+                        <i class="bi bi-exclamation-circle"></i> {{ t('status_failed') }}
+                      </span>
+                    {% else %}
+                      <span class="badge bg-secondary">{{ lead.telegram_status }}</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <small class="text-muted">{{ lead.created_at[:10] }}</small>
+                  </td>
+                  <td>
+                    <button 
+                      class="btn btn-sm btn-outline-primary" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#leadModal{{ loop.index }}"
+                      title="{{ t('view_details') }}"
+                    <!-- Lead Details Modal -->
+                    <div class="modal fade" id="leadModal{{ loop.index }}" tabindex="-1">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">{{ t('lead_details') }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                          <div class="modal-body">
+                            <h6>{{ t('contact_information') }}</h6>
+                            <p><strong>{{ t('name_label') }}:</strong> {{ lead.contact.name }}</p>
+                            <p><strong>{{ t('email_label') }}:</strong> {{ lead.contact.email }}</p>
+                            <p><strong>{{ t('phone_label') }}:</strong> {{ lead.contact.get('phone', 'N/A') }}</p>
+
+                            <hr>
+                            <h6>{{ t('lead_details') }}</h6>
+                            <p><strong>{{ t('lead_id_label') }}:</strong> <code>{{ lead.lead_id }}</code></p>
+                            <p><strong>{{ t('session_id_label') }}:</strong> <code>{{ lead.session_id }}</code></p>
+                            <p><strong>{{ t('quiz_id_label') }}:</strong> <code>{{ lead.quiz_id }}</code></p>
+                            <p><strong>{{ t('source_label') }}:</strong> {{ lead.source }}</p>
+                            <p><strong>{{ t('status_label') }}:</strong> {{ lead.status }}</p>
+                            <p><strong>{{ t('telegram_status_label') }}:</strong> {{ lead.telegram_status }}</p>
+                            <p><strong>{{ t('created_label') }}:</strong> {{ lead.created_at }}</p>
+
+                            {% if lead.pricing %}
+                            <hr>
+                            <h6>{{ t('pricing_information') }}</h6>
+                            <pre class="bg-light p-3 rounded">{{ lead.pricing | tojson(indent=2) }}</pre>
+                            {% endif %}
+
+                            {% if lead.answers %}
+                            <hr>
+                            <h6>{{ t('quiz_answers') }}</h6>
+                            <pre class="bg-light p-3 rounded">{{ lead.answers | tojson(indent=2) }}</pre>
+                            {% endif %}
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ t('close_button') }}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              {% else %}
+              <tr>
+                <td colspan="7" class="text-center py-4">
+                  <p class="text-muted mb-0">{{ t('no_leads_found') }}</p>
+                </td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if pagination.total_pages > 1 %}
+    <nav aria-label="Page navigation" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <!-- Previous Button -->
+        {% if pagination.page > 1 %}
+        <li class="page-item">
+          <a class="page-link" href="?q={{ filters.q }}&status={{ filters.status }}&source={{ filters.source }}&page_size={{ filters.page_size }}&page=1">
+            {{ t('first_button') }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?q={{ filters.q }}&status={{ filters.status }}&source={{ filters.source }}&page_size={{ filters.page_size }}&page={{ pagination.page - 1 }}">
+            {{ t('previous_button') }}
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">{{ t('first_button') }}</span>
+        </li>
+        <li class="page-item disabled">
+          <span class="page-link">{{ t('previous_button') }}</span>
+        </li>
+        {% endif %}
+
+        <!-- Page Numbers -->
+        {% for page_num in range(max(1, pagination.page - 2), min(pagination.total_pages + 1, pagination.page + 3)) %}
+          {% if page_num == pagination.page %}
+          <li class="page-item active">
+            <span class="page-link">{{ page_num }}</span>
+          </li>
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?q={{ filters.q }}&status={{ filters.status }}&source={{ filters.source }}&page_size={{ filters.page_size }}&page={{ page_num }}">
+              {{ page_num }}
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+
+        <!-- Next Button -->
+        {% if pagination.page < pagination.total_pages %}
+        <li class="page-item">
+          <a class="page-link" href="?q={{ filters.q }}&status={{ filters.status }}&source={{ filters.source }}&page_size={{ filters.page_size }}&page={{ pagination.page + 1 }}">
+            {{ t('next_button') }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?q={{ filters.q }}&status={{ filters.status }}&source={{ filters.source }}&page_size={{ filters.page_size }}&page={{ pagination.total_pages }}">
+            {{ t('last_button') }}
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">{{ t('next_button') }}</span>
+        </li>
+        <li class="page-item disabled">
+          <span class="page-link">{{ t('last_button') }}</span>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  section.admin-section {
+    opacity: 1 !important;
+    position: relative !important;
+    top: auto !important;
+    background: transparent;
+    z-index: 1;
+  }
+
+  #admin-leads {
+    min-height: 100vh;
+    padding: 80px 20px;
+    background: #f8f9fa;
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .section-title h2 {
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+  }
+
+  .section-title p {
+    color: #666;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Summary Cards */
+  .card-summary {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-summary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-summary .card-body {
+    padding: 20px;
+  }
+
+  .card-summary .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .card-summary h2 {
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .icon-summary {
+    font-size: 2.5rem;
+    opacity: 0.3;
+  }
+
+  /* Filter Card */
+  .filter-card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .filter-card .card-header {
+    border-bottom: 1px solid #ddd;
+    border-radius: 8px 8px 0 0;
+  }
+
+  /* Table Card */
+  .table-card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .table-card .card-header {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .table-card .table {
+    font-size: 14px;
+  }
+
+  .table-card .table thead th {
+    font-weight: 600;
+    color: #333;
+    border: none;
+    padding: 15px;
+  }
+
+  .table-card .table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border-color: #eee;
+  }
+
+  .table-card .table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+  }
+
+  .table-card .table tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+
+  .table-card .table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .table-card code {
+    background-color: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 10px;
+  }
+
+  /* Modal */
+  .modal-header {
+    border-bottom: 1px solid #ddd;
+    background-color: #f8f9fa;
+  }
+
+  .modal-body pre {
+    border: 1px solid #ddd;
+    max-height: 300px;
+    overflow-y: auto;
+    font-size: 12px;
+  }
+
+  /* Pagination */
+  .pagination {
+    margin-top: 30px;
+  }
+
+  .page-link {
+    color: #0066cc;
+    border-color: #ddd;
+    border-radius: 4px;
+    margin: 0 3px;
+  }
+
+  .page-link:hover {
+    background-color: #0066cc;
+    border-color: #0066cc;
+    color: white;
+  }
+
+  .page-item.active .page-link {
+    background-color: #0066cc;
+    border-color: #0066cc;
+  }
+
+  .page-item.disabled .page-link {
+    color: #999;
+    cursor: not-allowed;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #admin-leads {
+      padding: 60px 10px;
+    }
+
+    .section-title {
+      margin-bottom: 30px;
+    }
+
+    .section-title h2 {
+      font-size: 24px;
+    }
+
+    .table-card .table {
+      font-size: 12px;
+    }
+
+    .table-card .table thead th,
+    .table-card .table tbody td {
+      padding: 10px 8px;
+    }
+
+    .filter-card .row {
+      row-gap: 15px;
+    }
+  }
+</style>
+{% endblock %}

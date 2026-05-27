@@ -1,0 +1,792 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('quiz_title') }}{% endblock %}
+
+{% block content %}
+<style>
+  /* ── Layout ────────────────────────────────────────────────────── */
+  #quiz-page {
+    min-height: 100vh;
+    padding: 80px 0 60px;
+    background: linear-gradient(135deg, #0d0d1a 0%, #0a1628 60%, #0d1f3c 100%);
+  }
+
+  /* ── Progress ──────────────────────────────────────────────────── */
+  .quiz-progress-wrap {
+    max-width: 680px;
+    margin: 0 auto 32px;
+  }
+  .quiz-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+  }
+  .quiz-progress-bar {
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.1);
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #1e90ff, #00d4ff);
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 0 12px rgba(30,144,255,0.5);
+  }
+
+  /* ── Step card ─────────────────────────────────────────────────── */
+  .quiz-card {
+    max-width: 680px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(16px);
+    padding: 48px 48px 40px;
+    animation: cardIn .35s cubic-bezier(.4,0,.2,1);
+  }
+  @keyframes cardIn {
+    from { opacity:0; transform: translateY(16px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .quiz-step-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #1e90ff;
+    margin-bottom: 12px;
+  }
+  .quiz-question-title {
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 36px;
+  }
+
+  /* ── Single-choice / Multi-choice cards ───────────────────────── */
+  .option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .option-card {
+    position: relative;
+    cursor: pointer;
+  }
+  .option-card input[type="radio"],
+  .option-card input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+  .option-card-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    transition: all .2s ease;
+    user-select: none;
+  }
+  .option-card-inner:hover {
+    border-color: rgba(30,144,255,0.45);
+    background: rgba(30,144,255,0.08);
+  }
+  .option-card input:checked + .option-card-inner {
+    border-color: #1e90ff;
+    background: rgba(30,144,255,0.15);
+    box-shadow: 0 0 0 1px #1e90ff;
+  }
+  .option-check-icon {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.25);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: transparent;
+    transition: all .2s ease;
+  }
+  .option-card input[type="checkbox"] + .option-card-inner .option-check-icon {
+    border-radius: 5px;
+  }
+  .option-card input:checked + .option-card-inner .option-check-icon {
+    background: #1e90ff;
+    border-color: #1e90ff;
+    color: #fff;
+  }
+  .option-label-text {
+    color: rgba(255,255,255,0.88);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  /* ── Boolean (Yes / No) ────────────────────────────────────────── */
+  .bool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .bool-btn {
+    padding: 22px 0;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.03);
+    color: rgba(255,255,255,0.85);
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s ease;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+  }
+  .bool-btn i { font-size: 26px; }
+  .bool-btn:hover {
+    border-color: rgba(30,144,255,0.45);
+    background: rgba(30,144,255,0.08);
+    color: #fff;
+  }
+  .bool-btn.selected-yes {
+    border-color: #22c55e;
+    background: rgba(34,197,94,0.12);
+    box-shadow: 0 0 0 1px #22c55e;
+    color: #22c55e;
+  }
+  .bool-btn.selected-no {
+    border-color: #ef4444;
+    background: rgba(239,68,68,0.10);
+    box-shadow: 0 0 0 1px #ef4444;
+    color: #ef4444;
+  }
+
+  /* ── Text / Number input ───────────────────────────────────────── */
+  .quiz-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color .2s;
+    margin-bottom: 36px;
+  }
+  .quiz-input:focus {
+    border-color: #1e90ff;
+    background: rgba(30,144,255,0.07);
+  }
+  .quiz-input::placeholder { color: rgba(255,255,255,0.3); }
+
+  /* ── Navigation ────────────────────────────────────────────────── */
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-quiz-back {
+    padding: 12px 24px;
+    border: 1.5px solid rgba(255,255,255,0.18);
+    border-radius: 10px;
+    background: transparent;
+    color: rgba(255,255,255,0.65);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s ease;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-quiz-back:hover:not(:disabled) {
+    border-color: rgba(255,255,255,0.4);
+    color: #fff;
+  }
+  .btn-quiz-back:disabled { opacity: 0.3; cursor: default; }
+
+  .btn-quiz-next {
+    padding: 13px 32px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1e90ff, #0066cc);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s ease;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 20px rgba(30,144,255,0.3);
+  }
+  .btn-quiz-next:hover:not(:disabled) {
+    background: linear-gradient(135deg, #3da0ff, #1e90ff);
+    box-shadow: 0 6px 24px rgba(30,144,255,0.45);
+    transform: translateY(-1px);
+  }
+  .btn-quiz-next:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+  /* ── Loading state ─────────────────────────────────────────────── */
+  .quiz-loading {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 320px; gap: 20px;
+  }
+  .quiz-spinner {
+    width: 48px; height: 48px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: #1e90ff;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .quiz-loading-text { color: rgba(255,255,255,0.5); font-size: 15px; }
+
+  /* ── Error state ───────────────────────────────────────────────── */
+  .quiz-error {
+    max-width: 680px;
+    margin: 0 auto;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    color: #fca5a5;
+  }
+  .quiz-error i { font-size: 36px; color: #ef4444; margin-bottom: 12px; }
+  .quiz-error-msg { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 8px; }
+  .btn-retry {
+    margin-top: 20px;
+    padding: 10px 24px;
+    border: 1.5px solid #ef4444;
+    border-radius: 8px;
+    background: transparent;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all .2s;
+  }
+  .btn-retry:hover { background: rgba(239,68,68,0.15); }
+
+  /* ── Validation error ──────────────────────────────────────────── */
+  .quiz-field-error {
+    font-size: 13px;
+    color: #fca5a5;
+    margin-top: -28px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .quiz-field-error.visible { display: block; }
+
+  /* ── Completion screen ─────────────────────────────────────────── */
+  .quiz-complete {
+    text-align: center;
+    padding: 16px 0;
+  }
+  .quiz-complete-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 36px; color: #fff;
+    box-shadow: 0 8px 32px rgba(34,197,94,0.35);
+    animation: popIn .5s cubic-bezier(.175,.885,.32,1.275);
+  }
+  @keyframes popIn {
+    from { opacity:0; transform: scale(0.5); }
+    to   { opacity:1; transform: scale(1); }
+  }
+  .quiz-complete h3 { color: #fff; font-size: 26px; font-weight: 700; }
+  .quiz-complete p  { color: rgba(255,255,255,0.6); margin-top: 8px; }
+  .quiz-complete-actions {
+    display: flex; flex-wrap: wrap;
+    gap: 12px; justify-content: center; margin-top: 32px;
+  }
+  .btn-see-pricing {
+    padding: 14px 36px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1e90ff, #0066cc);
+    color: #fff;
+    font-size: 16px; font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(30,144,255,0.35);
+    transition: all .2s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-see-pricing:hover {
+    background: linear-gradient(135deg, #3da0ff, #1e90ff);
+    box-shadow: 0 6px 28px rgba(30,144,255,0.5);
+    transform: translateY(-2px);
+    color: #fff;
+  }
+  .btn-restart {
+    padding: 14px 28px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    font-size: 16px; font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-restart:hover {
+    border-color: rgba(255,255,255,0.45);
+    color: #fff;
+  }
+
+  /* ── Pricing result preview ────────────────────────────────────── */
+  .pricing-preview {
+    margin-top: 28px;
+    background: rgba(30,144,255,0.07);
+    border: 1px solid rgba(30,144,255,0.25);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: left;
+    animation: cardIn .4s ease;
+  }
+  .pricing-preview-total {
+    font-size: 36px; font-weight: 800;
+    color: #1e90ff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .pricing-line-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+  }
+  .pricing-line-item:last-child { border-bottom: none; }
+  .pricing-line-item .amount { font-weight: 600; color: rgba(255,255,255,0.9); }
+
+  /* ── Responsive ────────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .quiz-card { padding: 32px 24px 28px; }
+    .option-grid { grid-template-columns: 1fr; }
+    .bool-grid   { grid-template-columns: 1fr; }
+  }
+</style>
+
+<section id="quiz-page" class="section section-show">
+  <div class="container">
+    <!-- Progress bar (hidden until quiz starts) -->
+    <div class="quiz-progress-wrap" id="quizProgressWrap" style="display:none;">
+      <div class="quiz-progress-label">
+        <span id="progressText">Step 1</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Main card -->
+    <div class="quiz-card" id="quizCard">
+      <!-- Initial loading state -->
+      <div class="quiz-loading" id="quizLoading">
+        <div class="quiz-spinner"></div>
+        <div class="quiz-loading-text">Loading quiz…</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── State ───────────────────────────────────────────────────────── */
+  const state = {
+    schema:       null,   // full quiz schema
+    sessionId:    null,   // current session id
+    quizId:       null,   // quiz id
+    currentQ:     null,   // current question object (from schema)
+    quizState:    null,   // server state {answers, history, isComplete, currentQuestionId}
+    localHistory: [],     // [{questionId, answer, questionDef}] for Back navigation
+    totalEstimate: 0,     // estimated total question count
+    pricing:      null,   // pricing result once quiz is complete
+  };
+
+  /* ── API helpers ─────────────────────────────────────────────────── */
+  const api = async (method, path, body) => {
+    const opts = {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(path, opts);
+    const json = await res.json();
+    if (!res.ok) {
+      const msg = json.message || JSON.stringify(json);
+      throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+    }
+    return json.data;
+  };
+
+  /* ── DOM references ──────────────────────────────────────────────── */
+  const $card    = document.getElementById('quizCard');
+  const $wrap    = document.getElementById('quizProgressWrap');
+  const $fill    = document.getElementById('progressFill');
+  const $pText   = document.getElementById('progressText');
+  const $pPct    = document.getElementById('progressPct');
+  const lang     = '{{ lang }}';
+  const pricingUrl = "{{ url_for('main.pricing', lang=lang) }}";
+
+  /* ── Progress update ─────────────────────────────────────────────── */
+  function updateProgress() {
+    const done  = state.localHistory.length;
+    const total = Math.max(state.totalEstimate, done + 1);
+    const pct   = Math.round((done / total) * 100);
+    $fill.style.width = pct + '%';
+    $pText.textContent = `Step ${done + 1} of ${total}`;
+    $pPct.textContent  = pct + '%';
+  }
+
+  /* ── Render helpers ──────────────────────────────────────────────── */
+  function questionById(id) {
+    return state.schema.questions.find(q => q.id === id) || null;
+  }
+
+  function renderSingleChoice(question, savedAnswer) {
+    return `
+      <div class="option-grid" id="optionGrid">
+        ${question.options.map(opt => `
+          <label class="option-card">
+            <input type="radio" name="quiz_answer" value="${esc(opt.id)}"
+              ${savedAnswer === opt.id ? 'checked' : ''}>
+            <div class="option-card-inner">
+              <span class="option-check-icon">✓</span>
+              <span class="option-label-text">${esc(opt.label)}</span>
+            </div>
+          </label>
+        `).join('')}
+      </div>`;
+  }
+
+  function renderMultiChoice(question, savedAnswer) {
+    const saved = Array.isArray(savedAnswer) ? savedAnswer : [];
+    return `
+      <div class="option-grid" id="optionGrid">
+        ${question.options.map(opt => `
+          <label class="option-card">
+            <input type="checkbox" name="quiz_answer" value="${esc(opt.id)}"
+              ${saved.includes(opt.id) ? 'checked' : ''}>
+            <div class="option-card-inner">
+              <span class="option-check-icon">✓</span>
+              <span class="option-label-text">${esc(opt.label)}</span>
+            </div>
+          </label>
+        `).join('')}
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:-28px;margin-bottom:28px;">
+        Select all that apply
+      </p>`;
+  }
+
+  function renderBoolean(question, savedAnswer) {
+    const yes = savedAnswer === true;
+    const no  = savedAnswer === false;
+    return `
+      <div class="bool-grid" id="boolGrid">
+        <button type="button" class="bool-btn ${yes ? 'selected-yes' : ''}"
+          id="boolYes" onclick="selectBool(true)">
+          <i class="bi bi-check-circle"></i>Yes
+        </button>
+        <button type="button" class="bool-btn ${no ? 'selected-no' : ''}"
+          id="boolNo" onclick="selectBool(false)">
+          <i class="bi bi-x-circle"></i>No
+        </button>
+      </div>`;
+  }
+
+  function renderText(question, savedAnswer) {
+    return `
+      <textarea class="quiz-input" id="textAnswer" rows="3"
+        placeholder="Type your answer…"
+        style="resize:vertical;"
+      >${savedAnswer || ''}</textarea>`;
+  }
+
+  function renderNumber(question, savedAnswer) {
+    return `
+      <input type="number" class="quiz-input" id="numberAnswer"
+        placeholder="Enter a number…"
+        value="${savedAnswer !== null && savedAnswer !== undefined ? savedAnswer : ''}">`;
+  }
+
+  function esc(str) {
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── Render question step ────────────────────────────────────────── */
+  function renderQuestion(question, savedAnswer) {
+    state.currentQ = question;
+    const stepNum  = state.localHistory.length + 1;
+    const canBack  = state.localHistory.length > 0;
+
+    let inputHtml;
+    if      (question.type === 'single-choice') inputHtml = renderSingleChoice(question, savedAnswer);
+    else if (question.type === 'multi-choice')  inputHtml = renderMultiChoice(question, savedAnswer);
+    else if (question.type === 'boolean')        inputHtml = renderBoolean(question, savedAnswer);
+    else if (question.type === 'text')           inputHtml = renderText(question, savedAnswer);
+    else if (question.type === 'number')         inputHtml = renderNumber(question, savedAnswer);
+    else inputHtml = '<p style="color:rgba(255,255,255,0.5);">Unsupported question type.</p>';
+
+    $card.innerHTML = `
+      <div class="quiz-step-label">Question ${stepNum}</div>
+      <h2 class="quiz-question-title">${esc(question.title)}</h2>
+      ${inputHtml}
+      <div class="quiz-field-error" id="fieldError">Please answer this question to continue.</div>
+      <div class="quiz-nav">
+        <button class="btn-quiz-back" id="btnBack" onclick="goBack()"
+          ${canBack ? '' : 'disabled'}>
+          <i class="bi bi-arrow-left"></i> Back
+        </button>
+        <button class="btn-quiz-next" id="btnNext" onclick="goNext()">
+          Next <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>`;
+
+    $wrap.style.display = 'block';
+    updateProgress();
+    attachAutoAdvance(question);
+  }
+
+  /* ── Auto-advance for single-choice & boolean ────────────────────── */
+  function attachAutoAdvance(question) {
+    if (question.type === 'single-choice') {
+      document.querySelectorAll('input[name="quiz_answer"]').forEach(el => {
+        el.addEventListener('change', () => setTimeout(goNext, 250));
+      });
+    }
+  }
+
+  /* ── Boolean selection (global so inline onclick works) ─────────── */
+  window.selectBool = function(value) {
+    const yes = document.getElementById('boolYes');
+    const no  = document.getElementById('boolNo');
+    if (yes) yes.className = 'bool-btn' + (value ? ' selected-yes' : '');
+    if (no)  no.className  = 'bool-btn' + (!value ? ' selected-no' : '');
+    yes.dataset.selected = value ? 'true' : '';
+    no.dataset.selected  = !value ? 'true' : '';
+    // auto-advance
+    setTimeout(goNext, 300);
+  };
+
+  /* ── Collect current answer from DOM ─────────────────────────────── */
+  function collectAnswer(question) {
+    if (question.type === 'single-choice') {
+      const checked = document.querySelector('input[name="quiz_answer"]:checked');
+      return checked ? checked.value : null;
+    }
+    if (question.type === 'multi-choice') {
+      const checked = [...document.querySelectorAll('input[name="quiz_answer"]:checked')];
+      return checked.length > 0 ? checked.map(el => el.value) : null;
+    }
+    if (question.type === 'boolean') {
+      const yes = document.getElementById('boolYes');
+      const no  = document.getElementById('boolNo');
+      if (yes && yes.classList.contains('selected-yes')) return true;
+      if (no  && no.classList.contains('selected-no'))  return false;
+      return null;
+    }
+    if (question.type === 'text') {
+      const val = document.getElementById('textAnswer')?.value?.trim();
+      return val || null;
+    }
+    if (question.type === 'number') {
+      const val = document.getElementById('numberAnswer')?.value;
+      return val !== '' && val !== undefined ? Number(val) : null;
+    }
+    return null;
+  }
+
+  /* ── Validate answer ──────────────────────────────────────────────── */
+  function validateAnswer(question, answer) {
+    if (question.required && (answer === null || answer === undefined)) return false;
+    if (question.type === 'multi-choice' && Array.isArray(answer) && answer.length === 0) return false;
+    return true;
+  }
+
+  /* ── Navigation: Next ─────────────────────────────────────────────── */
+  window.goNext = async function () {
+    const question = state.currentQ;
+    if (!question) return;
+
+    const answer = collectAnswer(question);
+    const errorEl = document.getElementById('fieldError');
+
+    if (!validateAnswer(question, answer)) {
+      if (errorEl) { errorEl.classList.add('visible'); }
+      return;
+    }
+    if (errorEl) errorEl.classList.remove('visible');
+
+    const btn = document.getElementById('btnNext');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="quiz-spinner" style="width:18px;height:18px;border-width:2px;"></span>'; }
+
+    try {
+      // Submit answer to API
+      const result = await api('POST', '/api/quiz/answer', {
+        session_id: state.sessionId,
+        answer: answer,
+      });
+
+      // Push to local history for Back
+      state.localHistory.push({
+        questionId:  question.id,
+        answer:      answer,
+        questionDef: question,
+      });
+
+      state.quizState = result.state;
+      state.pricing   = result.pricing;
+
+      if (result.state.isComplete) {
+        await handleComplete();
+      } else {
+        const nextQ = questionById(result.state.currentQuestionId);
+        if (nextQ) {
+          renderQuestion(nextQ, result.state.answers[nextQ.id]);
+        } else {
+          showError('Could not determine the next question. Please try again.');
+        }
+      }
+    } catch (err) {
+      if (btn) { btn.disabled = false; btn.innerHTML = 'Next <i class="bi bi-arrow-right"></i>'; }
+      const errorEl = document.getElementById('fieldError');
+      if (errorEl) {
+        errorEl.textContent = err.message || 'Error submitting answer. Please try again.';
+        errorEl.classList.add('visible');
+      }
+    }
+  };
+
+  /* ── Navigation: Back ─────────────────────────────────────────────── */
+  window.goBack = function () {
+    if (state.localHistory.length === 0) return;
+    const prev = state.localHistory.pop();
+    renderQuestion(prev.questionDef, prev.answer);
+  };
+
+  /* ── Completion screen ─────────────────────────────────────────────── */
+  async function handleComplete() {
+    $wrap.style.display = 'none';
+
+    // Fetch pricing estimate
+    let pricingHtml = '';
+    try {
+      const pricingData = await api('POST', '/api/pricing/estimate', {
+        session_id: state.sessionId,
+      });
+      state.pricing = pricingData;
+      pricingHtml = buildPricingPreview(pricingData);
+    } catch (_) {
+      pricingHtml = '';
+    }
+
+    $card.innerHTML = `
+      <div class="quiz-complete">
+        <div class="quiz-complete-icon"><i class="bi bi-check-lg"></i></div>
+        <h3>All done!</h3>
+        <p>We've collected everything we need to estimate your project.</p>
+        ${pricingHtml}
+        <div class="quiz-complete-actions">
+          <a href="${pricingUrl}" class="btn-see-pricing">
+            <i class="bi bi-calculator"></i> Open Full Calculator
+          </a>
+          <button class="btn-restart" onclick="startQuiz()">
+            <i class="bi bi-arrow-counterclockwise"></i> Start Over
+          </button>
+        </div>
+      </div>`;
+  }
+
+  function buildPricingPreview(pricing) {
+    if (!pricing || !pricing.total) return '';
+    const items = (pricing.lineItems || []).map(item => `
+      <div class="pricing-line-item">
+        <span>${esc(item.label)} <small style="color:rgba(255,255,255,0.35);">(${esc(item.kind)})</small></span>
+        <span class="amount">${item.amount >= 0 ? '+' : ''}${item.amount} ${esc(pricing.currency)}</span>
+      </div>`).join('');
+    return `
+      <div class="pricing-preview">
+        <div style="font-size:13px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">Estimated Cost</div>
+        <div class="pricing-preview-total">${pricing.total} ${esc(pricing.currency)}</div>
+        ${items}
+      </div>`;
+  }
+
+  /* ── Error screen ─────────────────────────────────────────────────── */
+  function showError(msg) {
+    $wrap.style.display = 'none';
+    $card.innerHTML = `
+      <div class="quiz-error">
+        <i class="bi bi-exclamation-triangle d-block"></i>
+        <strong>Something went wrong</strong>
+        <div class="quiz-error-msg">${esc(msg)}</div>
+        <button class="btn-retry" onclick="startQuiz()">
+          <i class="bi bi-arrow-clockwise"></i> Try again
+        </button>
+      </div>`;
+  }
+
+  /* ── Bootstrap quiz ───────────────────────────────────────────────── */
+  window.startQuiz = async function () {
+    $wrap.style.display = 'none';
+    $card.innerHTML = `
+      <div class="quiz-loading">
+        <div class="quiz-spinner"></div>
+        <div class="quiz-loading-text">Loading quiz…</div>
+      </div>`;
+
+    // Reset local state
+    state.schema       = null;
+    state.sessionId    = null;
+    state.quizId       = null;
+    state.currentQ     = null;
+    state.quizState    = null;
+    state.localHistory = [];
+    state.pricing      = null;
+
+    try {
+      // 1. Load schema
+      const schemaData = await api('GET', '/api/quiz/schema');
+      state.schema = schemaData.schema;
+      state.quizId = schemaData.quiz_id;
+      state.totalEstimate = (state.schema.questions || []).length;
+
+      // 2. Start session
+      const session = await api('POST', '/api/quiz/start', { quiz_id: state.quizId });
+      state.sessionId = session.session_id;
+      state.quizState = session.state;
+
+      // 3. Render first question
+      const firstQId = session.state.currentQuestionId;
+      const firstQ   = questionById(firstQId);
+      if (!firstQ) throw new Error('Could not load the first question.');
+
+      renderQuestion(firstQ, null);
+    } catch (err) {
+      showError(err.message || 'Failed to load quiz. Please try again.');
+    }
+  };
+
+  // Auto-start
+  window.startQuiz();
+})();
+</script>
+{% endblock %}

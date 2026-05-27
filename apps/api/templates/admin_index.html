@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Admin Panel Section -->
+<!--ADMIN_INDEX_MARKER: updated--> 
+<section id="admin-panel" class="portfolio admin-section section-show">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ t('admin_panel_title') }}</h2>
+      <p>{{ t('admin_panel_subtitle') }}</p>
+    </div>
+
+    <div class="row">
+      <!-- System Dashboard Card -->
+      <div class="col-dashboard">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <div class="icon-admin">
+              <i class="bi bi-speedometer2"></i>
+            </div>
+            <h5 class="card-admin-title">{{ t('system_dashboard_title') }}</h5>
+            <p class="card-admin-text">
+              {{ t('system_dashboard_description') }}
+            </p>
+            <a href="{{ url_for('admin.system_dashboard_lang', lang=lang if lang is defined else current_lang) }}" class="btn-link">
+              {{ t('open_dashboard') }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leads Dashboard Card -->
+      <div class="col-dashboard">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <div class="icon-admin">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <h5 class="card-admin-title">{{ t('leads_dashboard_title') }}</h5>
+            <p class="card-admin-text">
+              {{ t('leads_dashboard_description') }}
+            </p>
+            <a href="{{ url_for('admin.admin_leads_lang', lang=lang if lang is defined else current_lang) }}" class="btn-link">
+              {{ t('open_leads') }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Override section default styles to make admin section visible */
+  section.admin-section {
+    opacity: 1 !important;
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    background: transparent;
+    z-index: 1;
+  }
+
+  #admin-panel {
+    min-height: 100vh;
+    padding: 80px 0;
+  }
+
+  #admin-panel .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  #admin-panel .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .col-dashboard {
+    flex: 0 1 calc(50% - 15px);
+    min-width: 300px;
+  }
+
+  .card-admin {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    padding: 24px;
+    transition: all 0.3s ease;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .card-admin:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+  }
+
+  .card-admin-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .icon-admin {
+    font-size: 48px;
+    color: #1e90ff;
+  }
+
+  .card-admin-title {
+    color: #fff;
+    font-size: 20px;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .card-admin-text {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    font-size: 14px;
+    flex-grow: 1;
+  }
+
+  .btn-link {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #1e90ff;
+    border: 1px solid #1e90ff;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    align-self: center;
+  }
+
+  .btn-link:hover {
+    background: rgba(30, 144, 255, 0.1);
+    color: #1e90ff;
+  }
+
+  @media (max-width: 900px) {
+    .col-dashboard {
+      flex: 0 1 100%;
+    }
+  }
+</style>
+{% endblock %}

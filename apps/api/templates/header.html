@@ -18,35 +18,103 @@
       </h2>
       <nav id="navbar" class="navbar">
         <ul>
+          <!-- Home -->
           <li>
-            <a class="nav-link active" href="#header">{{ sect1 }}</a>
+            <a class="nav-link{% if request.endpoint == 'main.index' %} active{% endif %}" 
+              href="{{ url_for('main.index', lang=current_lang) }}">
+              <i class="bi bi-house-door"></i> {{ t('nav_home') }}
+            </a>
           </li>
+          
+          <!-- Resume (from sect1) -->
           <li>
-            <a class="nav-link" href="#resume">{{ sect2 }}</a>
+            <a class="nav-link{% if 'resume' in request.path %} active{% endif %}" 
+               href="{{ url_for('main.index', lang=current_lang, _anchor='resume') }}">
+              <i class="bi bi-file-text"></i> {{ sect2 }}
+            </a>
           </li>
+          
+          <!-- Portfolio (from sect3) -->
           <li>
-            <a class="nav-link" href="#portfolio">{{ sect3 }}</a>
+            <a class="nav-link{% if 'portfolio' in request.path %} active{% endif %}" 
+               href="{{ url_for('main.index', lang=current_lang, _anchor='portfolio') }}">
+              <i class="bi bi-briefcase"></i> {{ sect3 }}
+            </a>
           </li>
+          
+          <!-- Blog (from sect4) -->
           <li>
-            <a class="nav-link" href="#blog">{{ sect4 }}</a>
+            <a class="nav-link{% if 'blog' in request.path %} active{% endif %}" 
+               href="{{ url_for('main.index', lang=current_lang, _anchor='blog') }}">
+              <i class="bi bi-newspaper"></i> {{ sect4 }}
+            </a>
           </li>
+
+          <!-- Pricing -->
           <li>
-            <a class="nav-link" href="#contact">{{ sect5 }}</a>
+            <a class="nav-link{% if request.endpoint == 'main.pricing' %} active{% endif %}" 
+               href="{{ url_for('main.pricing', lang=current_lang) }}">
+              <i class="bi bi-tag"></i> {{ t('nav_pricing') }}
+            </a>
+          </li>
+
+          <!-- Quiz -->
+          <li>
+            <a class="nav-link{% if request.endpoint == 'main.quiz' %} active{% endif %}" 
+               href="{{ url_for('main.quiz', lang=current_lang) }}">
+              <i class="bi bi-question-circle"></i> {{ t('nav_quiz') }}
+            </a>
+          </li>
+
+          <!-- Leads (public contact) -->
+          <li>
+            <a class="nav-link{% if request.endpoint == 'main.leads' %} active{% endif %}" 
+               href="{{ url_for('main.leads', lang=current_lang) }}">
+              <i class="bi bi-envelope-paper"></i> {{ t('nav_leads') }}
+            </a>
+          </li>
+
+          <!-- Admin Dropdown -->
+          <li class="dropdown">
+            <a class="nav-link dropdown-toggle{% if 'admin' in request.path %} active{% endif %}" 
+               href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-gear"></i> {{ t('nav_admin') }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('admin.admin_lang', lang=current_lang) }}">
+                  <i class="bi bi-speedometer2"></i> {{ t('admin_panel_title') }}
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('admin.system_dashboard_lang', lang=current_lang) }}">
+                  <i class="bi bi-graph-up"></i> {{ t('system_dashboard_title') }}
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Contact (from sect5) -->
+          <li>
+              <a class="nav-link{% if 'contact' in request.path %} active{% endif %}" 
+               href="{{ url_for('main.index', lang=current_lang, _anchor='contact') }}">
+              <i class="bi bi-envelope"></i> {{ sect5 }}
+            </a>
           </li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav>
       <div class="language-switcher" aria-label="Language switcher">
-        <a href="{{ url_for('main.index', lang='ru') }}"
-           class="language-flag{% if lang == 'ru' %} active{% endif %}"
+          <a href="{{ url_for('main.index', lang='ru') }}"
+            class="language-flag{% if current_lang == 'ru' %} active{% endif %}"
            title="Русский"
            aria-label="Русский">🇷🇺</a>
-        <a href="{{ url_for('main.index', lang='en') }}"
-           class="language-flag{% if lang == 'en' %} active{% endif %}"
+          <a href="{{ url_for('main.index', lang='en') }}"
+            class="language-flag{% if current_lang == 'en' %} active{% endif %}"
            title="English"
            aria-label="English">🇬🇧</a>
-        <a href="{{ url_for('main.index', lang='uk') }}"
-           class="language-flag{% if lang == 'uk' %} active{% endif %}"
+          <a href="{{ url_for('main.index', lang='uk') }}"
+            class="language-flag{% if current_lang == 'uk' %} active{% endif %}"
            title="Українська"
            aria-label="Українська">🇺🇦</a>
       </div>
@@ -60,4 +128,58 @@
     </div>
   </header>
   <!-- Конец хедера -->
+
+  <!-- CSS для dropdown меню -->
+  <style>
+    /* Navbar dropdown styling */
+    .navbar .dropdown {
+      position: relative;
+    }
+
+    .navbar .dropdown-menu {
+      background: rgba(4, 4, 4, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      min-width: 180px;
+      margin-top: 8px;
+    }
+
+    .navbar .dropdown-menu .dropdown-item {
+      color: #fff;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar .dropdown-menu .dropdown-item:hover {
+      background: rgba(30, 144, 255, 0.1);
+      color: #1e90ff;
+    }
+
+    .navbar .dropdown-menu .dropdown-item i {
+      width: 16px;
+      text-align: center;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .navbar ul {
+        flex-direction: column;
+      }
+
+      .navbar li {
+        margin: 5px 0;
+      }
+
+      .navbar .dropdown-menu {
+        position: static;
+        border: none;
+        background: rgba(30, 144, 255, 0.05);
+        margin-top: 0;
+        padding-left: 20px;
+      }
+    }
+  </style>
 {% endblock %}

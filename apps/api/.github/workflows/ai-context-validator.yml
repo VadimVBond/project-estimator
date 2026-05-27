@@ -1,0 +1,97 @@
+name: AI Context Validator
+
+on:
+  push:
+    paths:
+      - ".ai/context/**"
+      - "apps/**"
+      - "packages/**"
+      - "services/**"
+  pull_request:
+    paths:
+      - ".ai/context/**"
+      - "apps/**"
+      - "packages/**"
+      - "services/**"
+
+jobs:
+  validate-ai-context:
+    name: Validate AI Context Consistency
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate required files exist
+        run: |
+          echo "Checking AI context structure..."
+
+          test -f .ai/context/current-state.md || (echo "Missing current-state.md" && exit 1)
+          test -f .ai/context/integration-notes.md || (echo "Missing integration-notes.md" && exit 1)
+
+          echo "AI context structure OK"
+
+      - name: Check for empty context updates (anti-skip rule)
+        run: |
+          echo "Checking if AI context was ignored..."
+
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
+
+          if echo "$CHANGED_FILES" | grep -E "(apps/|packages/|services/)" > /dev/null; then
+            echo "Code changes detected"
+
+            CONTEXT_CHANGED=$(echo "$CHANGED_FILES" | grep ".ai/context/" || true)
+
+            if [ -z "$CONTEXT_CHANGED" ]; then
+              echo "ERROR: Code changed but AI context was not updated"
+              exit 1
+            fi
+
+            echo "AI context updated properly"
+          else
+            echo "No relevant code changes"
+          fi
+
+      - name: Validate non-empty context files
+        run: |
+          for file in .ai/context/*.md; do
+            if [ ! -s "$file" ]; then
+              echo "ERROR: $file is empty"
+              exit 1
+            fi
+          done
+
+          echo "All context files have content"
+
+      - name: Detect stale state pattern (basic heuristic)
+        run: |
+          echo "Checking for stale placeholders..."
+
+          if grep -R "TODO" .ai/context/; then
+            echo "ERROR: TODO found in AI context"
+            exit 1
+          fi
+
+          if grep -R "FIXME" .ai/context/; then
+            echo "ERROR: FIXME found in AI context"
+            exit 1
+          fi
+
+          echo "No stale markers found"
+
+      - name: Validate structure integrity
+        run: |
+          echo "Validating structure consistency..."
+
+          REQUIRED_SECTIONS=("implemented" "in progress" "broken")
+
+          if ! grep -qi "implemented" .ai/context/current-state.md; then
+            echo "WARNING: current-state.md missing 'implemented' section"
+          fi
+
+          if ! grep -qi "integration" .ai/context/integration-notes.md; then
+            echo "WARNING: integration-notes.md missing 'integration' section"
+          fi
+
+          echo "Structure check completed"

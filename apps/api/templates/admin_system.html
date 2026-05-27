@@ -1,0 +1,696 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- System Dashboard Section -->
+<section id="admin-system" class="portfolio admin-section section-show">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ t('system_dashboard_title') }}</h2>
+      <p>{{ t('last_updated') }} {{ dashboard.updated_date }} {{ t('at_label') }} {{ dashboard.generated_at }}</p>
+    </div>
+
+    <div class="admin-menu mb-4">
+      <a href="{{ url_for('admin.admin_lang', lang=lang if lang is defined else current_lang) }}" class="admin-menu-item{% if 'admin/admin' in request.path or request.endpoint == 'admin.admin_lang' %} active{% endif %}">
+        {{ t('admin_panel_title') }}
+      </a>
+      <a href="{{ url_for('admin.system_dashboard_lang', lang=lang if lang is defined else current_lang) }}" class="admin-menu-item{% if 'admin/system' in request.path %} active{% endif %}">
+        {{ t('system_dashboard_title') }}
+      </a>
+      <a href="{{ url_for('admin.admin_leads_lang', lang=lang if lang is defined else current_lang) }}" class="admin-menu-item{% if 'admin/leads' in request.path %} active{% endif %}">
+        {{ t('leads_dashboard_title') }}
+      </a>
+    </div>
+
+    <!-- Project Status -->
+    <div class="row mb-5">
+      <div class="col-lg-12 mb-4">
+        <div class="card-admin card-admin-large">
+          <div class="card-admin-body">
+            <h5 class="card-admin-title">
+              <i class="bi bi-activity"></i> {{ t('project_status_title') }}
+            </h5>
+            <p class="card-admin-text">{{ dashboard.project.message }}</p>
+            <span class="badge-status status-{{ dashboard.project.color }}">
+              {{ t('online_status') }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Links Section -->
+    <div class="row mb-5">
+      <div class="col-lg-12 mb-4">
+        <div class="section-subtitle">{{ t('quick_access') }}</div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <a href="{{ url_for('main.pricing', lang=lang if lang is defined else current_lang) }}" class="quick-link">
+          <i class="bi bi-tag"></i>
+          <span>{{ t('pricing_calculator_title') }}</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Implementation Progress Widget -->
+    <div class="row mb-5">
+      <div class="col-lg-12 mb-4">
+        <div class="section-subtitle">{{ t('implementation_progress') }}</div>
+      </div>
+      
+      <!-- Overall Progress Bar -->
+      <div class="col-lg-12 mb-4">
+        <div class="progress-card">
+          <div class="progress-header">
+            <h6 class="progress-title">{{ t('overall_completion') }}</h6>
+            <span class="progress-percentage">{{ dashboard.progress.totals.completion_percentage }}%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-background">
+              <div class="progress-bar-fill" style="width: {{ dashboard.progress.totals.completion_percentage }}%"></div>
+            </div>
+          </div>
+          <div class="progress-stats">
+            <div class="stat-item">
+              <span class="stat-label">{{ t('completed_label') }}</span>
+              <span class="stat-value completed">{{ dashboard.progress.totals.completed }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">{{ t('in_progress_label') }}</span>
+              <span class="stat-value in-progress">{{ dashboard.progress.totals.in_progress }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">{{ t('planned_label') }}</span>
+              <span class="stat-value planned">{{ dashboard.progress.totals.planned }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">{{ t('total_label') }}</span>
+              <span class="stat-value total">{{ dashboard.progress.totals.total }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Progress Grid -->
+      {% for section_name, section_data in dashboard.progress.sections.items() %}
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="progress-card-feature">
+          <div class="feature-header">
+            <h6 class="feature-name">{{ section_name }}</h6>
+            <p class="feature-desc">{{ section_data.description }}</p>
+          </div>
+          
+          <div class="feature-progress">
+            <div class="progress-bar-small">
+              {% set total = section_data.completed + section_data.in_progress + section_data.planned %}
+              <div class="progress-fill completed-fill" style="width: {{ (section_data.completed / total * 100) if total > 0 else 0 }}%"></div>
+              <div class="progress-fill in-progress-fill" style="width: {{ (section_data.in_progress / total * 100) if total > 0 else 0 }}%"></div>
+              <div class="progress-fill planned-fill" style="width: {{ (section_data.planned / total * 100) if total > 0 else 0 }}%"></div>
+            </div>
+          </div>
+
+          <div class="feature-stats">
+            <div class="feature-stat">
+              <span class="status-badge completed">✓ {{ section_data.completed }}</span>
+            </div>
+            <div class="feature-stat">
+              <span class="status-badge in-progress">⊙ {{ section_data.in_progress }}</span>
+            </div>
+            <div class="feature-stat">
+              <span class="status-badge planned">○ {{ section_data.planned }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- System Components -->
+    <div class="row mb-5">
+      <div class="col-lg-12 mb-4">
+        <div class="section-subtitle">{{ t('system_components') }}</div>
+      </div>
+
+      <!-- Telegram Integration Status -->
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <h5 class="card-admin-title">
+              <i class="bi bi-send-check"></i> {{ t('telegram_integration_title') }}
+            </h5>
+            <p class="card-admin-text">{{ dashboard.telegram.message }}</p>
+            <span class="badge-status status-{{ dashboard.telegram.color }}">
+              {{ dashboard.telegram.status | upper }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leads System Status -->
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <h5 class="card-admin-title">
+              <i class="bi bi-inbox-fill"></i> {{ t('leads_system_title') }}
+            </h5>
+            <p class="card-admin-text">{{ dashboard.leads.message }}</p>
+            <span class="badge-status status-{{ dashboard.leads.color }}">
+              {{ dashboard.leads.count }} {{ t('leads_label') }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FlatPages & Languages -->
+    <div class="row mb-5">
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <h5 class="card-admin-title">
+              <i class="bi bi-file-earmark-text"></i> {{ t('flatpages_title') }}
+            </h5>
+            <p class="card-admin-text">{{ dashboard.flatpages.message }}</p>
+            <span class="badge-status status-{{ dashboard.flatpages.color }}">
+              {{ dashboard.flatpages.pages_count }} {{ t('pages_label') }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <h5 class="card-admin-title">
+              <i class="bi bi-globe"></i> {{ t('languages_title') }}
+            </h5>
+            <p class="card-admin-text">{{ dashboard.languages.message }}</p>
+            <div class="badge-group">
+              {% for lang in dashboard.languages.languages %}
+                <span class="badge-status status-{{ dashboard.languages.color }}">{{ lang }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blueprints & Cache -->
+    <div class="row mb-5">
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <h5 class="card-admin-title">
+              <i class="bi bi-puzzle"></i> {{ t('blueprints_title') }}
+            </h5>
+            <p class="card-admin-text">{{ dashboard.blueprints.message }}</p>
+            {% if dashboard.blueprints.blueprints %}
+              <div class="blueprint-list">
+                {% for bp in dashboard.blueprints.blueprints %}
+                  <div class="blueprint-item">{{ bp }}</div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <span class="badge-status status-secondary">{{ t('no_blueprints') }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <h5 class="card-admin-title">
+              <i class="bi bi-lightning-charge"></i> {{ t('cache_title') }}
+            </h5>
+            <p class="card-admin-text">{{ dashboard.cache.message }}</p>
+            <span class="badge-status status-{{ dashboard.cache.color }}">
+              {{ dashboard.cache.type | upper }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-lg-12">
+        <a href="{{ url_for('admin.admin_lang', lang=lang if lang is defined else current_lang) }}" class="btn-back">{{ t('back_to_admin') }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Override section default styles to make admin sections visible */
+  section.admin-section {
+    opacity: 1 !important;
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    background: transparent;
+    z-index: 1;
+  }
+
+  #admin-system {
+    min-height: 100vh;
+    padding: 80px 0;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .admin-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .admin-menu-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .admin-menu-item:hover,
+  .admin-menu-item.active {
+    background: rgba(30, 144, 255, 0.12);
+    color: #fff;
+    border-color: rgba(30, 144, 255, 0.4);
+  }
+
+  .card-admin {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    padding: 24px;
+    transition: all 0.3s ease;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-admin-large {
+    min-height: auto;
+    padding: 32px;
+  }
+
+  .card-admin:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-admin-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card-admin-title {
+    color: #fff;
+    font-size: 18px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+
+  .card-admin-title i {
+    color: #1e90ff;
+    font-size: 20px;
+  }
+
+  .card-admin-text {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .badge-status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    width: fit-content;
+  }
+
+  .badge-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .status-success {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+  }
+
+  .status-info {
+    background: rgba(30, 144, 255, 0.2);
+    color: #1e90ff;
+  }
+
+  .status-warning {
+    background: rgba(234, 179, 8, 0.2);
+    color: #eab308;
+  }
+
+  .status-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+  }
+
+  .status-secondary {
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
+  }
+
+  .status-primary {
+    background: rgba(30, 144, 255, 0.2);
+    color: #1e90ff;
+  }
+
+  .blueprint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .blueprint-item {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    border-left: 2px solid rgba(30, 144, 255, 0.5);
+  }
+
+  .quick-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #1e90ff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-height: 140px;
+    font-weight: 600;
+  }
+
+  .quick-link i {
+    font-size: 32px;
+    color: #1e90ff;
+  }
+
+  .quick-link:hover {
+    background: rgba(30, 144, 255, 0.15);
+    border-color: rgba(30, 144, 255, 0.4);
+    color: #fff;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(30, 144, 255, 0.2);
+  }
+
+  .quick-link span {
+    font-size: 14px;
+  }
+
+  .btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #1e90ff;
+    border: 1px solid #1e90ff;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+  }
+
+  .btn-back:hover {
+    background: rgba(30, 144, 255, 0.1);
+    color: #fff;
+  }
+
+  /* Progress Widget Styles */
+  .progress-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    padding: 28px;
+    transition: all 0.3s ease;
+  }
+
+  .progress-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .progress-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+  }
+
+  .progress-percentage {
+    font-size: 24px;
+    font-weight: 700;
+    color: #22c55e;
+  }
+
+  .progress-bar-container {
+    margin-bottom: 24px;
+  }
+
+  .progress-bar-background {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    height: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.6s ease;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+  }
+
+  .progress-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .stat-value.completed {
+    color: #22c55e;
+  }
+
+  .stat-value.in-progress {
+    color: #1e90ff;
+  }
+
+  .stat-value.planned {
+    color: #eab308;
+  }
+
+  .stat-value.total {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Feature Progress Cards */
+  .progress-card-feature {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .progress-card-feature:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .feature-header {
+    margin-bottom: 16px;
+  }
+
+  .feature-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 6px 0;
+  }
+
+  .feature-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+  }
+
+  .feature-progress {
+    margin-bottom: 16px;
+  }
+
+  .progress-bar-small {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .progress-fill {
+    transition: width 0.4s ease;
+  }
+
+  .completed-fill {
+    background: #22c55e;
+  }
+
+  .in-progress-fill {
+    background: #1e90ff;
+  }
+
+  .planned-fill {
+    background: #eab308;
+  }
+
+  .feature-stats {
+    display: flex;
+    gap: 8px;
+    justify-content: space-around;
+  }
+
+  .feature-stat {
+    flex: 1;
+    text-align: center;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .status-badge.completed {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+  }
+
+  .status-badge.in-progress {
+    background: rgba(30, 144, 255, 0.2);
+    color: #1e90ff;
+  }
+
+  .status-badge.planned {
+    background: rgba(234, 179, 8, 0.2);
+    color: #eab308;
+  }
+
+  @media (max-width: 768px) {
+    #admin-system {
+      padding: 40px 0;
+    }
+
+    .card-admin {
+      min-height: 160px;
+    }
+
+    .quick-link {
+      min-height: 120px;
+      padding: 16px;
+    }
+
+    .quick-link i {
+      font-size: 28px;
+    }
+
+    .progress-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .progress-card {
+      padding: 20px;
+    }
+
+    .stat-item {
+      padding: 10px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+    }
+
+    .stat-value {
+      font-size: 16px;
+    }
+
+    .feature-stats {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+{% endblock %}

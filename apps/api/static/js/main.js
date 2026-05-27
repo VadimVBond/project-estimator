@@ -52,6 +52,8 @@
    * Scrool with ofset on links with a class name .scrollto
    */
   on('click', '#navbar .nav-link', function(e) {
+    if (!this.hash) return;
+    
     let section = select(this.hash)
     if (section) {
       e.preventDefault()
@@ -106,6 +108,15 @@
    * Activate/show sections on load with hash links
    */
   window.addEventListener('load', () => {
+    let sections = select('section', true)
+    if (!window.location.hash && sections && sections.length) {
+      sections.forEach((section) => {
+        if (['pricing', 'quiz-page', 'leads', 'admin-system', 'admin-leads', 'admin-panel'].includes(section.id)) {
+          section.classList.add('section-show')
+        }
+      })
+    }
+
     if (window.location.hash) {
       let initial_nav = select(window.location.hash)
 

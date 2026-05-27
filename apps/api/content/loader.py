@@ -7,6 +7,7 @@ _flatpages_ref = None
 def init_loader(flatpages):
     global _flatpages_ref
     _flatpages_ref = flatpages
+    build_cache()
 
 
 def build_cache():
@@ -19,11 +20,8 @@ def build_cache():
     for lang in config.SUPPORTED_LANGS:
         PAGES_BY_LANG[lang] = {}
         for section in [config.POST_DIR, config.PORT_DIR]:
-
             localized_prefix = f"{lang}/{section}"
-            localized_pages = [
-                p for p in _flatpages_ref if p.path.startswith(localized_prefix)
-            ]
+            localized_pages = [p for p in _flatpages_ref if p.path.startswith(localized_prefix)]
 
             if localized_pages:
                 PAGES_BY_LANG[lang][section] = localized_pages
@@ -39,8 +37,7 @@ def build_cache():
             fallback_pages = [
                 p
                 for p in _flatpages_ref
-                if p.path.startswith(default_localized_prefix)
-                or p.path.startswith(section)
+                if p.path.startswith(default_localized_prefix) or p.path.startswith(section)
             ]
             PAGES_BY_LANG[lang][section] = fallback_pages
 
