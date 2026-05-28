@@ -81,6 +81,20 @@ def portfolio_index(lang):
     return redirect(url_for("main.index", lang=lang, _anchor="portfolio"))
 
 
+@main_bp.route("/<lang>/docs/")
+def docs_index(lang):
+    if lang not in config.SUPPORTED_LANGS:
+        return redirect(url_for("main.index", lang=config.DEFAULT_LANG))
+    return redirect(url_for("main.index", lang=lang, _anchor="docs"))
+
+
+@main_bp.route("/<lang>/marketplace/")
+def marketplace_index(lang):
+    if lang not in config.SUPPORTED_LANGS:
+        return redirect(url_for("main.index", lang=config.DEFAULT_LANG))
+    return redirect(url_for("main.index", lang=lang, _anchor="marketplace"))
+
+
 @main_bp.route("/<lang>/portfolio/<name>/")
 def portfolio(lang, name):
     if lang not in config.SUPPORTED_LANGS:

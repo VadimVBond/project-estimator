@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="admin-home-link" class="portfolio admin-section mb-5">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ t('admin_home_button_title') }}</h2>
+    </div>
+    <div class="admin-home-link-wrap mb-4">
+      <a href="{{ url_for('main.index', lang=lang if lang is defined else current_lang) }}" class="btn btn-primary btn-home-link">
+        {{ t('admin_home_button_label') }}
+      </a>
+    </div>
+  </div>
+</section>
 <!-- Admin Leads Dashboard Section -->
 <section id="admin-leads" class="portfolio admin-section section-show">
   <div class="container-fluid">
@@ -203,7 +215,9 @@
                       class="btn btn-sm btn-outline-primary" 
                       data-bs-toggle="modal" 
                       data-bs-target="#leadModal{{ loop.index }}"
-                      title="{{ t('view_details') }}"
+                      title="{{ t('view_details') }}">
+                      <i class="bi bi-eye"></i>
+                    </button>
                     <!-- Lead Details Modal -->
                     <div class="modal fade" id="leadModal{{ loop.index }}" tabindex="-1">
                       <div class="modal-dialog modal-lg">
@@ -331,10 +345,10 @@
 <style>
   section.admin-section {
     opacity: 1 !important;
-    position: relative !important;
+    position: static !important;
     top: auto !important;
     background: transparent;
-    z-index: 1;
+    z-index: auto;
   }
 
   #admin-leads {

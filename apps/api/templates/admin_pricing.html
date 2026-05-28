@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('pricing_settings_title') }}{% endblock %}
+
+{% block content %}
+<section id="admin-pricing" class="portfolio admin-section section-show">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ t('pricing_settings_title') }}</h2>
+      <p>{{ t('pricing_settings_subtitle') }}</p>
+    </div>
+
+    {% if saved %}
+      <div class="alert alert-success">
+        {{ t('pricing_settings_saved_message') }}
+      </div>
+    {% endif %}
+
+    <form method="post" class="pricing-settings-form">
+      <div class="settings-card">
+        <h3>{{ t('pricing_settings_description') }}</h3>
+        <div class="grid-columns">
+          <div class="field-group">
+            <label for="currency">{{ t('pricing_settings_currency_label') }}</label>
+            <input id="currency" name="currency" type="text" value="{{ rules.currency }}" />
+          </div>
+          <div class="field-group">
+            <label for="rounding_increment">{{ t('pricing_settings_rounding_label') }}</label>
+            <input id="rounding_increment" name="rounding_increment" type="number" min="1" step="1" value="{{ rules.rounding.increment }}" />
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h4>{{ t('pricing_settings_currency_rates_title') }}</h4>
+        <div class="grid-columns">
+          <div class="field-group">
+            <label for="currencyRates[USD]">USD</label>
+            <input id="currencyRates[USD]" name="currencyRates[USD]" type="number" step="0.0001" min="0" value="{{ rules.currencyRates.USD }}" />
+          </div>
+          <div class="field-group">
+            <label for="currencyRates[EUR]">EUR</label>
+            <input id="currencyRates[EUR]" name="currencyRates[EUR]" type="number" step="0.0001" min="0" value="{{ rules.currencyRates.EUR }}" />
+          </div>
+          <div class="field-group">
+            <label for="currencyRates[UAH]">UAH</label>
+            <input id="currencyRates[UAH]" name="currencyRates[UAH]" type="number" step="0.01" min="0" value="{{ rules.currencyRates.UAH }}" />
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h4>{{ t('pricing_settings_project_types_title') }}</h4>
+        <div class="settings-table">
+          {% for project in rules.projectTypes.values() %}
+            <div class="settings-row">
+              <span>{{ project.label }}</span>
+              <input
+                type="number"
+                step="1"
+                min="0"
+                name="projectTypes[{{ project.id }}].basePrice"
+                value="{{ project.basePrice }}"
+              />
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h4>{{ t('pricing_settings_feature_costs_title') }}</h4>
+        <div class="settings-table">
+          {% for feature in rules.features.values() %}
+            <div class="settings-row">
+              <span>{{ feature.label }}{% if feature.appliesTo %} · {{ t('pricing_settings_applies_to_label') }} {{ feature.appliesTo | join(', ') }}{% endif %}</span>
+              <input
+                type="number"
+                step="1"
+                min="0"
+                name="features[{{ feature.id }}].amount"
+                value="{{ feature.amount }}"
+              />
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h4>{{ t('pricing_settings_stack_multipliers_title') }}</h4>
+        <div class="settings-table">
+          {% for stack in rules.stacks.values() %}
+            <div class="settings-row">
+              <span>{{ stack.label }}</span>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                name="stacks[{{ stack.id }}].multiplier"
+                value="{{ stack.multiplier }}"
+              />
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h4>{{ t('pricing_settings_complexity_coefficients_title') }}</h4>
+        <div class="settings-table">
+          {% for complexity in rules.complexities.values() %}
+            <div class="settings-row">
+              <span>{{ complexity.label }}</span>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                name="complexities[{{ complexity.id }}].coefficient"
+                value="{{ complexity.coefficient }}"
+              />
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary submit-button">{{ t('pricing_settings_save_button') }}</button>
+    </form>
+  </div>
+</section>
+
+<style>
+  #admin-pricing {
+    min-height: 100vh;
+    padding: 80px 0;
+  }
+  #admin-pricing .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .pricing-settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .settings-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+  }
+  .settings-card h3,
+  .settings-card h4 {
+    margin: 0 0 18px;
+    color: #fff;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+  }
+  .grid-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .settings-table {
+    display: grid;
+    gap: 14px;
+  }
+  .settings-row {
+    display: grid;
+    grid-template-columns: 1fr 170px;
+    gap: 16px;
+    align-items: center;
+  }
+  .settings-row span {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .settings-row input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #fff;
+    padding: 12px 14px;
+  }
+  .settings-row input:focus {
+    outline: none;
+    border-color: rgba(30, 144, 255, 0.8);
+    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.12);
+  }
+  .submit-button {
+    width: fit-content;
+    padding: 14px 28px;
+    color: #fff;
+  }
+  @media (max-width: 860px) {
+    .grid-columns,
+    .settings-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% endblock %}

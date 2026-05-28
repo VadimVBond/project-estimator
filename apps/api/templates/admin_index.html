@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="admin-home-link" class="portfolio admin-section mb-4">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ t('admin_home_button_title') }}</h2>
+    </div>
+    <div class="admin-home-link-wrap">
+      <a href="{{ url_for('main.index', lang=lang if lang is defined else current_lang) }}" class="btn btn-primary btn-home-link">
+        {{ t('admin_home_button_label') }}
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- Admin Panel Section -->
 <!--ADMIN_INDEX_MARKER: updated--> 
 <section id="admin-panel" class="portfolio admin-section section-show">
@@ -42,6 +55,24 @@
             </p>
             <a href="{{ url_for('admin.admin_leads_lang', lang=lang if lang is defined else current_lang) }}" class="btn-link">
               {{ t('open_leads') }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Settings Card -->
+      <div class="col-dashboard">
+        <div class="card-admin">
+          <div class="card-admin-body">
+            <div class="icon-admin">
+              <i class="bi bi-calculator"></i>
+            </div>
+            <h5 class="card-admin-title">{{ t('pricing_settings_title') }}</h5>
+            <p class="card-admin-text">
+              {{ t('pricing_settings_description') }}
+            </p>
+            <a href="{{ url_for('admin.admin_pricing_settings_lang', lang=lang if lang is defined else current_lang) }}" class="btn-link">
+              {{ t('open_pricing_settings') }}
             </a>
           </div>
         </div>

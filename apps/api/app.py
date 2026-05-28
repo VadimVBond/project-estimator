@@ -22,8 +22,6 @@ from services.lead_service import init_lead_storage
 
 app = Flask(__name__)
 app.config.from_object(config)
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.jinja_env.auto_reload = True
 
 flatpages = FlatPages(app)
 

@@ -1,0 +1,31 @@
+{% block marketplace %}
+  <!-- ======= Marketplace ======= -->
+  <section id="marketplace" class="services">
+    <div class="container">
+      <div class="section-title">
+        <h2>{{ t('marketplace_title') }}</h2>
+        <p>{{ t('marketplace_subtitle') }}</p>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4">
+          <div class="icon-box">
+            <div class="icon">
+              <i class="bi bi-shop-window"></i>
+            </div>
+            <h4>{{ t('marketplace_items_title') }}</h4>
+            <p>{{ t('marketplace_items_description') }}</p>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 d-flex align-items-stretch mt-4">
+          <div class="icon-box">
+            <div class="icon">
+              <i class="bi bi-box-seam"></i>
+            </div>
+            <h4>{{ t('marketplace_integrations_title') }}</h4>
+            <p>{{ t('marketplace_integrations_description') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- End Marketplace Section -->
+{% endblock %}

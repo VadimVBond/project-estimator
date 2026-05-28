@@ -3,7 +3,10 @@
   <header id="header">
     <div class="container">
       <h1>
-        <a href="{{ site_url }}">{{ name }}</a>
+        <a href="{{ site_url }}">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="site-logo">
+          {{ name }}
+        </a>
       </h1>
       <br>
       <br>
@@ -41,6 +44,14 @@
               <i class="bi bi-briefcase"></i> {{ sect3 }}
             </a>
           </li>
+
+          <!-- Marketplace -->
+          <li>
+            <a class="nav-link{% if 'marketplace' in request.path %} active{% endif %}" 
+               href="{{ url_for('main.index', lang=current_lang, _anchor='marketplace') }}">
+              <i class="bi bi-shop"></i> {{ t('nav_marketplace') }}
+            </a>
+          </li>
           
           <!-- Blog (from sect4) -->
           <li>
@@ -50,8 +61,26 @@
             </a>
           </li>
 
-          <!-- Pricing -->
+          <!-- Contact (from sect5) -->
           <li>
+              <a class="nav-link{% if 'contact' in request.path %} active{% endif %}" 
+               href="{{ url_for('main.index', lang=current_lang, _anchor='contact') }}">
+              <i class="bi bi-envelope"></i> {{ sect5 }}
+            </a>
+          </li>
+
+          <li class="nav-break"></li>
+
+          <!-- Docs -->
+          <li class="nav-second-row">
+            <a class="nav-link{% if 'docs' in request.path %} active{% endif %}" 
+               href="{{ url_for('main.index', lang=current_lang, _anchor='docs') }}">
+              <i class="bi bi-book"></i> {{ t('nav_docs') }}
+            </a>
+          </li>
+
+          <!-- Pricing -->
+          <li class="nav-second-row">
             <a class="nav-link{% if request.endpoint == 'main.pricing' %} active{% endif %}" 
                href="{{ url_for('main.pricing', lang=current_lang) }}">
               <i class="bi bi-tag"></i> {{ t('nav_pricing') }}
@@ -59,7 +88,7 @@
           </li>
 
           <!-- Quiz -->
-          <li>
+          <li class="nav-second-row">
             <a class="nav-link{% if request.endpoint == 'main.quiz' %} active{% endif %}" 
                href="{{ url_for('main.quiz', lang=current_lang) }}">
               <i class="bi bi-question-circle"></i> {{ t('nav_quiz') }}
@@ -67,7 +96,7 @@
           </li>
 
           <!-- Leads (public contact) -->
-          <li>
+          <li class="nav-second-row">
             <a class="nav-link{% if request.endpoint == 'main.leads' %} active{% endif %}" 
                href="{{ url_for('main.leads', lang=current_lang) }}">
               <i class="bi bi-envelope-paper"></i> {{ t('nav_leads') }}
@@ -75,9 +104,9 @@
           </li>
 
           <!-- Admin Dropdown -->
-          <li class="dropdown">
+          <li class="dropdown nav-second-row">
             <a class="nav-link dropdown-toggle{% if 'admin' in request.path %} active{% endif %}" 
-               href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+               href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" data-bs-boundary="viewport" data-bs-display="static" aria-haspopup="true" aria-expanded="false">
               <i class="bi bi-gear"></i> {{ t('nav_admin') }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="adminDropdown">
@@ -92,14 +121,6 @@
                 </a>
               </li>
             </ul>
-          </li>
-
-          <!-- Contact (from sect5) -->
-          <li>
-              <a class="nav-link{% if 'contact' in request.path %} active{% endif %}" 
-               href="{{ url_for('main.index', lang=current_lang, _anchor='contact') }}">
-              <i class="bi bi-envelope"></i> {{ sect5 }}
-            </a>
           </li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -132,35 +153,70 @@
   <!-- CSS для dropdown меню -->
   <style>
     /* Navbar dropdown styling */
+    #header {
+      overflow: visible;
+    }
+
+    .navbar {
+      overflow: visible;
+    }
+
     .navbar .dropdown {
       position: relative;
+      overflow: visible;
+    }
+
+    .navbar .dropdown-toggle::after {
+      margin-left: 6px;
     }
 
     .navbar .dropdown-menu {
+      display: none;
+      position: absolute !important;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 220px;
+      z-index: 5000;
+      margin: 0;
+      padding: 0.35rem 0;
       background: rgba(4, 4, 4, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
-      min-width: 180px;
-      margin-top: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .navbar .dropdown-menu.show,
+    .navbar .dropdown.show > .dropdown-menu {
+      display: block !important;
+      opacity: 1;
+      visibility: visible;
+      z-index: 5000;
     }
 
     .navbar .dropdown-menu .dropdown-item {
       color: #fff;
-      padding: 10px 15px;
+      padding: 10px 18px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
+      gap: 10px;
+      transition: all 0.2s ease;
     }
 
     .navbar .dropdown-menu .dropdown-item:hover {
-      background: rgba(30, 144, 255, 0.1);
+      background: rgba(30, 144, 255, 0.12);
       color: #1e90ff;
     }
 
     .navbar .dropdown-menu .dropdown-item i {
       width: 16px;
       text-align: center;
+    }
+
+    .navbar .dropdown:hover > .dropdown-menu {
+      display: block;
     }
 
     /* Mobile responsive */
@@ -175,10 +231,16 @@
 
       .navbar .dropdown-menu {
         position: static;
+        display: block;
         border: none;
-        background: rgba(30, 144, 255, 0.05);
+        background: transparent;
+        box-shadow: none;
         margin-top: 0;
-        padding-left: 20px;
+        padding-left: 0;
+      }
+
+      .navbar .dropdown-menu .dropdown-item {
+        padding-left: 32px;
       }
     }
   </style>

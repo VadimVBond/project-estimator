@@ -4,7 +4,7 @@
     "site_title": "Frontend & backend Вадим Бондаренко",
     "description": "Вадим Бондаренко - портфолио, резюме и блог Frontend & backend разработчика",
     "keywords": "Веб-разработка, HTML, CSS, Javascript, Python, Frontend, backend, ReactJS, NextJS, Django, Flask",
-    "name": "Вадим Бондаренко",
+    "name": "ВБ",
     "tag1": "Frontend & backend",
     "tag2": "HTML & CSS & Javascript & Python",
     "tag3": "ReactJS, NextJS, Django и Flask",
@@ -13,6 +13,8 @@
     "sect3": "Портфолио",
     "sect4": "Блог",
     "sect5": "Контакты",
+    "sect6": "Документация",
+    "sect7": "Маркетплейс",
     "telegram": "https://t.me/johndoe",
     "facebook": "https://facebook.com/john.doe",
     "vk": "https://vk.com/john_doe",
@@ -33,6 +35,8 @@
       "sect3": "Портфолио",
       "sect4": "Блог",
       "sect5": "Контакты",
+      "sect6": "Документация",
+      "sect7": "Маркетплейс",
       "city": "Харьков"
     },
     "en": {
@@ -48,6 +52,8 @@
       "sect3": "Portfolio",
       "sect4": "Blog",
       "sect5": "Contacts",
+      "sect6": "Docs",
+      "sect7": "Marketplace",
       "city": "Kharkiv"
     },
     "uk": {
@@ -63,6 +69,8 @@
       "sect3": "Портфоліо",
       "sect4": "Блог",
       "sect5": "Контакти",
+      "sect6": "Документація",
+      "sect7": "Маркетплейс",
       "city": "Харків"
     }
   }

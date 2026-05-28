@@ -36,6 +36,16 @@ export const defaultPricingRules: PricingRules = {
       label: "Automation system",
       basePrice: 4500,
     },
+    portfolio: {
+      id: "portfolio",
+      label: "Portfolio",
+      basePrice: 1000,
+    },
+    docs: {
+      id: "docs",
+      label: "Docs",
+      basePrice: 500,
+    },
   },
   features: {
     auth: {
@@ -77,6 +87,12 @@ export const defaultPricingRules: PricingRules = {
       id: "integrations",
       label: "Third-party integrations",
       amount: 1100,
+    },
+    seo: {
+      id: "seo",
+      label: "SEO optimization",
+      amount: 800,
+      appliesTo: ["landing-page", "corporate-website", "ecommerce"],
     },
   },
   stacks: {

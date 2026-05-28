@@ -378,7 +378,21 @@
   }
 </style>
 
+<section id="admin-home-link" class="portfolio admin-section section-show mb-5">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ t('admin_home_button_title') }}</h2>
+    </div>
+    <div class="admin-home-link-wrap mb-4">
+      <a href="{{ url_for('main.index', lang=lang if lang is defined else current_lang) }}" class="btn btn-primary btn-home-link">
+        {{ t('admin_home_button_label') }}
+      </a>
+    </div>
+  </div>
+</section>
+
 <section id="quiz-page" class="section section-show">
+
   <div class="container">
     <!-- Progress bar (hidden until quiz starts) -->
     <div class="quiz-progress-wrap" id="quizProgressWrap" style="display:none;">
@@ -396,7 +410,7 @@
       <!-- Initial loading state -->
       <div class="quiz-loading" id="quizLoading">
         <div class="quiz-spinner"></div>
-        <div class="quiz-loading-text">Loading quiz…</div>
+        <div class="quiz-loading-text">{{ t('quiz_loading') }}</div>
       </div>
     </div>
   </div>
@@ -443,13 +457,72 @@
   const lang     = '{{ lang }}';
   const pricingUrl = "{{ url_for('main.pricing', lang=lang) }}";
 
+  const I18N = {
+    loading: "{{ t('quiz_loading') }}",
+    progressTemplate: "{{ t('quiz_progress_template') }}",
+    questionLabel: "{{ t('quiz_question_label') }}",
+    selectAll: "{{ t('quiz_select_all') }}",
+    yes: "{{ t('quiz_yes') }}",
+    no: "{{ t('quiz_no') }}",
+    typeAnswer: "{{ t('quiz_type_answer') }}",
+    enterNumber: "{{ t('quiz_enter_number') }}",
+    answerRequired: "{{ t('quiz_answer_required') }}",
+    nextButton: "{{ t('next_button') }}",
+    previousButton: "{{ t('previous_button') }}",
+    quiz_question_project_type: "{{ t('quiz_question_project_type') }}",
+    quiz_question_authentication_required: "{{ t('quiz_question_authentication_required') }}",
+    quiz_question_payments_required: "{{ t('quiz_question_payments_required') }}",
+    quiz_question_multilingual_required: "{{ t('quiz_question_multilingual_required') }}",
+    quiz_question_complexity: "{{ t('quiz_question_complexity') }}",
+    quiz_option_landing_page: "{{ t('quiz_option_landing_page') }}",
+    quiz_option_corporate_website: "{{ t('quiz_option_corporate_website') }}",
+    quiz_option_ecommerce: "{{ t('quiz_option_ecommerce') }}",
+    quiz_option_saas: "{{ t('quiz_option_saas') }}",
+    quiz_option_mobile_app: "{{ t('quiz_option_mobile_app') }}",
+    quiz_option_automation: "{{ t('quiz_option_automation') }}",
+    quiz_option_portfolio: "{{ t('quiz_option_portfolio') }}",
+    quiz_option_docs: "{{ t('quiz_option_docs') }}",
+    quiz_option_low: "{{ t('quiz_option_low') }}",
+    quiz_option_medium: "{{ t('quiz_option_medium') }}",
+    quiz_option_high: "{{ t('quiz_option_high') }}",
+    quiz_option_enterprise: "{{ t('quiz_option_enterprise') }}",
+    quizCompleteTitle: "{{ t('quiz_complete_title') }}",
+    quizCompleteMessage: "{{ t('quiz_complete_message') }}",
+    quizOpenFullCalculator: "{{ t('quiz_open_full_calculator') }}",
+    quizStartOver: "{{ t('quiz_start_over') }}",
+    quizEstimatedCost: "{{ t('quiz_estimated_cost') }}",
+    quizErrorHeader: "{{ t('quiz_error_header') }}",
+    quizErrorRetry: "{{ t('quiz_error_retry') }}",
+    quizErrorCouldNotDetermine: "{{ t('quiz_error_could_not_determine') }}",
+    quizErrorSubmit: "{{ t('quiz_error_submit') }}",
+    quizErrorFailedLoad: "{{ t('quiz_error_failed_load') }}",
+    quizErrorFirstQuestion: "{{ t('quiz_error_first_question') }}",
+    quizErrorUnsupportedQuestionType: "{{ t('quiz_error_unsupported_question_type') }}",
+  };
+
+  function localizeSchema(schema) {
+    if (!schema || !Array.isArray(schema.questions)) return;
+    schema.questions.forEach(question => {
+      if (question.titleKey && I18N[question.titleKey]) {
+        question.title = I18N[question.titleKey];
+      }
+      if (Array.isArray(question.options)) {
+        question.options.forEach(opt => {
+          if (opt.labelKey && I18N[opt.labelKey]) {
+            opt.label = I18N[opt.labelKey];
+          }
+        });
+      }
+    });
+  }
+
   /* ── Progress update ─────────────────────────────────────────────── */
   function updateProgress() {
     const done  = state.localHistory.length;
     const total = Math.max(state.totalEstimate, done + 1);
     const pct   = Math.round((done / total) * 100);
     $fill.style.width = pct + '%';
-    $pText.textContent = `Step ${done + 1} of ${total}`;
+    $pText.textContent = I18N.progressTemplate.replace('{current}', done + 1).replace('{total}', total);
     $pPct.textContent  = pct + '%';
   }
 
@@ -490,7 +563,7 @@
         `).join('')}
       </div>
       <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:-28px;margin-bottom:28px;">
-        Select all that apply
+        ${I18N.selectAll}
       </p>`;
   }
 
@@ -501,11 +574,11 @@
       <div class="bool-grid" id="boolGrid">
         <button type="button" class="bool-btn ${yes ? 'selected-yes' : ''}"
           id="boolYes" onclick="selectBool(true)">
-          <i class="bi bi-check-circle"></i>Yes
+          <i class="bi bi-check-circle"></i>${I18N.yes}
         </button>
         <button type="button" class="bool-btn ${no ? 'selected-no' : ''}"
           id="boolNo" onclick="selectBool(false)">
-          <i class="bi bi-x-circle"></i>No
+          <i class="bi bi-x-circle"></i>${I18N.no}
         </button>
       </div>`;
   }
@@ -513,7 +586,7 @@
   function renderText(question, savedAnswer) {
     return `
       <textarea class="quiz-input" id="textAnswer" rows="3"
-        placeholder="Type your answer…"
+        placeholder="${I18N.typeAnswer}"
         style="resize:vertical;"
       >${savedAnswer || ''}</textarea>`;
   }
@@ -521,7 +594,7 @@
   function renderNumber(question, savedAnswer) {
     return `
       <input type="number" class="quiz-input" id="numberAnswer"
-        placeholder="Enter a number…"
+        placeholder="${I18N.enterNumber}"
         value="${savedAnswer !== null && savedAnswer !== undefined ? savedAnswer : ''}">`;
   }
 
@@ -543,20 +616,20 @@
     else if (question.type === 'boolean')        inputHtml = renderBoolean(question, savedAnswer);
     else if (question.type === 'text')           inputHtml = renderText(question, savedAnswer);
     else if (question.type === 'number')         inputHtml = renderNumber(question, savedAnswer);
-    else inputHtml = '<p style="color:rgba(255,255,255,0.5);">Unsupported question type.</p>';
+    else inputHtml = `<p style="color:rgba(255,255,255,0.5);">${esc(I18N.quizErrorUnsupportedQuestionType)}</p>`;
 
     $card.innerHTML = `
-      <div class="quiz-step-label">Question ${stepNum}</div>
+      <div class="quiz-step-label">${I18N.questionLabel.replace('{n}', stepNum)}</div>
       <h2 class="quiz-question-title">${esc(question.title)}</h2>
       ${inputHtml}
-      <div class="quiz-field-error" id="fieldError">Please answer this question to continue.</div>
+      <div class="quiz-field-error" id="fieldError">${I18N.answerRequired}</div>
       <div class="quiz-nav">
         <button class="btn-quiz-back" id="btnBack" onclick="goBack()"
           ${canBack ? '' : 'disabled'}>
-          <i class="bi bi-arrow-left"></i> Back
+          <i class="bi bi-arrow-left"></i> ${I18N.previousButton}
         </button>
         <button class="btn-quiz-next" id="btnNext" onclick="goNext()">
-          Next <i class="bi bi-arrow-right"></i>
+          ${I18N.nextButton} <i class="bi bi-arrow-right"></i>
         </button>
       </div>`;
 
@@ -662,14 +735,14 @@
         if (nextQ) {
           renderQuestion(nextQ, result.state.answers[nextQ.id]);
         } else {
-          showError('Could not determine the next question. Please try again.');
+          showError(I18N.quizErrorCouldNotDetermine);
         }
       }
     } catch (err) {
-      if (btn) { btn.disabled = false; btn.innerHTML = 'Next <i class="bi bi-arrow-right"></i>'; }
+      if (btn) { btn.disabled = false; btn.innerHTML = `${I18N.nextButton} <i class="bi bi-arrow-right"></i>`; }
       const errorEl = document.getElementById('fieldError');
       if (errorEl) {
-        errorEl.textContent = err.message || 'Error submitting answer. Please try again.';
+        errorEl.textContent = err.message || I18N.quizErrorSubmit;
         errorEl.classList.add('visible');
       }
     }
@@ -701,15 +774,15 @@
     $card.innerHTML = `
       <div class="quiz-complete">
         <div class="quiz-complete-icon"><i class="bi bi-check-lg"></i></div>
-        <h3>All done!</h3>
-        <p>We've collected everything we need to estimate your project.</p>
+        <h3>${I18N.quizCompleteTitle}</h3>
+        <p>${I18N.quizCompleteMessage}</p>
         ${pricingHtml}
         <div class="quiz-complete-actions">
           <a href="${pricingUrl}" class="btn-see-pricing">
-            <i class="bi bi-calculator"></i> Open Full Calculator
+            <i class="bi bi-calculator"></i> ${I18N.quizOpenFullCalculator}
           </a>
           <button class="btn-restart" onclick="startQuiz()">
-            <i class="bi bi-arrow-counterclockwise"></i> Start Over
+            <i class="bi bi-arrow-counterclockwise"></i> ${I18N.quizStartOver}
           </button>
         </div>
       </div>`;
@@ -724,7 +797,7 @@
       </div>`).join('');
     return `
       <div class="pricing-preview">
-        <div style="font-size:13px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">Estimated Cost</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">${I18N.quizEstimatedCost}</div>
         <div class="pricing-preview-total">${pricing.total} ${esc(pricing.currency)}</div>
         ${items}
       </div>`;
@@ -736,10 +809,10 @@
     $card.innerHTML = `
       <div class="quiz-error">
         <i class="bi bi-exclamation-triangle d-block"></i>
-        <strong>Something went wrong</strong>
+        <strong>${I18N.quizErrorHeader}</strong>
         <div class="quiz-error-msg">${esc(msg)}</div>
         <button class="btn-retry" onclick="startQuiz()">
-          <i class="bi bi-arrow-clockwise"></i> Try again
+          <i class="bi bi-arrow-clockwise"></i> ${I18N.quizErrorRetry}
         </button>
       </div>`;
   }
@@ -750,7 +823,7 @@
     $card.innerHTML = `
       <div class="quiz-loading">
         <div class="quiz-spinner"></div>
-        <div class="quiz-loading-text">Loading quiz…</div>
+        <div class="quiz-loading-text">${I18N.loading}</div>
       </div>`;
 
     // Reset local state
@@ -766,6 +839,7 @@
       // 1. Load schema
       const schemaData = await api('GET', '/api/quiz/schema');
       state.schema = schemaData.schema;
+      localizeSchema(state.schema);
       state.quizId = schemaData.quiz_id;
       state.totalEstimate = (state.schema.questions || []).length;
 
@@ -777,11 +851,11 @@
       // 3. Render first question
       const firstQId = session.state.currentQuestionId;
       const firstQ   = questionById(firstQId);
-      if (!firstQ) throw new Error('Could not load the first question.');
+      if (!firstQ) throw new Error(I18N.quizErrorFirstQuestion);
 
       renderQuestion(firstQ, null);
     } catch (err) {
-      showError(err.message || 'Failed to load quiz. Please try again.');
+      showError(err.message || I18N.quizErrorFailedLoad);
     }
   };
 

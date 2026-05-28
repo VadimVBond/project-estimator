@@ -108,6 +108,11 @@ export function validatePricingEstimateInput(input: PricingEstimateInput, rules:
 
     if (!rules.features[id]) issues.push(issue(`features.${index}`, `Unknown feature "${id}".`));
     if (quantity <= 0) issues.push(issue(`features.${index}.quantity`, "Feature quantity must be greater than zero."));
+
+    // Special validation for multilingual feature: quantity must be between 2 and 7
+    if (id === 'multilingual' && (quantity < 2 || quantity > 7)) {
+      issues.push(issue(`features.${index}.quantity`, "Multilingual feature quantity must be between 2 and 7."));
+    }
   });
 
   return { ok: issues.length === 0, issues };

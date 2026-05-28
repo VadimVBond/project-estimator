@@ -3,6 +3,18 @@
 {% block title %}{{ t('pricing_calculator_title') }}{% endblock %}
 
 {% block content %}
+<div id="admin-home-link" class="portfolio admin-section mb-5">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ t('admin_home_button_title') }}</h2>
+    </div>
+    <div class="admin-home-link-wrap mb-4">
+      <a href="{{ url_for('main.index', lang=lang if lang is defined else current_lang) }}" class="btn btn-primary btn-home-link">
+        {{ t('admin_home_button_label') }}
+      </a>
+    </div>
+  </div>
+</section>
 <section id="pricing" class="pricing section-bg section-show" style="padding-top: 100px;">
   <div class="container" data-aos="fade-up">
     <div class="section-title">
@@ -18,45 +30,58 @@
             <form id="pricingForm">
               
               <div class="mb-4">
-                <label for="projectType" class="form-label fw-bold">Project Type</label>
+                <label for="projectType" class="form-label fw-bold">{{ t('pricing_section_project_type_label') }}</label>
                 <select class="form-select" id="projectType" name="projectType" required>
-                  <option value="" disabled selected>Select project type</option>
+                  <option value="" disabled selected>{{ t('pricing_section_project_type_placeholder') }}</option>
                   {% for key, type_data in rules.projectTypes.items() %}
-                  <option value="{{ key }}">{{ type_data.label }} (Base: {{ type_data.basePrice }} {{ rules.currency }})</option>
+                  <option value="{{ key }}">{{ t('pricing_project_type_' ~ key) }} ({{ t('pricing_section_base_price_label') }}: {{ type_data.basePrice }} {{ rules.currency }})</option>
                   {% endfor %}
                 </select>
               </div>
 
               <div class="mb-4">
-                <label for="stack" class="form-label fw-bold">Technology Stack</label>
+                <label for="stack" class="form-label fw-bold">{{ t('pricing_section_technology_stack_label') }}</label>
                 <select class="form-select" id="stack" name="stack">
                   {% for key, stack_data in rules.stacks.items() %}
-                  <option value="{{ key }}">{{ stack_data.label }}</option>
+                  <option value="{{ key }}">{{ t('pricing_stack_' ~ key) }}</option>
                   {% endfor %}
                 </select>
               </div>
 
               <div class="mb-4">
-                <label for="complexity" class="form-label fw-bold">Complexity Level</label>
+                <label for="complexity" class="form-label fw-bold">{{ t('pricing_section_complexity_level_label') }}</label>
                 <select class="form-select" id="complexity" name="complexity">
                   {% for key, comp_data in rules.complexities.items() %}
-                  <option value="{{ key }}">{{ comp_data.label }}</option>
+                  <option value="{{ key }}">{{ t('pricing_complexity_' ~ key) }}</option>
                   {% endfor %}
                 </select>
               </div>
 
               <div class="mb-4">
-                <label class="form-label fw-bold">Features</label>
+                <label class="form-label fw-bold" for="feature_multilingual">{{ t('pricing_feature_multilingual') }}</label>
+                <select class="form-select feature-select" data-feature-id="multilingual" id="feature_multilingual">
+                  <option value="">{{ t('pricing_feature_multilingual_select_placeholder') }}</option>
+                  {% set feature = rules.features['multilingual'] %}
+                  {% for n in range(2,8) %}
+                  <option value="{{ n }}">{{ n }} — +{{ feature.amount * n }} {{ rules.currency }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-bold">{{ t('pricing_section_features_label') }}</label>
                 <div class="row g-3" id="featuresContainer">
                   {% for key, feature in rules.features.items() %}
+                  {% if key != 'multilingual' %}
                   <div class="col-md-6 feature-checkbox" data-applies-to='{{ feature.get("appliesTo", []) | tojson | safe }}'>
                     <div class="form-check">
                       <input class="form-check-input feature-input" type="checkbox" value="{{ key }}" id="feature_{{ key }}">
                       <label class="form-check-label" for="feature_{{ key }}">
-                        {{ feature.label }} <span class="badge bg-secondary">+{{ feature.amount }} {{ rules.currency }}</span>
+                        {{ t('pricing_feature_' ~ key) }} <span class="badge bg-secondary">+{{ feature.amount }} {{ rules.currency }}</span>
                       </label>
                     </div>
                   </div>
+                  {% endif %}
                   {% endfor %}
                 </div>
               </div>
@@ -70,17 +95,54 @@
       <div class="col-lg-4">
         <div class="card shadow border-primary position-sticky" style="top: 100px;">
           <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Estimated Cost</h5>
+            <h5 class="mb-0">{{ t('pricing_section_estimated_cost') }}</h5>
           </div>
           <div class="card-body">
+            <div id="currencySwitcher" class="mb-4">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="fw-bold">{{ t('pricing_section_currency_selector_label') }}</span>
+                <div class="btn-group" role="group" aria-label="Currency selector">
+                  <button type="button" class="btn btn-outline-primary currency-toggle active" data-currency="USD">USD</button>
+                  <button type="button" class="btn btn-outline-primary currency-toggle" data-currency="EUR">EUR</button>
+                  <button type="button" class="btn btn-outline-primary currency-toggle" data-currency="UAH">UAH</button>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-sm table-borderless mb-0">
+                  <thead>
+                    <tr>
+                      <th>{{ t('pricing_section_currency_column_label') }}</th>
+                      <th>{{ t('pricing_section_currency_rate_header') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody id="currencyRatesTable">
+                    <tr>
+                      <td>USD</td>
+                      <td>1.00</td>
+                    </tr>
+                    <tr>
+                      <td>EUR</td>
+                      <td>...</td>
+                    </tr>
+                    <tr>
+                      <td>UAH</td>
+                      <td>...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="currencyRateError" class="alert alert-warning d-none mt-2 p-2"></div>
+            </div>
+
             <div id="pricingResult" class="d-none">
               <h2 class="text-center text-primary mb-4" id="totalPrice">0</h2>
               <div id="lineItems" class="small mb-3"></div>
-              <button class="btn btn-outline-primary w-100 mt-2" onclick="window.print()">Print Estimate</button>
+              <button class="btn btn-outline-primary w-100 mt-2" onclick="window.print()">{{ t('pricing_section_print_estimate') }}</button>
             </div>
             <div id="pricingPlaceholder" class="text-center text-muted py-4">
               <i class="bi bi-calculator fs-1 mb-2 d-block"></i>
-              Select a project type to see your estimate.
+              {{ t('pricing_section_select_project_type_message') }}
             </div>
             <div id="pricingError" class="alert alert-danger d-none mt-3 text-sm"></div>
           </div>
@@ -95,6 +157,17 @@
 .feature-checkbox.disabled {
     opacity: 0.5;
     pointer-events: none;
+}
+.currency-toggle.active {
+    background-color: var(--bs-primary);
+    color: #fff;
+    border-color: var(--bs-primary);
+}
+#currencySwitcher .table td,
+#currencySwitcher .table th {
+    border-top: none;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
 }
 .card {
     background-color: var(--bs-body-bg);
@@ -114,6 +187,135 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorPanel = document.getElementById('pricingError');
     const totalPriceEl = document.getElementById('totalPrice');
     const lineItemsEl = document.getElementById('lineItems');
+    const currencyButtons = document.querySelectorAll('.currency-toggle');
+    const currencyRatesTable = document.getElementById('currencyRatesTable');
+    const currencyRateError = document.getElementById('currencyRateError');
+
+    const supportedCurrencies = ['USD', 'EUR', 'UAH'];
+    let currentCurrency = 'USD';
+    let currentPricingData = null;
+    let exchangeRates = {
+      USD: {{ rules.currencyRates.USD }},
+      EUR: {{ rules.currencyRates.EUR }},
+      UAH: {{ rules.currencyRates.UAH }},
+    };
+
+    function hasManualRates() {
+      return (
+        typeof exchangeRates.USD === 'number' &&
+        typeof exchangeRates.EUR === 'number' &&
+        typeof exchangeRates.UAH === 'number'
+      );
+    }
+
+    const pricingKindLabels = {
+      base: {{ t('pricing_line_kind_base') | tojson }},
+      feature: {{ t('pricing_line_kind_feature') | tojson }},
+      stack: {{ t('pricing_line_kind_stack') | tojson }},
+      complexity: {{ t('pricing_line_kind_complexity') | tojson }},
+      rounding: {{ t('pricing_line_kind_rounding') | tojson }},
+    };
+
+    const pricingLabelMap = {
+      {% for key in rules.projectTypes.keys() %}
+      {{ key | tojson }}: {{ t('pricing_project_type_' ~ key) | tojson }},{% endfor %}
+      {% for key in rules.stacks.keys() %}
+      {{ key | tojson }}: {{ t('pricing_stack_' ~ key) | tojson }},{% endfor %}
+      {% for key in rules.complexities.keys() %}
+      {{ key | tojson }}: {{ t('pricing_complexity_' ~ key) | tojson }},{% endfor %}
+      {% for key in rules.features.keys() %}
+      {{ key | tojson }}: {{ t('pricing_feature_' ~ key) | tojson }},{% endfor %}
+      {{ 'rounding' | tojson }}: {{ t('pricing_line_item_rounding') | tojson }},
+    };
+
+    function formatMoney(amount, currency) {
+      if (typeof amount !== 'number' || Number.isNaN(amount)) {
+        return '-';
+      }
+      const maximumFractionDigits = currency === 'UAH' ? 0 : 2;
+      return new Intl.NumberFormat('ru-RU', {
+        style: 'currency',
+        currency,
+        maximumFractionDigits,
+      }).format(Math.round(amount * 100) / 100);
+    }
+
+    function getExchangeRate(fromCurrency, toCurrency) {
+      const fromRate = exchangeRates[fromCurrency];
+      const toRate = exchangeRates[toCurrency];
+
+      if (fromRate === null || fromRate === undefined || toRate === null || toRate === undefined) {
+        return null;
+      }
+
+      return toRate / fromRate;
+    }
+
+    function formatRate(rate, fromCurrency, toCurrency) {
+      if (rate === null || rate === undefined) {
+        return '—';
+      }
+      const maximumFractionDigits = toCurrency === 'UAH' ? 2 : 4;
+      const formatted = rate.toLocaleString('ru-RU', { maximumFractionDigits });
+      return `1 ${fromCurrency} = ${formatted} ${toCurrency}`;
+    }
+
+    function updateCurrencyButtons() {
+      currencyButtons.forEach(button => {
+        button.classList.toggle('active', button.dataset.currency === currentCurrency);
+      });
+    }
+
+    function renderRatesTable() {
+      currencyRatesTable.innerHTML = supportedCurrencies
+        .map(currency => {
+          const rate = getExchangeRate(currentCurrency, currency);
+          return `
+          <tr>
+            <td>${currency}</td>
+            <td>${formatRate(rate, currentCurrency, currency)}</td>
+          </tr>
+        `;
+        })
+        .join('');
+    }
+
+    function convertPrice(amount) {
+      if (typeof amount !== 'number' || Number.isNaN(amount)) {
+        return amount;
+      }
+      const rate = exchangeRates[currentCurrency];
+      return typeof rate === 'number' ? amount * rate : amount;
+    }
+
+    function renderPricing(data) {
+      currentPricingData = data;
+      const convertedTotal = convertPrice(data.total);
+      totalPriceEl.textContent = formatMoney(convertedTotal, currentCurrency);
+
+      let itemsHtml = '<ul class="list-group list-group-flush">';
+      data.lineItems.forEach(item => {
+        const convertedAmount = convertPrice(item.amount);
+        let sign = convertedAmount > 0 ? '+' : '';
+        if (convertedAmount < 0) sign = '';
+
+        let amountStr = convertedAmount === 0 ? formatMoney(0, currentCurrency) : `${sign}${formatMoney(convertedAmount, currentCurrency)}`;
+        const labelText = getTranslatedLineItemLabel(item);
+        const kindLabel = pricingKindLabels[item.kind] || item.kind;
+
+        itemsHtml += `
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent" style="border-color: rgba(128,128,128,0.2);">
+            <span>${labelText} <small class="text-muted">(${kindLabel})</small></span>
+            <span class="fw-bold">${amountStr}</span>
+          </li>`;
+      });
+      itemsHtml += '</ul>';
+      lineItemsEl.innerHTML = itemsHtml;
+    }
+
+    function getTranslatedLineItemLabel(item) {
+      return pricingLabelMap[item.id] || item.label;
+    }
 
     function updateFeatureVisibility() {
         const selectedType = projectTypeSelect.value;
@@ -121,10 +323,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const appliesToAttr = div.getAttribute('data-applies-to');
             const appliesTo = appliesToAttr !== 'null' ? JSON.parse(appliesToAttr) : null;
             const checkbox = div.querySelector('input');
+            const select = div.querySelector('select');
             
             if (appliesTo && selectedType && !appliesTo.includes(selectedType)) {
                 div.classList.add('disabled');
-                checkbox.checked = false;
+                if (checkbox) checkbox.checked = false;
+                if (select) select.value = '';
             } else {
                 div.classList.remove('disabled');
             }
@@ -143,11 +347,21 @@ document.addEventListener('DOMContentLoaded', function() {
             quantity: 1
         }));
 
+        // Include multilingual select values (and any other feature-selects)
+        const selectFeatures = Array.from(document.querySelectorAll('.feature-select')).map(sel => {
+            const val = sel.value;
+            const id = sel.getAttribute('data-feature-id') || sel.id.replace(/^feature_/, '');
+            if (!val) return null;
+            return { id, quantity: Number(val) };
+        }).filter(Boolean);
+
+        const featuresPayload = selectedFeatures.concat(selectFeatures);
+
         const payload = {
             projectType,
             stack,
             complexity,
-            features: selectedFeatures
+            features: featuresPayload
         };
 
         try {
@@ -174,24 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
             placeholderPanel.classList.add('d-none');
             errorPanel.classList.add('d-none');
             resultPanel.classList.remove('d-none');
-
-            totalPriceEl.textContent = `${data.total} ${data.currency}`;
-            
-            let itemsHtml = '<ul class="list-group list-group-flush">';
-            data.lineItems.forEach(item => {
-                let sign = item.amount > 0 ? '+' : '';
-                if (item.amount < 0) sign = ''; // Negative includes '-'
-                
-                let amountStr = item.amount === 0 ? '0' : `${sign}${item.amount}`;
-                
-                itemsHtml += `
-                <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent" style="border-color: rgba(128,128,128,0.2);">
-                  <span>${item.label} <small class="text-muted">(${item.kind})</small></span>
-                  <span class="fw-bold">${amountStr} ${data.currency}</span>
-                </li>`;
-            });
-            itemsHtml += '</ul>';
-            lineItemsEl.innerHTML = itemsHtml;
+            renderPricing(data);
 
         } catch (error) {
             console.error('Pricing Error:', error);
@@ -205,6 +402,51 @@ document.addEventListener('DOMContentLoaded', function() {
         calculatePricing();
     });
 
+    currencyButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selected = button.dataset.currency;
+        if (!selected || !supportedCurrencies.includes(selected)) {
+          return;
+        }
+        currentCurrency = selected;
+        updateCurrencyButtons();
+        renderRatesTable();
+        if (currentPricingData) {
+          renderPricing(currentPricingData);
+        }
+      });
+    });
+
+    async function fetchExchangeRates() {
+      if (hasManualRates()) {
+        renderRatesTable();
+        return;
+      }
+
+      try {
+        currencyRateError.classList.add('d-none');
+        const response = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=EUR,UAH');
+        const result = await response.json();
+
+        if (!response.ok || !result.rates) {
+          throw new Error('Не удалось получить курсы валют.');
+        }
+
+        exchangeRates = {
+          USD: 1,
+          EUR: Number(result.rates.EUR),
+          UAH: Number(result.rates.UAH),
+        };
+      } catch (error) {
+        console.warn('Exchange rate fetch failed', error);
+        exchangeRates = { USD: 1, EUR: 0.93, UAH: 40 };
+        currencyRateError.textContent = "{{ t('pricing_section_currency_rate_error') }}";
+        currencyRateError.classList.remove('d-none');
+      } finally {
+        renderRatesTable();
+      }
+    }
+
     inputs.forEach(input => {
         if (input.id !== 'projectType') {
             input.addEventListener('change', calculatePricing);
@@ -212,6 +454,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     updateFeatureVisibility();
+    updateCurrencyButtons();
+    fetchExchangeRates();
 });
 </script>
 {% endblock %}

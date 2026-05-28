@@ -4,7 +4,14 @@ from copy import deepcopy
 from typing import Any
 from uuid import uuid4
 
-from schemas.validation import ValidationIssue, ValidationResult, invalid, is_non_empty_string, is_number, issue
+from schemas.validation import (
+    ValidationIssue,
+    ValidationResult,
+    invalid,
+    is_non_empty_string,
+    is_number,
+    issue,
+)
 
 DEFAULT_QUIZ_SCHEMA: dict[str, Any] = {
     "id": "project-estimator-v1",
@@ -15,24 +22,79 @@ DEFAULT_QUIZ_SCHEMA: dict[str, Any] = {
             "id": "projectType",
             "type": "single-choice",
             "title": "Project type",
+            "titleKey": "quiz_question_project_type",
             "required": True,
             "pricing": {"field": "projectType"},
             "options": [
-                {"id": "landing-page", "label": "Landing page"},
-                {"id": "corporate-website", "label": "Corporate website"},
-                {"id": "ecommerce", "label": "E-commerce"},
-                {"id": "saas", "label": "SaaS application"},
-                {"id": "mobile-app", "label": "Mobile app"},
-                {"id": "automation", "label": "Automation system"},
+                {
+                    "id": "landing-page",
+                    "label": "Landing page",
+                    "labelKey": "quiz_option_landing_page",
+                },
+                {
+                    "id": "corporate-website",
+                    "label": "Corporate website",
+                    "labelKey": "quiz_option_corporate_website",
+                },
+                {"id": "ecommerce", "label": "E-commerce", "labelKey": "quiz_option_ecommerce"},
+                {"id": "saas", "label": "SaaS application", "labelKey": "quiz_option_saas"},
+                {"id": "mobile-app", "label": "Mobile app", "labelKey": "quiz_option_mobile_app"},
+                {
+                    "id": "automation",
+                    "label": "Automation system",
+                    "labelKey": "quiz_option_automation",
+                },
+                {"id": "portfolio", "label": "Portfolio", "labelKey": "quiz_option_portfolio"},
+                {"id": "docs", "label": "Docs", "labelKey": "quiz_option_docs"},
+            ],
+            "next": "stack",
+        },
+        {
+            "id": "stack",
+            "type": "single-choice",
+            "title": "Technology stack",
+            "titleKey": "quiz_question_technology_stack",
+            "required": True,
+            "pricing": {"field": "stack"},
+            "options": [
+                {"id": "standard", "label": "Standard stack", "labelKey": "pricing_stack_standard"},
+                {
+                    "id": "custom-backend",
+                    "label": "Custom backend",
+                    "labelKey": "pricing_stack_custom-backend",
+                },
+                {
+                    "id": "full-stack",
+                    "label": "Full-stack product",
+                    "labelKey": "pricing_stack_full-stack",
+                },
+                {
+                    "id": "high-load",
+                    "label": "High-load architecture",
+                    "labelKey": "pricing_stack_high-load",
+                },
             ],
             "branches": [
                 {
-                    "when": {"questionId": "projectType", "operator": "equals", "value": "ecommerce"},
-                    "next": "payments",
-                },
-                {
                     "when": {"questionId": "projectType", "operator": "equals", "value": "saas"},
                     "next": "auth",
+                },
+                {
+                    "when": {
+                        "any": [
+                            {
+                                "questionId": "projectType",
+                                "operator": "equals",
+                                "value": "ecommerce",
+                            },
+                            {
+                                "questionId": "projectType",
+                                "operator": "equals",
+                                "value": "mobile-app",
+                            },
+                        ]
+                    },
+                    "next": "payments",
                 },
             ],
             "next": "multilingual",
@@ -41,7 +103,13 @@ DEFAULT_QUIZ_SCHEMA: dict[str, Any] = {
             "id": "auth",
             "type": "boolean",
             "title": "Authentication required",
+            "titleKey": "quiz_question_authentication_required",
             "required": True,
+            "visibleWhen": {
+                "questionId": "projectType",
+                "operator": "equals",
+                "value": "saas",
+            },
             "pricing": {"featureId": "auth"},
             "next": "payments",
         },
@@ -49,7 +117,15 @@ DEFAULT_QUIZ_SCHEMA: dict[str, Any] = {
             "id": "payments",
             "type": "boolean",
             "title": "Payments required",
+            "titleKey": "quiz_question_payments_required",
             "required": True,
+            "visibleWhen": {
+                "any": [
+                    {"questionId": "projectType", "operator": "equals", "value": "saas"},
+                    {"questionId": "projectType", "operator": "equals", "value": "ecommerce"},
+                    {"questionId": "projectType", "operator": "equals", "value": "mobile-app"},
+                ]
+            },
             "pricing": {"featureId": "payments"},
             "next": "multilingual",
         },
@@ -57,27 +133,66 @@ DEFAULT_QUIZ_SCHEMA: dict[str, Any] = {
             "id": "multilingual",
             "type": "boolean",
             "title": "Multilingual content required",
+            "titleKey": "quiz_question_multilingual_required",
+            "required": True,
+            "next": "multilingual_languages",
+            "branches": [
+                {
+                    "when": {
+                        "questionId": "multilingual",
+                        "operator": "equals",
+                        "value": False,
+                    },
+                    "next": "complexity",
+                },
+            ],
+        },
+        {
+            "id": "multilingual_languages",
+            "type": "single-choice",
+            "title": "Number of languages",
+            "titleKey": "quiz_question_multilingual_languages",
             "required": True,
             "pricing": {"featureId": "multilingual"},
+            "options": [
+                {"id": "2", "label": "2 languages", "labelKey": "quiz_option_multilingual_2"},
+                {"id": "3", "label": "3 languages", "labelKey": "quiz_option_multilingual_3"},
+                {"id": "4", "label": "4 languages", "labelKey": "quiz_option_multilingual_4"},
+                {"id": "5", "label": "5 languages", "labelKey": "quiz_option_multilingual_5"},
+                {"id": "6", "label": "6 languages", "labelKey": "quiz_option_multilingual_6"},
+                {"id": "7", "label": "7 languages", "labelKey": "quiz_option_multilingual_7"},
+            ],
             "next": "complexity",
         },
         {
             "id": "complexity",
             "type": "single-choice",
             "title": "Project complexity",
+            "titleKey": "quiz_question_complexity",
             "required": True,
             "pricing": {"field": "complexity"},
             "options": [
-                {"id": "low", "label": "Low"},
-                {"id": "medium", "label": "Medium"},
-                {"id": "high", "label": "High"},
-                {"id": "enterprise", "label": "Enterprise"},
+                {"id": "low", "label": "Low", "labelKey": "quiz_option_low"},
+                {"id": "medium", "label": "Medium", "labelKey": "quiz_option_medium"},
+                {"id": "high", "label": "High", "labelKey": "quiz_option_high"},
+                {"id": "enterprise", "label": "Enterprise", "labelKey": "quiz_option_enterprise"},
             ],
         },
     ],
 }
 
-CONDITION_OPERATORS = {"equals", "notEquals", "includes", "notIncludes", "exists", "notExists", "gt", "gte", "lt", "lte"}
+CONDITION_OPERATORS = {
+    "equals",
+    "notEquals",
+    "includes",
+    "notIncludes",
+    "exists",
+    "notExists",
+    "gt",
+    "gte",
+    "lt",
+    "lte",
+}
 QUESTION_TYPES = {"single-choice", "multi-choice", "text", "number", "boolean"}
 DEFAULT_QUIZ_ID = DEFAULT_QUIZ_SCHEMA["id"]
 _QUIZ_SCHEMAS: dict[str, dict[str, Any]] = {DEFAULT_QUIZ_ID: DEFAULT_QUIZ_SCHEMA}
@@ -92,13 +207,17 @@ def get_quiz_schema(quiz_id: str | None = None) -> dict[str, Any]:
     selected_quiz_id = quiz_id or DEFAULT_QUIZ_ID
     schema = _QUIZ_SCHEMAS.get(selected_quiz_id)
     if not schema:
-        raise ValueError({"ok": False, "issues": [{"path": "quiz_id", "message": "Unknown quiz id."}]})
+        raise ValueError(
+            {"ok": False, "issues": [{"path": "quiz_id", "message": "Unknown quiz id."}]}
+        )
 
     return deepcopy(schema)
 
 
 def _question_by_id(schema: dict[str, Any], question_id: str) -> dict[str, Any] | None:
-    return next((question for question in schema["questions"] if question["id"] == question_id), None)
+    return next(
+        (question for question in schema["questions"] if question["id"] == question_id), None
+    )
 
 
 def _evaluate_condition(condition: dict[str, Any], state: dict[str, Any]) -> bool:
@@ -192,7 +311,9 @@ def validate_quiz_schema(schema: dict[str, Any]) -> ValidationResult:
 
     for question_id in referenced_ids:
         if question_id not in question_ids:
-            issues.append(issue("questions", f'Referenced question "{question_id}" does not exist.'))
+            issues.append(
+                issue("questions", f'Referenced question "{question_id}" does not exist.')
+            )
 
     return ValidationResult(ok=len(issues) == 0, issues=issues)
 
@@ -257,7 +378,9 @@ def create_quiz_session(quiz_id: str | None = None) -> dict[str, Any]:
 def get_quiz_session(session_id: str) -> dict[str, Any]:
     session = _QUIZ_SESSIONS.get(session_id)
     if not session:
-        raise ValueError({"ok": False, "issues": [{"path": "session_id", "message": "Unknown quiz session."}]})
+        raise ValueError(
+            {"ok": False, "issues": [{"path": "session_id", "message": "Unknown quiz session."}]}
+        )
 
     return session
 
@@ -282,7 +405,9 @@ def resolve_next_question_id(schema: dict[str, Any], state: dict[str, Any]) -> s
             start_question = _question_by_id(schema, start_question_id)
             if start_question and _is_visible(start_question, state):
                 return start_question_id
-        first_visible = next((question for question in schema["questions"] if _is_visible(question, state)), None)
+        first_visible = next(
+            (question for question in schema["questions"] if _is_visible(question, state)), None
+        )
         return first_visible["id"] if first_visible else None
 
     current_question = _question_by_id(schema, current_question_id)
@@ -304,14 +429,18 @@ def resolve_next_question_id(schema: dict[str, Any], state: dict[str, Any]) -> s
     return None
 
 
-def answer_current_question(schema: dict[str, Any], state: dict[str, Any], answer: Any) -> dict[str, Any]:
+def answer_current_question(
+    schema: dict[str, Any], state: dict[str, Any], answer: Any
+) -> dict[str, Any]:
     current_question_id = state.get("currentQuestionId")
     if not current_question_id:
         return state
 
     question = _question_by_id(schema, current_question_id)
     if not question:
-        raise ValueError({"ok": False, "issues": [{"path": "currentQuestionId", "message": "Unknown question."}]})
+        raise ValueError(
+            {"ok": False, "issues": [{"path": "currentQuestionId", "message": "Unknown question."}]}
+        )
 
     validation = validate_answer(question, answer)
     if not validation.ok:
@@ -339,7 +468,11 @@ def get_next_question_for_session(session_id: str) -> dict[str, Any]:
     session = get_quiz_session(session_id)
     next_question_id = resolve_next_question_id(session["schema"], session["state"])
 
-    return {"session_id": session_id, "quiz_id": session["quiz_id"], "nextQuestionId": next_question_id}
+    return {
+        "session_id": session_id,
+        "quiz_id": session["quiz_id"],
+        "nextQuestionId": next_question_id,
+    }
 
 
 def build_pricing_payload_for_session(session_id: str) -> dict[str, Any]:
@@ -362,10 +495,19 @@ def build_pricing_payload_for_session(session_id: str) -> dict[str, Any]:
             payload["complexity"] = answer
 
         feature_id = pricing.get("featureId")
-        if feature_id and answer is True:
-            payload["features"].append(feature_id)
-        if feature_id and isinstance(answer, list) and feature_id in answer:
-            payload["features"].append(feature_id)
+        if feature_id:
+            if answer is True:
+                payload["features"].append({"id": feature_id, "quantity": 1})
+            elif isinstance(answer, list) and feature_id in answer:
+                payload["features"].append({"id": feature_id, "quantity": 1})
+            elif isinstance(answer, str) and answer.isdigit():
+                quantity = int(answer)
+                if quantity > 0:
+                    payload["features"].append({"id": feature_id, "quantity": quantity})
+            elif is_number(answer):
+                quantity = int(answer)
+                if quantity > 0:
+                    payload["features"].append({"id": feature_id, "quantity": quantity})
 
     return payload
 

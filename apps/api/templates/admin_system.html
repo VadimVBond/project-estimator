@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="admin-home-link" class="portfolio admin-section mb-5">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ t('admin_home_button_title') }}</h2>
+    </div>
+    <div class="admin-home-link-wrap mb-4">
+      <a href="{{ url_for('main.index', lang=lang if lang is defined else current_lang) }}" class="btn btn-primary btn-home-link">
+        {{ t('admin_home_button_label') }}
+      </a>
+    </div>
+  </div>
+</section>
 <!-- System Dashboard Section -->
 <section id="admin-system" class="portfolio admin-section section-show">
   <div class="container">
@@ -44,9 +56,27 @@
         <div class="section-subtitle">{{ t('quick_access') }}</div>
       </div>
       <div class="col-lg-3 col-md-6 mb-4">
+        <a href="{{ telegram }}" class="quick-link" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-telegram"></i>
+          <span>{{ t('telegram') }}</span>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <a href="{{ url_for('main.leads', lang=lang if lang is defined else current_lang) }}" class="quick-link">
+          <i class="bi bi-people"></i>
+          <span>{{ t('nav_leads') }}</span>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
         <a href="{{ url_for('main.pricing', lang=lang if lang is defined else current_lang) }}" class="quick-link">
           <i class="bi bi-tag"></i>
           <span>{{ t('pricing_calculator_title') }}</span>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-4">
+        <a href="{{ url_for('main.quiz', lang=lang if lang is defined else current_lang) }}" class="quick-link">
+          <i class="bi bi-question-circle"></i>
+          <span>{{ t('quiz_title') }}</span>
         </a>
       </div>
     </div>

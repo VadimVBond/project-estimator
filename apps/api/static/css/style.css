@@ -63,7 +63,14 @@ h1, h2, h3, h4, h5, h6 {
 #header h1 a, #header h1 a:hover {
   color: #fff;
   line-height: 1;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+#header h1 a .site-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 #header h2 {
   font-size: 24px;
@@ -216,14 +223,29 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0 22px;
   list-style: none;
   align-items: center;
 }
 .navbar li {
   position: relative;
+  order: 0;
+}
+.navbar li.nav-second-row {
+  order: 1;
+}
+.navbar li.nav-break {
+  flex-basis: 100%;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  order: 0;
 }
 .navbar li + li {
-  margin-left: 30px;
+  margin-left: 0;
 }
 .navbar a, .navbar a:focus {
   display: flex;
@@ -385,6 +407,22 @@ section .container {
   color: #aaaaaa;
   font-family: "Poppins", sans-serif;
 }
+#admin-home-link .section-title h2 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 20px 0;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  color: #ffffff;
+}
+#admin-home-link .admin-home-link-wrap {
+  margin-top: 20px;
+}
+#admin-home-link .btn-home-link {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+}
 .section-title h2::after {
   content: "";
   width: 120px;
@@ -401,6 +439,25 @@ section .container {
   text-transform: uppercase;
   font-family: "Poppins", sans-serif;
   color: #fff;
+}
+
+/* Ensure admin-home-link is visible above quiz and other sections */
+#admin-home-link {
+  position: relative;
+  z-index: 50;
+  margin: 0 0 18px 0;
+  padding-top: 6px;
+}
+#admin-home-link .container {
+  background: transparent;
+  padding: 0;
+}
+#admin-home-link .section-title h2 {
+  margin: 0 0 8px 0;
+}
+
+@media (max-width: 640px) {
+  #admin-home-link .btn-home-link { padding: 0.6rem 1rem; font-size: 0.95rem; }
 }
 
 /*--------------------------------------------------------------

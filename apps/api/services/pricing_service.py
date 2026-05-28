@@ -1,9 +1,19 @@
 from __future__ import annotations
 
+import json
+import os
 from copy import deepcopy
 from typing import Any
 
-from schemas.validation import ValidationIssue, ValidationResult, invalid, is_non_empty_string, is_number, issue, ok
+import config
+from schemas.validation import (
+    ValidationIssue,
+    ValidationResult,
+    invalid,
+    is_non_empty_string,
+    is_number,
+    issue,
+)
 from services.quiz_service import attach_pricing_to_session, build_pricing_payload_for_session
 
 DEFAULT_STACK_ID = "standard"
@@ -13,11 +23,17 @@ DEFAULT_PRICING_RULES: dict[str, Any] = {
     "currency": "USD",
     "projectTypes": {
         "landing-page": {"id": "landing-page", "label": "Landing page", "basePrice": 1200},
-        "corporate-website": {"id": "corporate-website", "label": "Corporate website", "basePrice": 3000},
+        "corporate-website": {
+            "id": "corporate-website",
+            "label": "Corporate website",
+            "basePrice": 3000,
+        },
         "ecommerce": {"id": "ecommerce", "label": "E-commerce", "basePrice": 5500},
         "saas": {"id": "saas", "label": "SaaS application", "basePrice": 9000},
         "mobile-app": {"id": "mobile-app", "label": "Mobile app", "basePrice": 8000},
         "automation": {"id": "automation", "label": "Automation system", "basePrice": 4500},
+        "portfolio": {"id": "portfolio", "label": "Portfolio", "basePrice": 1000},
+        "docs": {"id": "docs", "label": "Docs", "basePrice": 500},
     },
     "features": {
         "auth": {
@@ -52,6 +68,12 @@ DEFAULT_PRICING_RULES: dict[str, Any] = {
             "appliesTo": ["saas", "automation", "corporate-website"],
         },
         "integrations": {"id": "integrations", "label": "Third-party integrations", "amount": 1100},
+        "seo": {
+            "id": "seo",
+            "label": "SEO optimization",
+            "amount": 800,
+            "appliesTo": ["landing-page", "corporate-website", "ecommerce"],
+        },
     },
     "stacks": {
         "standard": {"id": "standard", "label": "Standard stack", "multiplier": 1},
@@ -66,11 +88,42 @@ DEFAULT_PRICING_RULES: dict[str, Any] = {
         "enterprise": {"id": "enterprise", "label": "Enterprise complexity", "coefficient": 1.8},
     },
     "rounding": {"increment": 50},
+    "currencyRates": {"USD": 1, "EUR": 0.93, "UAH": 40},
 }
 
 
-def get_pricing_rules() -> dict[str, Any]:
+PRICING_RULES_PATH = os.path.join(config.BASE_DIR, "pricing_rules.json")
+
+
+def _deep_merge_rules(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
+    merged = deepcopy(base)
+    for key, value in override.items():
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key] = _deep_merge_rules(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+
+def _load_pricing_rules_from_store() -> dict[str, Any]:
+    if os.path.exists(PRICING_RULES_PATH):
+        try:
+            with open(PRICING_RULES_PATH, encoding="utf-8") as handle:
+                rules = json.load(handle)
+                if isinstance(rules, dict):
+                    return _deep_merge_rules(DEFAULT_PRICING_RULES, rules)
+        except (ValueError, OSError):
+            pass
     return deepcopy(DEFAULT_PRICING_RULES)
+
+
+def save_pricing_rules(rules: dict[str, Any]) -> None:
+    with open(PRICING_RULES_PATH, "w", encoding="utf-8") as handle:
+        json.dump(rules, handle, ensure_ascii=False, indent=2)
+
+
+def get_pricing_rules() -> dict[str, Any]:
+    return deepcopy(_load_pricing_rules_from_store())
 
 
 def _normalize_feature(feature: Any) -> dict[str, Any]:
@@ -83,7 +136,9 @@ def _normalize_feature(feature: Any) -> dict[str, Any]:
     return {"id": None, "quantity": None}
 
 
-def validate_pricing_input(data: dict[str, Any], rules: dict[str, Any] | None = None) -> ValidationResult:
+def validate_pricing_input(
+    data: dict[str, Any], rules: dict[str, Any] | None = None
+) -> ValidationResult:
     rules = rules or DEFAULT_PRICING_RULES
     issues: list[ValidationIssue] = []
 
@@ -131,7 +186,19 @@ def validate_pricing_input(data: dict[str, Any], rules: dict[str, Any] | None = 
             )
 
         if not is_number(quantity) or quantity <= 0:
-            issues.append(issue(f"features.{index}.quantity", "Feature quantity must be greater than zero."))
+            issues.append(
+                issue(f"features.{index}.quantity", "Feature quantity must be greater than zero.")
+            )
+
+        # Special validation for multilingual feature: must be between 2 and 7 languages
+        if feature_id == "multilingual":
+            if not is_number(quantity) or quantity < 2 or quantity > 7:
+                issues.append(
+                    issue(
+                        f"features.{index}.quantity",
+                        "Multilingual feature quantity must be between 2 and 7.",
+                    )
+                )
 
     return ValidationResult(ok=len(issues) == 0, issues=issues)
 
@@ -200,11 +267,22 @@ def estimate_project(data: dict[str, Any], rules: dict[str, Any] | None = None) 
 
     subtotal_after_coefficients = subtotal_after_stack + complexity_amount
     increment = rules.get("rounding", {}).get("increment")
-    total = round(subtotal_after_coefficients / increment) * increment if increment else subtotal_after_coefficients
+    total = (
+        round(subtotal_after_coefficients / increment) * increment
+        if increment
+        else subtotal_after_coefficients
+    )
     rounding_adjustment = total - subtotal_after_coefficients
 
     if rounding_adjustment:
-        line_items.append({"id": "rounding", "kind": "rounding", "label": "Rounding", "amount": rounding_adjustment})
+        line_items.append(
+            {
+                "id": "rounding",
+                "kind": "rounding",
+                "label": "Rounding",
+                "amount": rounding_adjustment,
+            }
+        )
 
     return {
         "total": total,
@@ -225,7 +303,9 @@ def estimate_project(data: dict[str, Any], rules: dict[str, Any] | None = None) 
     }
 
 
-def estimate_project_for_session(session_id: str, rules: dict[str, Any] | None = None) -> dict[str, Any]:
+def estimate_project_for_session(
+    session_id: str, rules: dict[str, Any] | None = None
+) -> dict[str, Any]:
     payload = build_pricing_payload_for_session(session_id)
     pricing = estimate_project(payload, rules)
     attach_pricing_to_session(session_id, pricing)
